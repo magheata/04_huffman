@@ -47,14 +47,6 @@ import java.io.Reader;
  * @version 1.0.1
  */
 public class FileDrop {
-
-    public void setMain(FileReader main) {
-        this.main = main;
-    }
-
-    private static FileReader main;
-
-
     /**
      * Discover if the running JVM is modern enough to have drag and drop.
      */
@@ -65,176 +57,6 @@ public class FileDrop {
     private static String ZERO_CHAR_STRING = "" + (char) 0;
     private transient javax.swing.border.Border normalBorder;
     private transient java.awt.dnd.DropTargetListener dropListener;
-
-
-    /**
-     * Constructs a {@link FileDrop} with a default light-blue border
-     * and, if <var>c</var> is a {@link java.awt.Container}, recursively
-     * sets all elements contained within as drop targets, though only
-     * the top level container will change borders.
-     *
-     * @param c        Component on which files will be dropped.
-     * @param listener Listens for <tt>filesDropped</tt>.
-     * @since 1.0
-     */
-    public FileDrop(final java.awt.Component c, final Listener listener) {
-        this(null,  // Logging stream
-                c,     // Drop target
-                javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, defaultBorderColor), // Drag border
-                true, // Recursive
-                listener);
-    }   // end constructor
-
-
-    /**
-     * Constructor with a default border and the option to recursively set drop targets.
-     * If your component is a <tt>java.awt.Container</tt>, then each of its children
-     * components will also listen for drops, though only the parent will change borders.
-     *
-     * @param c         Component on which files will be dropped.
-     * @param recursive Recursively set children as drop targets.
-     * @param listener  Listens for <tt>filesDropped</tt>.
-     * @since 1.0
-     */
-    public FileDrop(
-            final java.awt.Component c,
-            final boolean recursive,
-            final Listener listener) {
-        this(null,  // Logging stream
-                c,     // Drop target
-                javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, defaultBorderColor), // Drag border
-                recursive, // Recursive
-                listener);
-    }   // end constructor
-
-
-    /**
-     * Constructor with a default border and debugging optionally turned on.
-     * With Debugging turned on, more status messages will be displayed to
-     * <tt>out</tt>. A common way to use this constructor is with
-     * <tt>System.out</tt> or <tt>System.err</tt>. A <tt>null</tt> value for
-     * the parameter <tt>out</tt> will result in no debugging output.
-     *
-     * @param out      PrintStream to record debugging info or null for no debugging.
-     * @param out
-     * @param c        Component on which files will be dropped.
-     * @param listener Listens for <tt>filesDropped</tt>.
-     * @since 1.0
-     */
-    public FileDrop(
-            final java.io.PrintStream out,
-            final java.awt.Component c,
-            final Listener listener) {
-        this(out,  // Logging stream
-                c,    // Drop target
-                javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, defaultBorderColor),
-                false, // Recursive
-                listener);
-    }   // end constructor
-
-
-    /**
-     * Constructor with a default border, debugging optionally turned on
-     * and the option to recursively set drop targets.
-     * If your component is a <tt>java.awt.Container</tt>, then each of its children
-     * components will also listen for drops, though only the parent will change borders.
-     * With Debugging turned on, more status messages will be displayed to
-     * <tt>out</tt>. A common way to use this constructor is with
-     * <tt>System.out</tt> or <tt>System.err</tt>. A <tt>null</tt> value for
-     * the parameter <tt>out</tt> will result in no debugging output.
-     *
-     * @param out       PrintStream to record debugging info or null for no debugging.
-     * @param out
-     * @param c         Component on which files will be dropped.
-     * @param recursive Recursively set children as drop targets.
-     * @param listener  Listens for <tt>filesDropped</tt>.
-     * @since 1.0
-     */
-    public FileDrop(
-            final java.io.PrintStream out,
-            final java.awt.Component c,
-            final boolean recursive,
-            final Listener listener) {
-        this(out,  // Logging stream
-                c,    // Drop target
-                javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, defaultBorderColor), // Drag border
-                recursive, // Recursive
-                listener);
-    }   // end constructor
-
-
-    /**
-     * Constructor with a specified border
-     *
-     * @param c          Component on which files will be dropped.
-     * @param dragBorder Border to use on <tt>JComponent</tt> when dragging occurs.
-     * @param listener   Listens for <tt>filesDropped</tt>.
-     * @since 1.0
-     */
-    public FileDrop(
-            final java.awt.Component c,
-            final javax.swing.border.Border dragBorder,
-            final Listener listener) {
-        this(
-                null,   // Logging stream
-                c,      // Drop target
-                dragBorder, // Drag border
-                false,  // Recursive
-                listener);
-    }   // end constructor
-
-
-    /**
-     * Constructor with a specified border and the option to recursively set drop targets.
-     * If your component is a <tt>java.awt.Container</tt>, then each of its children
-     * components will also listen for drops, though only the parent will change borders.
-     *
-     * @param c          Component on which files will be dropped.
-     * @param dragBorder Border to use on <tt>JComponent</tt> when dragging occurs.
-     * @param recursive  Recursively set children as drop targets.
-     * @param listener   Listens for <tt>filesDropped</tt>.
-     * @since 1.0
-     */
-    public FileDrop(
-            final java.awt.Component c,
-            final javax.swing.border.Border dragBorder,
-            final boolean recursive,
-            final Listener listener) {
-        this(
-                null,
-                c,
-                dragBorder,
-                recursive,
-                listener);
-    }   // end constructor
-
-
-    /**
-     * Constructor with a specified border and debugging optionally turned on.
-     * With Debugging turned on, more status messages will be displayed to
-     * <tt>out</tt>. A common way to use this constructor is with
-     * <tt>System.out</tt> or <tt>System.err</tt>. A <tt>null</tt> value for
-     * the parameter <tt>out</tt> will result in no debugging output.
-     *
-     * @param out        PrintStream to record debugging info or null for no debugging.
-     * @param c          Component on which files will be dropped.
-     * @param dragBorder Border to use on <tt>JComponent</tt> when dragging occurs.
-     * @param listener   Listens for <tt>filesDropped</tt>.
-     * @since 1.0
-     */
-    public FileDrop(
-            final java.io.PrintStream out,
-            final java.awt.Component c,
-            final javax.swing.border.Border dragBorder,
-            final Listener listener) {
-        this(
-                out,    // Logging stream
-                c,      // Drop target
-                dragBorder, // Drag border
-                false,  // Recursive
-                listener);
-    }   // end constructor
-
 
     /**
      * Full constructor with a specified border and debugging optionally turned on.
@@ -251,6 +73,7 @@ public class FileDrop {
      * @since 1.0
      */
     public FileDrop(
+            final Controller controller,
             final java.io.PrintStream out,
             final java.awt.Component c,
             final javax.swing.border.Border dragBorder,
@@ -269,7 +92,7 @@ public class FileDrop {
                             javax.swing.JComponent jc = (javax.swing.JComponent) c;
                             normalBorder = jc.getBorder();
                             log(out, "Application.FileDrop: normal border saved.");
-                            jc.setBorder(normalBorder);
+                            jc.setBorder(dragBorder);
                             log(out, "Application.FileDrop: drag border set.");
                         }   // end if: JComponent
 
@@ -311,7 +134,7 @@ public class FileDrop {
                             java.io.File[] filesTemp = new java.io.File[fileList.size()];
                             fileList.toArray(filesTemp);
                             final java.io.File[] files = filesTemp;
-                            main.getFiles(files);
+                            controller.addFiles(files);
                             // Alert listener to drop.
                             if (listener != null)
                                 listener.filesDropped(files);

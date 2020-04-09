@@ -1,27 +1,80 @@
 package Presentation;/* Created by andreea on 08/04/2020 */
 
+import Application.Controller;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class Window extends JFrame {
 
-    private DnD dragDropComponent;
-    private FileChooser fileChooserComponent;
+    private DnDPanel dragDropComponent;
+    private FileChooserPanel fileChooserPanelComponent;
+    public FilesPanel filesPanel;
+    private Controller controller;
 
-    public Window() {
+    JPanel outerPanel;
+    public Window(Controller controller) {
+        this.controller = controller;
         initComponents();
     }
 
     private void initComponents() {
-        dragDropComponent = new DnD();
-        fileChooserComponent = new FileChooser();
+        JTabbedPane tabbedPane = new JTabbedPane();
+
+        outerPanel = new JPanel();
+        outerPanel.setLayout(new BorderLayout());
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridBagLayout());
+
+        //region GridBagConstraints
+        GridBagConstraints fileChooserConstraints = new GridBagConstraints();
+        fileChooserConstraints.fill = GridBagConstraints.HORIZONTAL;
+        fileChooserConstraints.gridwidth = 3;
+        fileChooserConstraints.gridheight = 2;
+        fileChooserConstraints.gridx = 0;
+        fileChooserConstraints.gridy = 0;
+
+        GridBagConstraints dragDropConstraints = new GridBagConstraints();
+        dragDropConstraints.fill = GridBagConstraints.HORIZONTAL;
+        dragDropConstraints.gridwidth = 3;
+        dragDropConstraints.gridheight = 1;
+        dragDropConstraints.ipady = 40;      //make this component tall
+        dragDropConstraints.gridx = 0;
+        dragDropConstraints.gridy = 2;
+        dragDropConstraints.weightx = 1;
+        //endregion
+
+        dragDropComponent = new DnDPanel();
+        fileChooserPanelComponent = new FileChooserPanel(controller);
+
+        filesPanel = new FilesPanel(Window.this);
+        controller.setFilesPanel(filesPanel);
+
+        panel.add(fileChooserPanelComponent, fileChooserConstraints);
+        panel.add(dragDropComponent, dragDropConstraints);
+
+        outerPanel.add(panel, BorderLayout.NORTH);
+        outerPanel.add(filesPanel, BorderLayout.CENTER);
+
+        JScrollPane pane = new JScrollPane(outerPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+        tabbedPane.addTab("Instrucciones uso", null);
+        tabbedPane.addTab("Comprimir archivo", pane);
+        tabbedPane.addTab("Preferencias", null);
+
         this.setPreferredSize(new Dimension(500, 600));
         this.setLayout(new BorderLayout());
-        this.add(fileChooserComponent, BorderLayout.CENTER);
-        this.add(dragDropComponent, BorderLayout.SOUTH);
+        this.setResizable(false);
+        this.add(tabbedPane);
     }
 
-    public DnD getDragDropComponent(){
+    public DnDPanel getDragDropComponent(){
         return this.dragDropComponent;
+    }
+
+    public void repaintOuterPanel(){
+        outerPanel.repaint();
     }
 }
