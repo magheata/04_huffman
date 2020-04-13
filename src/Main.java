@@ -13,10 +13,9 @@ public class Main {
         Controller controller = new Controller();
         Window window = new Window(controller);
 
-        FileDrop fileDrop = new FileDrop(controller, null, window.getDragDropComponent(), BorderFactory.createLineBorder(Color.black), true, files -> {
+        FileDrop fileDrop = new FileDrop(controller, null, window.getDragDropComponent(), BorderFactory.createMatteBorder(10, 10, 10, 10, Color.gray), true, files -> {
 
         });
-
         controller.setFileDropService(fileDrop);
         window.setVisible(true);
         window.pack();

@@ -1,27 +1,28 @@
 /* Created by andreea on 09/04/2020 */
-package Presentation;
+package Presentation.Utils;
+import Presentation.FilesPanel;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
+import java.awt.datatransfer.Transferable;
+import java.awt.dnd.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.Serializable;
 
-public class FileLabel extends DraggableComponent implements Serializable {
+public class FileLabel implements Serializable, DragGestureListener, DragSourceListener {
 
     private File file;
-
-    public String getFileName() {
-        return fileName;
-    }
-
     private String fileName;
     private Icon fileIcon;
     public JLabel fileLabel;
+    private DragSource dragSource;
+    private JLabel label;
 
     public FileLabel(File file) {
         super();
+        dragSource = new DragSource();
         this.file = file;
         this.fileName = file.getName();
         this.fileIcon = FileSystemView.getFileSystemView().getSystemIcon(file);
@@ -45,5 +46,31 @@ public class FileLabel extends DraggableComponent implements Serializable {
         g2.drawImage(srcImg, 0, 0, w, h, null);
         g2.dispose();
         return resizedImg;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void dragGestureRecognized(DragGestureEvent evt) {
+        Transferable t = new JLabelTransferable(label);
+        evt.startDrag(null, t, this);
+    }
+
+    //region UNUSED DRAG METHODS
+    public void dragEnter(DragSourceDragEvent evt) { }
+
+    public void dragOver(DragSourceDragEvent evt) {}
+
+    public void dragExit(DragSourceEvent evt) {}
+
+    public void dropActionChanged(DragSourceDragEvent evt) {}
+
+    public void dragDropEnd(DragSourceDropEvent evt) { }
+    //endregion
+
+    public void setLabel(JLabel label) {
+        this.label = label;
+        dragSource.createDefaultDragGestureRecognizer(label, DnDConstants.ACTION_COPY_OR_MOVE, this);
     }
 }

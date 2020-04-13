@@ -1,6 +1,7 @@
 package Presentation;/* Created by andreea on 08/04/2020 */
 
 import Application.Controller;
+import Utils.Constantes;
 
 import javax.swing.*;
 import java.awt.*;
@@ -60,11 +61,11 @@ public class Window extends JFrame {
         JScrollPane pane = new JScrollPane(outerPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-        tabbedPane.addTab("Instrucciones uso", null);
-        tabbedPane.addTab("Comprimir archivo", pane);
-        tabbedPane.addTab("Preferencias", null);
+        tabbedPane.addTab(Constantes.TITLE_INFO_TABBED_PANE, null);
+        tabbedPane.addTab(Constantes.TITLE_COMPRIMIR_TABBED_PANE, pane);
+        tabbedPane.addTab(Constantes.TITLE_PREFERENCIAS_TABBED_PANE, null);
 
-        this.setPreferredSize(new Dimension(500, 600));
+        this.setPreferredSize(Constantes.DIM_WINDOW);
         this.setLayout(new BorderLayout());
         this.setResizable(false);
         this.add(tabbedPane);
@@ -75,6 +76,6 @@ public class Window extends JFrame {
     }
 
     public void repaintOuterPanel(){
-        outerPanel.repaint();
+        outerPanel.revalidate();
     }
 }
