@@ -32,7 +32,7 @@ public class DropTargetListener extends DropTargetAdapter {
             evt.acceptDrop(java.awt.dnd.DnDConstants.ACTION_COPY_OR_MOVE);
             // Get a useful list
             JLabel fileList = (JLabel) tr.getTransferData(jLabelFlavor);
-            parentComponent.removeFile(fileList.getName(), true);
+            parentComponent.removeFile(fileList.getName());
             parentComponent.revalidate();
             // Mark that drop is completed.
             evt.getDropTargetContext().dropComplete(true);

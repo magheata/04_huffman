@@ -84,12 +84,14 @@ public class FilesPanel extends JPanel {
 
     public void setSelectedFiles(File[] selectedFiles){
         int archivosRepetidos = contarArchivosRepetidos(selectedFiles);
-        totalArchivos = totalArchivos - archivosRepetidos;
+        totalArchivos = totalArchivos + (selectedFiles.length - archivosRepetidos);
 
         for(File file : selectedFiles){
             FileLabel label = new FileLabel(file);
             if (labels.get(label.fileLabel.getText()) != null && !reemplazarArchivos){
                 Object[] botones;
+
+                //region JOPTIONPANE
                 if (archivosRepetidos > 1){
                     botones = new Object[]{Constantes.BTN_REEMPLAZAR, Constantes.BTN_REEMPLAZAR_TODO, Constantes.BTN_CANCELAR};
                     Constantes.BTN_REEMPLAZAR_TODO.setText("Reemplazar todo (" + (archivosRepetidos - 1) +" más)");
@@ -106,26 +108,28 @@ public class FilesPanel extends JPanel {
                         null,
                         botones,
                         Constantes.BTN_REEMPLAZAR);
-                if (reemplazarArchivo || reemplazarArchivos){
+                //endregion
+
+                if (reemplazarArchivo){
                     archivosRepetidos--;
-                    removeFile(label.getFileName(), false);
+                    selectedFilesPanel.remove(labels.get(label.getFileName()));
+                    labels.remove(label.getFileName());
                     labels.put(label.getFileName(), label.fileLabel);
                     selectedFilesPanel.add(label.fileLabel);
-                    totalArchivos++;
                 }
-            } else {
-                if (reemplazarArchivos){
-                    removeFile(label.getFileName(), false);
+            } else if (reemplazarArchivos){
+                if (labels.get(label.fileLabel.getText()) != null){
+                    selectedFilesPanel.remove(labels.get(label.getFileName()));
+                    labels.remove(label.getFileName());
+                    labels.put(label.getFileName(), label.fileLabel);
+                    selectedFilesPanel.add(label.fileLabel);
                     archivosRepetidos--;
                 }
-                totalArchivos++;
-                labels.put(label.getFileName(), label.fileLabel);
+            } else {
                 selectedFilesPanel.add(label.fileLabel);
+                labels.put(label.getFileName(), label.fileLabel);
             }
         }
-
-        selectedFilesPanel.repaint();
-        this.repaint();
         reemplazarArchivos = false;
         reemplazarArchivo = false;
         if (totalArchivos > 1){
@@ -135,12 +139,10 @@ public class FilesPanel extends JPanel {
         window.repaintOuterPanel();
     }
 
-    public void removeFile(String fileName, boolean repaint){
+    public void removeFile(String fileName){
         selectedFilesPanel.remove(labels.get(fileName));
         labels.remove(fileName);
-        if (repaint){
-            selectedFilesPanel.repaint();
-        }
+        totalArchivos--;
         if (totalArchivos == 0){
             comprimirArchivoButton.setVisible(false);
         } else if (totalArchivos == 1){
@@ -148,6 +150,7 @@ public class FilesPanel extends JPanel {
         } else {
             comprimirArchivoButton.setText("Comprimir archivos (" + totalArchivos + " archivos)");
         }
+        selectedFilesPanel.repaint();
     }
 
     private void inicializarJOptionPane(){

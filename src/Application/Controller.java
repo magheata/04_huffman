@@ -24,7 +24,7 @@ public class Controller implements IController {
 
     @Override
     public void deleteFile(String fileName) {
-        filesPanel.removeFile(fileName, true);
+        filesPanel.removeFile(fileName);
     }
 
     //region SETTERS Y GETTERS
