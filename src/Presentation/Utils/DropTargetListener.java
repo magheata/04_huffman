@@ -9,6 +9,7 @@ import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetAdapter;
 import java.awt.dnd.DropTargetDropEvent;
+import java.io.File;
 
 import static Presentation.Utils.JLabelTransferable.jLabelFlavor;
 
@@ -32,7 +33,7 @@ public class DropTargetListener extends DropTargetAdapter {
             evt.acceptDrop(java.awt.dnd.DnDConstants.ACTION_COPY_OR_MOVE);
             // Get a useful list
             JLabel fileList = (JLabel) tr.getTransferData(jLabelFlavor);
-            parentComponent.removeFile(fileList.getName());
+            parentComponent.removeFile(new File(fileList.getName()));
             parentComponent.revalidate();
             // Mark that drop is completed.
             evt.getDropTargetContext().dropComplete(true);

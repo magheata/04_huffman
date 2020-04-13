@@ -13,7 +13,7 @@ import java.io.Serializable;
 
 public class FileLabel implements Serializable, DragGestureListener, DragSourceListener {
 
-    private File file;
+    public File file;
     private String fileName;
     private Icon fileIcon;
     public JLabel fileLabel;
@@ -24,10 +24,11 @@ public class FileLabel implements Serializable, DragGestureListener, DragSourceL
         super();
         dragSource = new DragSource();
         this.file = file;
-        this.fileName = file.getName();
+        this.fileName = file.getPath();
         this.fileIcon = FileSystemView.getFileSystemView().getSystemIcon(file);
         this.fileLabel = new JLabel(fileName, getImageIcon(), JLabel.LEFT);
         this.fileLabel.setName(fileName);
+        this.fileLabel.setText(file.getName());
         setLabel(fileLabel);
     }
 

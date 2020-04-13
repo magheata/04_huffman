@@ -49,7 +49,7 @@ public class Window extends JFrame {
         dragDropComponent = new DnDPanel();
         fileChooserPanelComponent = new FileChooserPanel(controller);
 
-        filesPanel = new FilesPanel(Window.this);
+        filesPanel = new FilesPanel(Window.this, controller);
         controller.setFilesPanel(filesPanel);
 
         panel.add(fileChooserPanelComponent, fileChooserConstraints);

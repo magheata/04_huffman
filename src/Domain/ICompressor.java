@@ -2,6 +2,6 @@ package Domain;
 
 public interface ICompressor {
     void calcularFrecuencias();
-    void comprimir();
+    void comprimir(byte[] bytes);
     void descomprimir();
 }

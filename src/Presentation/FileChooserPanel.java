@@ -30,11 +30,11 @@ public class FileChooserPanel extends JPanel {
             switch (fileChooser.showOpenDialog(FileChooserPanel.this))
             {
                 case JFileChooser.APPROVE_OPTION:
+                    File directory = fileChooser.getCurrentDirectory();
                     if (fileChooser.getSelectedFiles() != null && fileChooser.getSelectedFiles().length > 1){
-                        controller.addFiles(fileChooser.getSelectedFiles());
-
+                        controller.addFiles(directory, fileChooser.getSelectedFiles());
                     } else {
-                        controller.addFiles(new File[]{fileChooser.getSelectedFile()});
+                        controller.addFiles(directory, new File[]{fileChooser.getSelectedFile()});
                     }
                     break;
 

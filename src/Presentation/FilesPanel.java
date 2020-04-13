@@ -2,6 +2,8 @@
 package Presentation;
 
 import Presentation.Utils.DropTargetListener;
+import Application.Controller;
+
 import Presentation.Utils.FileLabel;
 import Utils.Constantes;
 
@@ -15,7 +17,7 @@ import java.util.HashMap;
 public class FilesPanel extends JPanel {
 
     private JPanel selectedFilesPanel, deleteFilePanel;
-    private HashMap<String, JLabel> labels = new HashMap<>();
+    private HashMap<File, JLabel> labels = new HashMap<>();
     private HighlightButton comprimirArchivoButton;
     private Color color;
     private Window window;
@@ -23,9 +25,11 @@ public class FilesPanel extends JPanel {
     private boolean reemplazarArchivo = false;
     private boolean reemplazarArchivos = false;
     private int totalArchivos;
+    private Controller controller;
 
-    public FilesPanel(Window window) {
+    public FilesPanel(Window window, Controller controller) {
         this.window = window;
+        this.controller = controller;
         this.color = Color.white;
         initComponents();
     }
@@ -36,7 +40,7 @@ public class FilesPanel extends JPanel {
         comprimirArchivoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Pulsado");
+                controller.comprimirFicheros(labels.keySet());
             }
         });
         comprimirArchivoButton.setHighlight(new Color(59, 89, 182, 64));
@@ -88,7 +92,7 @@ public class FilesPanel extends JPanel {
 
         for(File file : selectedFiles){
             FileLabel label = new FileLabel(file);
-            if (labels.get(label.fileLabel.getText()) != null && !reemplazarArchivos){
+            if (labels.get(label.file) != null && !reemplazarArchivos){
                 Object[] botones;
 
                 //region JOPTIONPANE
@@ -111,23 +115,17 @@ public class FilesPanel extends JPanel {
                 //endregion
 
                 if (reemplazarArchivo){
+                    replaceFile(label.file, label.file, label.fileLabel);
                     archivosRepetidos--;
-                    selectedFilesPanel.remove(labels.get(label.getFileName()));
-                    labels.remove(label.getFileName());
-                    labels.put(label.getFileName(), label.fileLabel);
-                    selectedFilesPanel.add(label.fileLabel);
                 }
             } else if (reemplazarArchivos){
-                if (labels.get(label.fileLabel.getText()) != null){
-                    selectedFilesPanel.remove(labels.get(label.getFileName()));
-                    labels.remove(label.getFileName());
-                    labels.put(label.getFileName(), label.fileLabel);
-                    selectedFilesPanel.add(label.fileLabel);
+                if (labels.get(label.file) != null){
+                    replaceFile(label.file, label.file, label.fileLabel);
                     archivosRepetidos--;
                 }
             } else {
                 selectedFilesPanel.add(label.fileLabel);
-                labels.put(label.getFileName(), label.fileLabel);
+                labels.put(file, label.fileLabel);
             }
         }
         reemplazarArchivos = false;
@@ -139,9 +137,9 @@ public class FilesPanel extends JPanel {
         window.repaintOuterPanel();
     }
 
-    public void removeFile(String fileName){
-        selectedFilesPanel.remove(labels.get(fileName));
-        labels.remove(fileName);
+    public void removeFile(File file){
+        selectedFilesPanel.remove(labels.get(file));
+        labels.remove(file);
         totalArchivos--;
         if (totalArchivos == 0){
             comprimirArchivoButton.setVisible(false);
@@ -180,11 +178,17 @@ public class FilesPanel extends JPanel {
     private int contarArchivosRepetidos(File[] files){
         int archivosRepetidos = 0;
         for (File file : files){
-            FileLabel label = new FileLabel(file);
-            if (labels.get(label.fileLabel.getText()) != null){
+            if (labels.get(file) != null){
                 archivosRepetidos++;
             }
         }
         return archivosRepetidos;
+    }
+
+    private void replaceFile(File oldFile, File newFile, JLabel newButton){
+        selectedFilesPanel.remove(labels.get(oldFile));
+        labels.remove(oldFile);
+        labels.put(newFile, newButton);
+        selectedFilesPanel.add(newButton);
     }
 }
