@@ -7,6 +7,8 @@ import Utils.Constantes;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.HashMap;
 
@@ -14,7 +16,7 @@ public class FilesPanel extends JPanel {
 
     private JPanel selectedFilesPanel, deleteFilePanel;
     private HashMap<String, JLabel> labels = new HashMap<>();
-    private JButton comprimirArchivoButton;
+    private HighlightButton comprimirArchivoButton;
     private Color color;
     private Window window;
     private JOptionPane mensajeFicheros;
@@ -30,7 +32,16 @@ public class FilesPanel extends JPanel {
 
     private void initComponents() {
         totalArchivos = 0;
-        comprimirArchivoButton = new JButton("Comprimir archivo");
+        comprimirArchivoButton = new HighlightButton("Comprimir archivo");
+        comprimirArchivoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Pulsado");
+            }
+        });
+        comprimirArchivoButton.setHighlight(new Color(59, 89, 182, 64));
+        comprimirArchivoButton.setFocusPainted(false);
+        comprimirArchivoButton.setFont(new Font("Tahoma", Font.BOLD, 12));
         comprimirArchivoButton.setVisible(false);
         JPanel wrapperFiles = new JPanel();
         wrapperFiles.setLayout(new FlowLayout());
@@ -66,6 +77,7 @@ public class FilesPanel extends JPanel {
         wrapperFiles.add(deleteFilePanel);
 
         this.add(wrapperFiles, BorderLayout.CENTER);
+        this.setBackground(Color.white);
         this.add(comprimirArchivoButton, BorderLayout.SOUTH);
         this.setVisible(true);
     }
@@ -73,6 +85,7 @@ public class FilesPanel extends JPanel {
     public void setSelectedFiles(File[] selectedFiles){
         int archivosRepetidos = contarArchivosRepetidos(selectedFiles);
         totalArchivos = totalArchivos - archivosRepetidos;
+
         for(File file : selectedFiles){
             FileLabel label = new FileLabel(file);
             if (labels.get(label.fileLabel.getText()) != null && !reemplazarArchivos){
@@ -83,6 +96,7 @@ public class FilesPanel extends JPanel {
                 } else {
                     botones = new Object[]{Constantes.BTN_REEMPLAZAR, Constantes.BTN_CANCELAR};
                 }
+
                 mensajeFicheros.showOptionDialog(
                         this,
                         "El fichero " + label.getFileName() + " ya existe. Desea reemplazarlo?",
@@ -92,7 +106,7 @@ public class FilesPanel extends JPanel {
                         null,
                         botones,
                         Constantes.BTN_REEMPLAZAR);
-                if (reemplazarArchivo){
+                if (reemplazarArchivo || reemplazarArchivos){
                     archivosRepetidos--;
                     removeFile(label.getFileName(), false);
                     labels.put(label.getFileName(), label.fileLabel);
@@ -100,7 +114,7 @@ public class FilesPanel extends JPanel {
                     totalArchivos++;
                 }
             } else {
-                if (labels.get(label.fileLabel.getText()) != null){
+                if (reemplazarArchivos){
                     removeFile(label.getFileName(), false);
                     archivosRepetidos--;
                 }
@@ -109,11 +123,12 @@ public class FilesPanel extends JPanel {
                 selectedFilesPanel.add(label.fileLabel);
             }
         }
+
         selectedFilesPanel.repaint();
         this.repaint();
         reemplazarArchivos = false;
         reemplazarArchivo = false;
-        if (selectedFiles.length > 1){
+        if (totalArchivos > 1){
             comprimirArchivoButton.setText("Comprimir archivos (" + totalArchivos + " archivos)");
         }
         comprimirArchivoButton.setVisible(true);
@@ -125,6 +140,13 @@ public class FilesPanel extends JPanel {
         labels.remove(fileName);
         if (repaint){
             selectedFilesPanel.repaint();
+        }
+        if (totalArchivos == 0){
+            comprimirArchivoButton.setVisible(false);
+        } else if (totalArchivos == 1){
+            comprimirArchivoButton.setText("Comprimir archivo");
+        } else {
+            comprimirArchivoButton.setText("Comprimir archivos (" + totalArchivos + " archivos)");
         }
     }
 
