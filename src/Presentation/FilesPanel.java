@@ -49,7 +49,7 @@ public class FilesPanel extends JPanel {
         comprimirArchivoButton.setVisible(false);
         JPanel wrapperFiles = new JPanel();
         wrapperFiles.setLayout(new FlowLayout());
-        this.setLayout(new BorderLayout());
+         this.setLayout(new BorderLayout());
         selectedFilesPanel = new JPanel();
         deleteFilePanel = new JPanel();
 

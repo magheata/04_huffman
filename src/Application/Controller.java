@@ -1,7 +1,7 @@
 /* Created by andreea on 09/04/2020 */
 package Application;
 
-import Domain.IController;
+import Domain.Interficies.IController;
 import Infrastructure.Compressor;
 import Infrastructure.Reader;
 import Presentation.FilesPanel;
@@ -34,7 +34,7 @@ public class Controller implements IController {
     @Override
     public void comprimirFicheros(Set<File> files) {
         for (File file : files){
-            compressor.comprimir(reader.getBytes(file));
+            compressor.buildHuffmanTree(reader.getBytes(file));
         }
     }
 
