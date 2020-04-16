@@ -34,7 +34,7 @@ public class Controller implements IController {
     @Override
     public void comprimirFicheros(Set<File> files) {
         for (File file : files){
-            compressor.buildHuffmanTree(reader.getBytes(file));
+            compressor.buildHuffmanTree(reader.getBytes(file), file.getName());
         }
     }
 
