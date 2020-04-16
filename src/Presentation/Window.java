@@ -67,13 +67,18 @@ public class Window extends JFrame {
         JPanel panelInformacion = new JPanel();
         panelInformacion.setVisible(true);
 
+        JPanel panelArchivosComprimidos = new JPanel();
+        panelArchivosComprimidos.setVisible(true);
+
         tabbedPane.addTab(Constantes.TITLE_INFO_TABBED_PANE, panelInformacion);
-        tabbedPane.addTab(Constantes.TITLE_COMPRIMIR_TABBED_PANE, pane);
+        tabbedPane.addTab(Constantes.TITLE_COMPRIMIR_TABBED_PANE, outerPanel);
         tabbedPane.addTab(Constantes.TITLE_DESCOMPRIMIR_TABBED_PANE, panelDescomprimir);
+        tabbedPane.addTab(Constantes.TITLE_FICHEROS_COMPRIMIDOS_TABBED_PANE, panelArchivosComprimidos);
 
         this.setPreferredSize(Constantes.DIM_WINDOW);
         this.setLayout(new BorderLayout());
-        this.setResizable(false);
+        this.setResizable(true);
+        this.setMinimumSize(Constantes.DIM_WINDOW);
         this.add(tabbedPane);
     }
 

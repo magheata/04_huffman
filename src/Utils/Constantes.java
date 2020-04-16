@@ -34,6 +34,7 @@ public class Constantes {
 
     public final static String TITLE_COMPRIMIR_TABBED_PANE = "Comprimir archivo";
     public final static String TITLE_DESCOMPRIMIR_TABBED_PANE = "Descomprimir archivo";
+    public final static String TITLE_FICHEROS_COMPRIMIDOS_TABBED_PANE = "Archivos comprimidos";
 
     public final static String TITLE_INFO_TABBED_PANE = "Instrucciones uso";
     public final static String TITLE_PREFERENCIAS_TABBED_PANE = "Preferencias";
