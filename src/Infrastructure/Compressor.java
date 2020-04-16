@@ -1,20 +1,38 @@
 /* Created by andreea on 12/04/2020 */
 package Infrastructure;
 
+import Application.Controller;
 import Domain.Interficies.ICompressor;
 import Domain.Node;
 import Infrastructure.Utils.BinaryOut;
 
+import java.io.File;
 import java.util.*;
 
 public class Compressor implements ICompressor {
 
+    private Thread worker;
     private Map<Byte, String> huffmanCode = new HashMap<>();
     private BinaryOut binaryOutTrie, binaryOutCodes, binaryOutCompressedFile;
+    private byte[] bytes;
+    private File file;
+    private Controller controller;
+    private int bytesOriginales;
+    private int bytesComprimidos;
+
+    public Compressor(Controller controller, byte[] bytes, File file){
+        this.controller = controller;
+        this.bytes = bytes;
+        this.file = file;
+    }
+    public void start() {
+        worker = new Thread(this);
+        worker.start();
+    }
+
     // traverse the Huffman Tree and store Huffman Codes
     // in a map.
-    public void encode(Node root, String str, Map<Byte, String> huffmanCode)
-    {
+    public void encode(Node root, String str, Map<Byte, String> huffmanCode) {
         if (root == null) return;
 
         // found a leaf node
@@ -27,8 +45,7 @@ public class Compressor implements ICompressor {
     }
 
     // traverse the Huffman Tree and decode the encoded string
-    public int decode(Node root, int index, StringBuilder sb)
-    {
+    public int decode(Node root, int index, StringBuilder sb) {
         if (root == null)
             return index;
 
@@ -50,9 +67,32 @@ public class Compressor implements ICompressor {
     }
 
     // Builds Huffman Tree and huffmanCode and decode given input text
-    public void buildHuffmanTree(byte[] bytes, String fileName)
-    {
-        StringBuilder bytesOriginales = new StringBuilder();
+    public void comprimir() {
+        // count frequency of appearance of each character
+        // and store it in a map
+        Map<Byte, Integer> freq = crearTablaFrecuencias(bytes);
+
+        // Create a priority queue to store live nodes of Huffman tree
+        // Notice that highest priority item has lowest frequency
+        PriorityQueue<Node> pq = crearArbolHuffman(freq);
+
+        // traverse the Huffman tree and store the Huffman codes in a map
+        encode(pq.peek(), "", huffmanCode);
+
+        String name = file.getName().split("\\.")[0];
+
+        binaryOutTrie = new BinaryOut("huffmanTrees/" + name + "_trie.txt");
+        binaryOutCodes = new BinaryOut("huffmanCodes/" + name + "_codes.txt");
+        binaryOutCompressedFile = new BinaryOut("compressed/" + name + "_compressed.txt");
+
+        writeTrie(pq.peek());
+        writeHuffmanCodes(file.getName().split("\\.")[1]);
+        writeCompressedFile(bytes);
+        controller.addArchivosPorComprimirAPanel(file, bytesOriginales, bytesComprimidos);
+    }
+
+    private Map<Byte, Integer> crearTablaFrecuencias(byte[] bytes){
+        StringBuilder bytesOrig = new StringBuilder();
 
         // count frequency of appearance of each character
         // and store it in a map
@@ -61,12 +101,14 @@ public class Compressor implements ICompressor {
             if (!freq.containsKey(bytes[i])) {
                 freq.put(bytes[i], 0);
             }
-            bytesOriginales.append(String.format("%8s", Integer.toBinaryString(bytes[i] & 0xFF)).replace(' ', '0'));
+            bytesOrig.append(String.format("%8s", Integer.toBinaryString(bytes[i] & 0xFF)).replace(' ', '0'));
             freq.put(bytes[i], freq.get(bytes[i]) + 1);
         }
+        bytesOriginales = bytesOrig.length();
+        return freq;
+    }
 
-        System.out.println("Bytes originales (bits): " + bytesOriginales.length());
-
+    private PriorityQueue<Node> crearArbolHuffman(Map<Byte, Integer> freq){
         // Create a priority queue to store live nodes of Huffman tree
         // Notice that highest priority item has lowest frequency
         PriorityQueue<Node> pq = new PriorityQueue<>(Comparator.comparingInt(l -> l.frecuencia));
@@ -91,22 +133,7 @@ public class Compressor implements ICompressor {
             int sum = left.frecuencia + right.frecuencia;
             pq.add(new Node((byte) '\0', sum, left, right));
         }
-
-        // root stores pointer to root of Huffman Tree
-        Node root = pq.peek();
-
-        // traverse the Huffman tree and store the Huffman codes in a map
-        encode(root, "", huffmanCode);
-
-        String name = fileName.split("\\.")[0];
-
-        binaryOutTrie = new BinaryOut("huffmanTrees/" + name + "_trie.txt");
-        binaryOutCodes = new BinaryOut("huffmanCodes/" + name + "_codes.txt");
-        binaryOutCompressedFile = new BinaryOut("compressed/" + name + "_compressed.txt");
-
-        writeTrie(root);
-        writeHuffmanCodes(fileName.split("\\.")[1]);
-        writeCompressedFile(bytes);
+        return pq;
     }
 
     private void writeTrie(Node x){
@@ -161,7 +188,7 @@ public class Compressor implements ICompressor {
     }
 
     private void writeCompressedFile(byte [] bytes){
-        StringBuilder bytesComprimidos = new StringBuilder();
+        StringBuilder bytesCompr = new StringBuilder();
         // print encoded string
         for (int i = 0 ; i < bytes.length; i++) {
             String code = huffmanCode.get(bytes[i]);
@@ -172,10 +199,15 @@ public class Compressor implements ICompressor {
                     binaryOutCompressedFile.write(true);
                 }
             }
-            bytesComprimidos.append(huffmanCode.get(bytes[i]));
+            bytesCompr.append(huffmanCode.get(bytes[i]));
         }
-        System.out.println("Bytes comprimidos (bits): " + bytesComprimidos.length());
+        bytesComprimidos = bytesCompr.length();
         binaryOutCompressedFile.flush();
         binaryOutCompressedFile.close();
+    }
+
+    @Override
+    public void run() {
+        comprimir();
     }
 }

@@ -61,9 +61,15 @@ public class Window extends JFrame {
         JScrollPane pane = new JScrollPane(outerPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-        tabbedPane.addTab(Constantes.TITLE_INFO_TABBED_PANE, null);
+        JPanel panelDescomprimir = new JPanel();
+        panelDescomprimir.setVisible(true);
+
+        JPanel panelInformacion = new JPanel();
+        panelInformacion.setVisible(true);
+
+        tabbedPane.addTab(Constantes.TITLE_INFO_TABBED_PANE, panelInformacion);
         tabbedPane.addTab(Constantes.TITLE_COMPRIMIR_TABBED_PANE, pane);
-        tabbedPane.addTab(Constantes.TITLE_PREFERENCIAS_TABBED_PANE, null);
+        tabbedPane.addTab(Constantes.TITLE_DESCOMPRIMIR_TABBED_PANE, panelDescomprimir);
 
         this.setPreferredSize(Constantes.DIM_WINDOW);
         this.setLayout(new BorderLayout());

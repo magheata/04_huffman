@@ -9,15 +9,14 @@ import Utils.Constantes;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.HashMap;
 
 public class FilesPanel extends JPanel {
 
-    private JPanel selectedFilesPanel, deleteFilePanel;
+    private JPanel selectedFilesPanel, deleteFilePanel, archivosComprimidos;
     private HashMap<File, JLabel> labels = new HashMap<>();
+    private GridBagConstraints constraintsFileLabel, constraintsOriginalBytes, constraintsCompressedBytes;
     private HighlightButton comprimirArchivoButton;
     private Color color;
     private Window window;
@@ -37,12 +36,12 @@ public class FilesPanel extends JPanel {
     private void initComponents() {
         totalArchivos = 0;
         comprimirArchivoButton = new HighlightButton("Comprimir archivo");
-        comprimirArchivoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.comprimirFicheros(labels.keySet());
-            }
+        comprimirArchivoButton.addActionListener(e -> {
+            controller.comprimirFicheros(labels.keySet());
+            comprimirArchivoButton.setVisible(false);
+            comprimirArchivoButton.setText("");
         });
+
         comprimirArchivoButton.setHighlight(new Color(59, 89, 182, 64));
         comprimirArchivoButton.setFocusPainted(false);
         comprimirArchivoButton.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -80,10 +79,56 @@ public class FilesPanel extends JPanel {
         wrapperFiles.add(selectedFilesScrollPane);
         wrapperFiles.add(deleteFilePanel);
 
-        this.add(wrapperFiles, BorderLayout.CENTER);
+        inicializarPanelFicherosComprimidos();
+
+        this.add(wrapperFiles, BorderLayout.NORTH);
         this.setBackground(Color.white);
+        this.add(archivosComprimidos, BorderLayout.CENTER);
+
         this.add(comprimirArchivoButton, BorderLayout.SOUTH);
         this.setVisible(true);
+    }
+
+
+    public void inicializarPanelFicherosComprimidos(){
+        archivosComprimidos = new JPanel();
+        archivosComprimidos.setLayout(new BoxLayout(archivosComprimidos, BoxLayout.PAGE_AXIS));
+
+        constraintsFileLabel = new GridBagConstraints();
+        constraintsFileLabel.fill = GridBagConstraints.HORIZONTAL;
+        constraintsFileLabel.gridwidth = 1;
+        constraintsFileLabel.gridheight = 3;
+        constraintsFileLabel.gridx = 0;
+        constraintsFileLabel.gridy = 0;
+
+        constraintsOriginalBytes = new GridBagConstraints();
+        constraintsOriginalBytes.fill = GridBagConstraints.HORIZONTAL;
+        constraintsOriginalBytes.gridwidth = 1;
+        constraintsOriginalBytes.gridheight = 3;
+        constraintsOriginalBytes.gridx = 1;
+        constraintsOriginalBytes.gridy = 0;
+
+        constraintsCompressedBytes = new GridBagConstraints();
+        constraintsCompressedBytes.fill = GridBagConstraints.HORIZONTAL;
+        constraintsCompressedBytes.gridwidth = 1;
+        constraintsCompressedBytes.gridheight = 3;
+        constraintsCompressedBytes.gridx = 2;
+        constraintsCompressedBytes.gridy = 0;
+    }
+
+    public void addArchivosPorComprimirAPanel(File file, int totalBytesOriginales, int totalBytesComprimidos) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridBagLayout());
+        JLabel label = new JLabel(file.getName());
+        JLabel bytesOriginales = new JLabel(totalBytesOriginales + " bytes");
+        JLabel bytesComprimidos = new JLabel(totalBytesComprimidos + " bytes");
+        panel.add(label, constraintsFileLabel);
+        panel.add(bytesOriginales, constraintsOriginalBytes);
+        panel.add(bytesComprimidos, constraintsCompressedBytes);
+        archivosComprimidos.add(panel);
+        archivosComprimidos.add(new JSeparator(SwingConstants.HORIZONTAL), BorderLayout.CENTER);
+        removeFile(file);
+        this.revalidate();
     }
 
     public void setSelectedFiles(File[] selectedFiles){
@@ -191,4 +236,5 @@ public class FilesPanel extends JPanel {
         labels.put(newFile, newButton);
         selectedFilesPanel.add(newButton);
     }
+
 }
