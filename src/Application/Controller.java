@@ -6,9 +6,9 @@ import Infrastructure.Compressor;
 import Infrastructure.Reader;
 import Presentation.FilesPanel;
 
-import javax.swing.*;
 import java.io.File;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -20,6 +20,16 @@ public class Controller implements IController {
     private Reader reader;
     private Compressor compressor;
     private ExecutorService executorService;
+
+    public void setFiles(HashMap<String, File> files) {
+        this.files = files;
+    }
+
+    public HashMap<String, File> getFiles() {
+        return files;
+    }
+
+    private HashMap<String, File> files;
 
     public Controller() {
         reader = new Reader();
@@ -38,14 +48,13 @@ public class Controller implements IController {
     @Override
     public void comprimirFicheros(Set<File> files) {
         executorService = Executors.newFixedThreadPool(files.size());
-        for (File file : files){
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            executorService.submit(() -> comrimirFichero(file));
+        for (Iterator i = files.iterator(); i.hasNext();){
+            executorService.submit(() -> comrimirFichero((File) i.next()));
         }
+    }
+
+    public StringBuilder readFileContent(String fileName){
+        return reader.getFileContent(fileName);
     }
 
     private void comrimirFichero(File file){

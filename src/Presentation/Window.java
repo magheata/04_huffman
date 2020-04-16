@@ -58,16 +58,13 @@ public class Window extends JFrame {
         outerPanel.add(panel, BorderLayout.NORTH);
         outerPanel.add(filesPanel, BorderLayout.CENTER);
 
-        JScrollPane pane = new JScrollPane(outerPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
         JPanel panelDescomprimir = new JPanel();
         panelDescomprimir.setVisible(true);
 
         JPanel panelInformacion = new JPanel();
         panelInformacion.setVisible(true);
 
-        JPanel panelArchivosComprimidos = new JPanel();
+        CompressionInformationPanel panelArchivosComprimidos = new CompressionInformationPanel(controller);
         panelArchivosComprimidos.setVisible(true);
 
         tabbedPane.addTab(Constantes.TITLE_INFO_TABBED_PANE, panelInformacion);

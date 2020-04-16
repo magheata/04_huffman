@@ -1,6 +1,8 @@
 /* Created by andreea on 13/04/2020 */
 package Utils;
 
+import Presentation.TableModel;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
@@ -32,14 +34,20 @@ public class Constantes {
     public final static String TEXT_DND_PANEL = "O arrastrar archivos aquí";
     public final static String TEXT_FILECHOOSER_PANEL = "Seleccionar un archivo...";
 
-    public final static String TITLE_COMPRIMIR_TABBED_PANE = "Comprimir archivo";
-    public final static String TITLE_DESCOMPRIMIR_TABBED_PANE = "Descomprimir archivo";
+    public final static String TITLE_COMPRIMIR_TABBED_PANE = "Comprimir";
+    public final static String TITLE_DESCOMPRIMIR_TABBED_PANE = "Descomprimir";
     public final static String TITLE_FICHEROS_COMPRIMIDOS_TABBED_PANE = "Archivos comprimidos";
-
     public final static String TITLE_INFO_TABBED_PANE = "Instrucciones uso";
-    public final static String TITLE_PREFERENCIAS_TABBED_PANE = "Preferencias";
-
-    public final static String MSG_ARCHIVO_EXISTENTE = "Este archivo ya se ha cargado. Desea reemplazarlo?";
+    public final static String TITLE_HUFFMAN_CODE_PANE = "Códigos Huffman";
+    public final static String TITLE_HUFFMAN_TREE_PANE = "Árbol Huffman";
 
     public final static String PATH_TRASH_ICON = "src/Presentation/Images/delete.png";
+
+    public final static String [] COLUMNAS_TABLA_FICHEROS = {"Fichero", "# Bits (Original)", "# Bits (Comprimido)"};
+
+    public final static TableModel tableModel = new TableModel(COLUMNAS_TABLA_FICHEROS);
+
+    public final static String HUFFMAN_CODES_EXTENSION = "_codes.txt";
+    public final static String HUFFMAN_TRIE_EXTENSION = "_trie.txt";
+    public final static String COMPRESSED_FILE_EXTENSION = "_compressed.txt";
 }

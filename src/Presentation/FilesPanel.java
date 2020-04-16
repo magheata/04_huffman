@@ -8,7 +8,6 @@ import Presentation.Utils.FileLabel;
 import Utils.Constantes;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.io.File;
 import java.util.HashMap;
@@ -16,10 +15,10 @@ import java.util.HashMap;
 public class FilesPanel extends JPanel {
 
     private JPanel selectedFilesPanel, deleteFilePanel;
-    private DefaultTableModel model;
-    private JScrollPane archivosComprimidos;
+    private TablaFicherosComprimidos archivosComprimidos;
     private HashMap<File, JLabel> labels = new HashMap<>();
-    private GridBagConstraints constraintsFileLabel, constraintsOriginalBytes, constraintsCompressedBytes;
+    private HashMap<String, File> files = new HashMap<>();
+
     private HighlightButton comprimirArchivoButton;
     private Color color;
     private Window window;
@@ -37,7 +36,10 @@ public class FilesPanel extends JPanel {
     }
 
     private void initComponents() {
+        controller.setFiles(files);
         this.setLayout(new BorderLayout());
+        archivosComprimidos = new TablaFicherosComprimidos();
+        archivosComprimidos.getPanel().setVisible(false);
         totalArchivos = 0;
         comprimirArchivoButton = new HighlightButton("Comprimir archivo");
         comprimirArchivoButton.addActionListener(e -> {
@@ -84,11 +86,6 @@ public class FilesPanel extends JPanel {
         wrapperFiles.add(selectedFilesScrollPane);
         wrapperFiles.add(deleteFilePanel);
 
-        inicializarPanelFicherosComprimidos();
-
-        JScrollPane archivosComprimidosScrollPane = new JScrollPane(archivosComprimidos, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
         JPanel comprimirFicherosPanel = new JPanel();
         comprimirFicherosPanel.setLayout(new BorderLayout());
         comprimirFicherosPanel.add(wrapperFiles, BorderLayout.NORTH);
@@ -96,55 +93,17 @@ public class FilesPanel extends JPanel {
 
         //this.setBackground(Color.white);
         this.add(comprimirFicherosPanel, BorderLayout.NORTH);
-        this.add(archivosComprimidosScrollPane, BorderLayout.CENTER);
+        this.add(archivosComprimidos.getPanel(), BorderLayout.CENTER);
         //this.add(comprimirArchivoButton, BorderLayout.CENTER);
         this.setVisible(true);
     }
 
-
-    public void inicializarPanelFicherosComprimidos(){
-
-        model = new DefaultTableModel();
-        JTable table = new JTable(model);
-        model.addColumn("Fichero");
-        model.addColumn("# Bits (Original)");
-        model.addColumn("# Bits (Comprimido)");
-
-
-        //archivosComprimidos = new JPanel();
-        archivosComprimidos = new JScrollPane(table);
-        table.setFillsViewportHeight(true);
-
-        //archivosComprimidos.setLayout(new BoxLayout(archivosComprimidos, BoxLayout.PAGE_AXIS));
-
-        constraintsFileLabel = new GridBagConstraints();
-        constraintsFileLabel.fill = GridBagConstraints.HORIZONTAL;
-        constraintsFileLabel.gridwidth = 1;
-        constraintsFileLabel.gridheight = 3;
-        constraintsFileLabel.gridx = 0;
-        constraintsFileLabel.gridy = 0;
-        constraintsFileLabel.insets = new Insets(0, 10, 0, 10);
-
-        constraintsOriginalBytes = new GridBagConstraints();
-        constraintsOriginalBytes.fill = GridBagConstraints.HORIZONTAL;
-        constraintsOriginalBytes.gridwidth = 1;
-        constraintsOriginalBytes.gridheight = 3;
-        constraintsOriginalBytes.gridx = 1;
-        constraintsOriginalBytes.gridy = 0;
-        constraintsOriginalBytes.insets = new Insets(0, 10, 0, 10);
-
-        constraintsCompressedBytes = new GridBagConstraints();
-        constraintsCompressedBytes.fill = GridBagConstraints.HORIZONTAL;
-        constraintsCompressedBytes.gridwidth = 1;
-        constraintsCompressedBytes.gridheight = 3;
-        constraintsCompressedBytes.gridx = 2;
-        constraintsCompressedBytes.gridy = 0;
-        constraintsCompressedBytes.insets = new Insets(0, 10, 0, 10);
-
-    }
-
     public void addArchivosPorComprimirAPanel(File file, int totalBytesOriginales, int totalBytesComprimidos) {
-        model.addRow(new Object[]{file.getName(), totalBytesOriginales + " bytes", totalBytesComprimidos + " bytes"});
+        if(!archivosComprimidos.getPanel().isVisible()){
+            archivosComprimidos.getPanel().setVisible(true);
+        }
+        archivosComprimidos.addRow(new Object[]{file.getName(), totalBytesOriginales + " bytes", totalBytesComprimidos + " bytes"});
+        //model.addRow(new Object[]{file.getName(), totalBytesOriginales + " bytes", totalBytesComprimidos + " bytes"});
         removeFile(file);
         this.revalidate();
     }
@@ -166,9 +125,10 @@ public class FilesPanel extends JPanel {
                     botones = new Object[]{Constantes.BTN_REEMPLAZAR, Constantes.BTN_CANCELAR};
                 }
 
+                String[] fileName = label.getFileName().split("/");
                 mensajeFicheros.showOptionDialog(
                         this,
-                        "El fichero " + label.getFileName() + " ya existe. Desea reemplazarlo?",
+                        "El fichero " + fileName[fileName.length - 1] + " ya existe. Desea reemplazarlo?",
                         "Mensaje",
                         JOptionPane.YES_NO_CANCEL_OPTION,
                         JOptionPane.QUESTION_MESSAGE,
@@ -189,6 +149,7 @@ public class FilesPanel extends JPanel {
             } else {
                 selectedFilesPanel.add(label.fileLabel);
                 labels.put(file, label.fileLabel);
+                files.put(file.getName(), file);
             }
         }
         reemplazarArchivos = false;
@@ -250,9 +211,10 @@ public class FilesPanel extends JPanel {
 
     private void replaceFile(File oldFile, File newFile, JLabel newButton){
         selectedFilesPanel.remove(labels.get(oldFile));
+        files.remove(oldFile.getName());
         labels.remove(oldFile);
         labels.put(newFile, newButton);
+        files.remove(newFile.getName(), newFile);
         selectedFilesPanel.add(newButton);
     }
-
 }

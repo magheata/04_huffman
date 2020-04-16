@@ -5,6 +5,7 @@ import Application.Controller;
 import Domain.Interficies.ICompressor;
 import Domain.Node;
 import Infrastructure.Utils.BinaryOut;
+import Utils.Constantes;
 
 import java.io.File;
 import java.util.*;
@@ -81,9 +82,9 @@ public class Compressor implements ICompressor {
 
         String name = file.getName().split("\\.")[0];
 
-        binaryOutTrie = new BinaryOut("huffmanTrees/" + name + "_trie.txt");
-        binaryOutCodes = new BinaryOut("huffmanCodes/" + name + "_codes.txt");
-        binaryOutCompressedFile = new BinaryOut("compressed/" + name + "_compressed.txt");
+        binaryOutTrie = new BinaryOut("huffmanTrees/" + name + Constantes.HUFFMAN_TRIE_EXTENSION);
+        binaryOutCodes = new BinaryOut("huffmanCodes/" + name + Constantes.HUFFMAN_CODES_EXTENSION);
+        binaryOutCompressedFile = new BinaryOut("compressed/" + name + Constantes.COMPRESSED_FILE_EXTENSION);
 
         writeTrie(pq.peek());
         writeHuffmanCodes(file.getName().split("\\.")[1]);
