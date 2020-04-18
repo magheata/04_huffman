@@ -5,7 +5,14 @@ import Application.Controller;
 import Domain.Interficies.ICompressor;
 import Domain.Node;
 import Infrastructure.Utils.BinaryOut;
+import Presentation.ChampsTree;
 import Utils.Constantes;
+import com.mxgraph.swing.mxGraphComponent;
+import com.mxgraph.view.mxGraph;
+import com.scalified.tree.TraversalAction;
+
+import com.scalified.tree.TreeNode;
+import com.scalified.tree.multinode.ArrayMultiTreeNode;
 
 import java.io.File;
 import java.util.*;
@@ -20,6 +27,8 @@ public class Compressor implements ICompressor {
     private Controller controller;
     private int bytesOriginales;
     private int bytesComprimidos;
+    private TreeNode<Node> trie;
+
 
     public Compressor(Controller controller, byte[] bytes, File file){
         this.controller = controller;
@@ -82,10 +91,11 @@ public class Compressor implements ICompressor {
 
         String name = file.getName().split("\\.")[0];
 
-        binaryOutTrie = new BinaryOut("huffmanTrees/" + name + Constantes.HUFFMAN_TRIE_EXTENSION);
-        binaryOutCodes = new BinaryOut("huffmanCodes/" + name + Constantes.HUFFMAN_CODES_EXTENSION);
-        binaryOutCompressedFile = new BinaryOut("compressed/" + name + Constantes.COMPRESSED_FILE_EXTENSION);
+        binaryOutTrie = new BinaryOut(Constantes.PATH_HUFFMAN_TRIE + name + Constantes.EXTENSION_HUFFMAN_TRIE);
+        binaryOutCodes = new BinaryOut(Constantes.PATH_HUFFMAN_CODES + name + Constantes.EXTENSION_HUFFMAN_CODES);
+        binaryOutCompressedFile = new BinaryOut(Constantes.PATH_COMPRESSED_FILE + name + Constantes.EXTENSION_COMPRESSED_FILE);
 
+        createTree(pq.peek());
         writeTrie(pq.peek());
         writeHuffmanCodes(file.getName().split("\\.")[1]);
         writeCompressedFile(bytes);
@@ -135,6 +145,48 @@ public class Compressor implements ICompressor {
             pq.add(new Node((byte) '\0', sum, left, right));
         }
         return pq;
+    }
+
+    private TreeNode<Node> createTree(Node root){
+        mxGraph graph = new mxGraph();
+        Object parent = graph.getDefaultParent();
+
+        graph.getModel().beginUpdate();
+        try
+        {
+            Object v1 = graph.insertVertex(parent, null, "Hello", 20, 20, 80,
+                    30);
+            Object v2 = graph.insertVertex(parent, null, "World!", 240, 150,
+                    80, 30);
+            graph.insertEdge(parent, null, "Edge", v1, v2);
+        }
+        finally
+        {
+            graph.getModel().endUpdate();
+        }
+
+        mxGraphComponent graphComponent = new mxGraphComponent(graph);
+        ChampsTree frame = new ChampsTree(root);
+        TreeNode<Node> node = createTreeRecursive(root);
+        // Creating traversal action
+        Iterator<TreeNode<Node>> iterator = node.iterator();
+        while (iterator.hasNext()) {
+            TreeNode<Node> nextNode = iterator.next();
+            System.out.println(nextNode.data().byteRepresentado + " " + nextNode.data().frecuencia);
+        }
+        return node;
+    }
+
+    private TreeNode<Node> createTreeRecursive(Node root){
+        if ((root.leftNode == null) || (root.rightNode == null)){
+            return new ArrayMultiTreeNode<>(root);
+        }
+        TreeNode<Node> newNode = new ArrayMultiTreeNode<>(root);
+        TreeNode<Node> newNodeLeft = createTreeRecursive(root.leftNode);
+        TreeNode<Node> newNodeRight = createTreeRecursive(root.rightNode);
+        newNode.add(newNodeLeft);
+        newNode.add(newNodeRight);
+        return newNode;
     }
 
     private void writeTrie(Node x){

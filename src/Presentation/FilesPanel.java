@@ -36,6 +36,7 @@ public class FilesPanel extends JPanel {
     }
 
     private void initComponents() {
+        ToolTipManager.sharedInstance().setInitialDelay(1);
         controller.setFiles(files);
         this.setLayout(new BorderLayout());
         archivosComprimidos = new TablaFicherosComprimidos();
@@ -65,7 +66,7 @@ public class FilesPanel extends JPanel {
         ImageIcon trashIcon = new ImageIcon(Constantes.PATH_TRASH_ICON);
         JLabel label = new JLabel(trashIcon, JLabel.CENTER);
         deleteFilePanel.add(label);
-
+        deleteFilePanel.setToolTipText("Arrastrar archivo aquí para eliminar");
         JScrollPane selectedFilesScrollPane = new JScrollPane(selectedFilesPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
@@ -106,6 +107,15 @@ public class FilesPanel extends JPanel {
         //model.addRow(new Object[]{file.getName(), totalBytesOriginales + " bytes", totalBytesComprimidos + " bytes"});
         removeFile(file);
         this.revalidate();
+    }
+
+    public static void setToolTipRecursively(JComponent c, String text) {
+
+        c.setToolTipText(text);
+
+        for (Component cc : c.getComponents())
+            if (cc instanceof JComponent)
+                setToolTipRecursively((JComponent) cc, text);
     }
 
     public void setSelectedFiles(File[] selectedFiles){

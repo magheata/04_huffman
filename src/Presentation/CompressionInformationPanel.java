@@ -22,8 +22,8 @@ public class CompressionInformationPanel extends JPanel {
 
     private void initComponents() {
         this.setLayout(new BorderLayout());
-        tablaFicherosComprimidos.getPanel().setPreferredSize(new Dimension(300, 100));
-        tablaFicherosComprimidos.getPanel().setSize(new Dimension(300, 100));
+        tablaFicherosComprimidos.getPanel().setPreferredSize(Constantes.DIM_TABLA_FICHEROS_COMPRIMIDOS);
+        tablaFicherosComprimidos.getPanel().setSize(Constantes.DIM_TABLA_FICHEROS_COMPRIMIDOS);
 
         this.add(tablaFicherosComprimidos.getPanel());
         huffmanCodePanel = new JPanel();
@@ -38,7 +38,7 @@ public class CompressionInformationPanel extends JPanel {
                 Vector values = Constantes.tableModel.getDataVector().elementAt(tablaFicherosComprimidos.getTable().getSelectedRow());
                 String file = (String) values.get(0);
                 String fileName = file.split("\\.")[0];
-                StringBuilder sb = controller.readFileContent("huffmanCodes/" + fileName + Constantes.HUFFMAN_CODES_EXTENSION);
+                StringBuilder sb = controller.readFileContent("huffmanCodes/" + fileName + Constantes.EXTENSION_HUFFMAN_CODES);
                 JTextPane fileContent = new JTextPane();
                 fileContent.setFocusable(false);
                 fileContent.setRequestFocusEnabled(false);

@@ -19,6 +19,8 @@ public class Constantes {
     public final static int HEIGHT_FILES_PANEL = 900;
     public final static int WIDTH_WINDOW = 500;
     public final static int HEIGHT_WINDOW = 600;
+    public final static int WIDTH_TABLA_FICHEROS_COMPRIMIDOS = 300;
+    public final static int HEIGHT_TABLA_FICHEROS_COMPRIMIDOS = 100;
 
     public final static Border BORDER_DELETE_FILES_PANEL = BorderFactory.createEmptyBorder(25, 10, 10, 10);
     public final static Border BORDER_DND_PANEL = BorderFactory.createEmptyBorder(10, 10, 10, 10);
@@ -31,6 +33,8 @@ public class Constantes {
     public final static Dimension DIM_SELECTED_FILES_SCROLL_PANEL = new Dimension(WIDTH_SELECTED_FILES_SCROLL_PANEL, HEIGHT_SELECTED_FILES_SCROLL_PANEL);
     public final static Dimension DIM_FILES_PANEL = new Dimension(WIDTH_FILES_PANEL, HEIGHT_FILES_PANEL);
     public final static Dimension DIM_WINDOW = new Dimension(WIDTH_WINDOW, HEIGHT_WINDOW);
+    public final static Dimension DIM_TABLA_FICHEROS_COMPRIMIDOS = new Dimension(WIDTH_TABLA_FICHEROS_COMPRIMIDOS, HEIGHT_TABLA_FICHEROS_COMPRIMIDOS);
+
     public final static String TEXT_DND_PANEL = "O arrastrar archivos aquí";
     public final static String TEXT_FILECHOOSER_PANEL = "Seleccionar un archivo...";
 
@@ -47,7 +51,13 @@ public class Constantes {
 
     public final static TableModel tableModel = new TableModel(COLUMNAS_TABLA_FICHEROS);
 
-    public final static String HUFFMAN_CODES_EXTENSION = "_codes.txt";
-    public final static String HUFFMAN_TRIE_EXTENSION = "_trie.txt";
-    public final static String COMPRESSED_FILE_EXTENSION = "_compressed.txt";
+    public final static String EXTENSION_HUFFMAN_CODES = "_codes.txt";
+    public final static String EXTENSION_HUFFMAN_TRIE = "_trie.txt";
+    public final static String EXTENSION_COMPRESSED_FILE = "_compressed.txt";
+
+    public final static String PATH_HUFFMAN_CODES = "huffmanCodes/";
+    public final static String PATH_HUFFMAN_TRIE = "huffmanTrees/";
+    public final static String PATH_COMPRESSED_FILE = "compressed/";
+    public final static String PATH_DECOMPRESSED_FILE = "decompressed/";
+
 }
