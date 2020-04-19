@@ -1,6 +1,7 @@
 package Presentation;/* Created by andreea on 08/04/2020 */
 
 import Application.Controller;
+import Presentation.Panels.*;
 import Utils.Constantes;
 
 import javax.swing.*;
@@ -11,10 +12,12 @@ public class Window extends JFrame {
     private DnDPanel dragDropComponent;
     private FileChooserPanel fileChooserPanelComponent;
     public FilesPanel filesPanel;
+    private IntroductionPanel introductionPanel;
     private Controller controller;
 
     JPanel outerPanel;
     public Window(Controller controller) {
+        super("Compresor Huffman");
         this.controller = controller;
         initComponents();
     }
@@ -58,16 +61,24 @@ public class Window extends JFrame {
         outerPanel.add(panel, BorderLayout.NORTH);
         outerPanel.add(filesPanel, BorderLayout.CENTER);
 
-        JScrollPane pane = new JScrollPane(outerPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        JPanel panelDescomprimir = new JPanel();
+        panelDescomprimir.setVisible(true);
 
-        tabbedPane.addTab(Constantes.TITLE_INFO_TABBED_PANE, null);
-        tabbedPane.addTab(Constantes.TITLE_COMPRIMIR_TABBED_PANE, pane);
-        tabbedPane.addTab(Constantes.TITLE_PREFERENCIAS_TABBED_PANE, null);
+        introductionPanel = new IntroductionPanel();
+        introductionPanel.setVisible(true);
+
+        CompressionInformationPanel panelArchivosComprimidos = new CompressionInformationPanel(controller);
+        panelArchivosComprimidos.setVisible(true);
+
+        tabbedPane.addTab(Constantes.TITLE_INFO_TABBED_PANE, introductionPanel);
+        tabbedPane.addTab(Constantes.TITLE_COMPRIMIR_TABBED_PANE, outerPanel);
+        tabbedPane.addTab(Constantes.TITLE_DESCOMPRIMIR_TABBED_PANE, panelDescomprimir);
+        tabbedPane.addTab(Constantes.TITLE_FICHEROS_COMPRIMIDOS_TABBED_PANE, panelArchivosComprimidos);
 
         this.setPreferredSize(Constantes.DIM_WINDOW);
         this.setLayout(new BorderLayout());
-        this.setResizable(false);
+        this.setResizable(true);
+        this.setMinimumSize(Constantes.DIM_WINDOW);
         this.add(tabbedPane);
     }
 

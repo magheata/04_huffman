@@ -1,6 +1,8 @@
 package Domain.Interficies;
 
+import javax.swing.*;
 import java.io.File;
+import java.util.HashMap;
 import java.util.Set;
 
 public interface IController {
