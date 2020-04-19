@@ -1,20 +1,20 @@
 /* Created by andreea on 17/04/2020 */
-package Presentation;
+package Presentation.Panels;
 
 import Domain.Node;
+import Presentation.Utils.FoldableTree;
 import com.mxgraph.layout.mxCompactTreeLayout;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.util.mxEvent;
 
 import javax.swing.*;
-import java.util.Iterator;
 
-public class HuffmanTrie extends JPanel {
+public class HuffmanTriePanel extends JPanel {
+
     private FoldableTree graph;
     private mxGraphComponent graphComponent;
 
-    public HuffmanTrie(Node rootHuffman)
-    {
+    public HuffmanTriePanel(Node rootHuffman) {
         graph = new FoldableTree();
         mxCompactTreeLayout layout = new mxCompactTreeLayout(graph, false);
         layout.setMoveTree(false);
@@ -30,8 +30,7 @@ public class HuffmanTrie extends JPanel {
             createTree(rootHuffman, parent);
             layout.execute(parent);
         }
-        finally
-        {
+        finally {
             graph.getModel().endUpdate();
         }
 
@@ -64,5 +63,4 @@ public class HuffmanTrie extends JPanel {
     public mxGraphComponent getGraphComponent() {
         return graphComponent;
     }
-
 }

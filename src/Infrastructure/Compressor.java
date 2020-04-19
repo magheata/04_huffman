@@ -5,11 +5,8 @@ import Application.Controller;
 import Domain.Interficies.ICompressor;
 import Domain.Node;
 import Infrastructure.Utils.BinaryOut;
-import Presentation.HuffmanTrie;
 import Utils.Constantes;
 
-import com.scalified.tree.TreeNode;
-import com.scalified.tree.multinode.ArrayMultiTreeNode;
 
 import java.io.File;
 import java.util.*;
@@ -25,8 +22,6 @@ public class Compressor implements ICompressor {
     private Controller controller;
     private int bytesOriginales;
     private int bytesComprimidos;
-    private TreeNode<Node> trie;
-
 
     public Compressor(Controller controller, byte[] bytes, File file){
         this.controller = controller;
@@ -144,18 +139,6 @@ public class Compressor implements ICompressor {
             pq.add(new Node((byte) '\0', sum, left, right));
         }
         return pq;
-    }
-
-    private TreeNode<Node> createTreeRecursive(Node root){
-        if ((root.leftNode == null) || (root.rightNode == null)){
-            return new ArrayMultiTreeNode<>(root);
-        }
-        TreeNode<Node> newNode = new ArrayMultiTreeNode<>(root);
-        TreeNode<Node> newNodeLeft = createTreeRecursive(root.leftNode);
-        TreeNode<Node> newNodeRight = createTreeRecursive(root.rightNode);
-        newNode.add(newNodeLeft);
-        newNode.add(newNodeRight);
-        return newNode;
     }
 
     private void writeTrie(Node x){

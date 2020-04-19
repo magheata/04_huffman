@@ -45,15 +45,13 @@ public class ImagePreview extends JComponent implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent e) {
         String propName = e.getPropertyName();
 
-        if (JFileChooser.DIRECTORY_CHANGED_PROPERTY.equals(propName))
-        {
+        if (JFileChooser.DIRECTORY_CHANGED_PROPERTY.equals(propName)) {
             icon = null;
             repaint();
             return;
         }
 
-        if (JFileChooser.SELECTED_FILE_CHANGED_PROPERTY.equals(propName))
-        {
+        if (JFileChooser.SELECTED_FILE_CHANGED_PROPERTY.equals(propName)) {
             File file = (File) e.getNewValue();
 
             if (file == null){
@@ -72,7 +70,6 @@ public class ImagePreview extends JComponent implements PropertyChangeListener {
             if (icon.getIconWidth() > WIDTH)
                 icon = new ImageIcon(icon.getImage().getScaledInstance (WIDTH, -1,
                         Image.SCALE_DEFAULT));
-
             repaint();
         }
     }

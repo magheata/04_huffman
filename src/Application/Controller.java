@@ -5,8 +5,8 @@ import Domain.Interficies.IController;
 import Domain.Node;
 import Infrastructure.Compressor;
 import Infrastructure.Reader;
-import Presentation.FilesPanel;
-import Presentation.HuffmanTrie;
+import Presentation.Panels.FilesPanel;
+import Presentation.Panels.HuffmanTriePanel;
 
 import javax.swing.*;
 import java.io.File;
@@ -77,7 +77,7 @@ public class Controller implements IController {
     }
 
     public JComponent addTrieToPanel(String fileName) {
-        HuffmanTrie trie = new HuffmanTrie(rootNodes.get(fileName));
+        HuffmanTriePanel trie = new HuffmanTriePanel(rootNodes.get(fileName));
         return trie.getGraphComponent();
     }
 

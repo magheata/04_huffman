@@ -1,5 +1,5 @@
 /* Created by andreea on 13/04/2020 */
-package Presentation;
+package Presentation.Utils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,10 +8,6 @@ import java.awt.image.BufferedImage;
 public class HighlightButton extends JButton {
 
     private Color highlight;
-
-    public HighlightButton() {
-        setOpaque(false);
-    }
 
     public HighlightButton(String text) {
         super(text);

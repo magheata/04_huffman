@@ -1,5 +1,5 @@
 /* Created by andreea on 08/04/2020 */
-package Presentation;
+package Presentation.Panels;
 
 import Application.Controller;
 import Presentation.Utils.ImagePreview;
@@ -46,7 +46,7 @@ public class FileChooserPanel extends JPanel {
         });
 
         this.setLayout(new BorderLayout());
-        this.setBackground(Color.ORANGE);
+        this.setBackground(new Color(1, 35, 63));
         this.add(chooseFileButton, BorderLayout.CENTER);
     }
 }

@@ -4,25 +4,12 @@ package Presentation;
 import Utils.Constantes;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import java.awt.event.ActionListener;
 
 public class TablaFicherosComprimidos {
-
-    public JTable getTable() {
-        return table;
-    }
-
     private JTable table;
     public JScrollPane getPanel() {
         return panel;
     }
-
-    public void setPanel(JScrollPane panel) {
-        this.panel = panel;
-    }
-
     private JScrollPane panel;
 
     public TablaFicherosComprimidos() {
@@ -33,5 +20,9 @@ public class TablaFicherosComprimidos {
 
     public void addRow(Object [] data){
         Constantes.tableModel.addRowToModel(data);
+    }
+
+    public JTable getTable() {
+        return table;
     }
 }

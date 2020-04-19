@@ -1,10 +1,13 @@
 /* Created by andreea on 09/04/2020 */
-package Presentation;
+package Presentation.Panels;
 
+import Presentation.Utils.HighlightButton;
+import Presentation.TablaFicherosComprimidos;
 import Presentation.Utils.DropTargetListener;
 import Application.Controller;
 
 import Presentation.Utils.FileLabel;
+import Presentation.Window;
 import Utils.Constantes;
 
 import javax.swing.*;
@@ -21,7 +24,7 @@ public class FilesPanel extends JPanel {
 
     private HighlightButton comprimirArchivoButton;
     private Color color;
-    private Window window;
+    private Presentation.Window window;
     private JOptionPane mensajeFicheros;
     private boolean reemplazarArchivo = false;
     private boolean reemplazarArchivos = false;
@@ -46,10 +49,9 @@ public class FilesPanel extends JPanel {
         comprimirArchivoButton.addActionListener(e -> {
             controller.comprimirFicheros(labels.keySet());
             comprimirArchivoButton.setVisible(false);
-            comprimirArchivoButton.setText("");
         });
 
-        comprimirArchivoButton.setHighlight(new Color(59, 89, 182, 64));
+        comprimirArchivoButton.setHighlight(new Color(231, 29, 54, 64));
         comprimirArchivoButton.setFocusPainted(false);
         comprimirArchivoButton.setFont(new Font("Tahoma", Font.BOLD, 12));
         comprimirArchivoButton.setVisible(false);
@@ -70,7 +72,7 @@ public class FilesPanel extends JPanel {
         JScrollPane selectedFilesScrollPane = new JScrollPane(selectedFilesPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-        deleteFilePanel.setBackground(Color.ORANGE);
+        deleteFilePanel.setBackground(new Color(231, 29, 54));
         deleteFilePanel.setBorder(Constantes.BORDER_DELETE_FILES_PANEL);
         selectedFilesPanel.setLayout(new BoxLayout(selectedFilesPanel, BoxLayout.PAGE_AXIS));
 
@@ -92,10 +94,8 @@ public class FilesPanel extends JPanel {
         comprimirFicherosPanel.add(wrapperFiles, BorderLayout.NORTH);
         comprimirFicherosPanel.add(comprimirArchivoButton, BorderLayout.CENTER);
 
-        //this.setBackground(Color.white);
         this.add(comprimirFicherosPanel, BorderLayout.NORTH);
         this.add(archivosComprimidos.getPanel(), BorderLayout.CENTER);
-        //this.add(comprimirArchivoButton, BorderLayout.CENTER);
         this.setVisible(true);
     }
 
@@ -104,18 +104,8 @@ public class FilesPanel extends JPanel {
             archivosComprimidos.getPanel().setVisible(true);
         }
         archivosComprimidos.addRow(new Object[]{file.getName(), totalBytesOriginales + " bytes", totalBytesComprimidos + " bytes"});
-        //model.addRow(new Object[]{file.getName(), totalBytesOriginales + " bytes", totalBytesComprimidos + " bytes"});
         removeFile(file);
         this.revalidate();
-    }
-
-    public static void setToolTipRecursively(JComponent c, String text) {
-
-        c.setToolTipText(text);
-
-        for (Component cc : c.getComponents())
-            if (cc instanceof JComponent)
-                setToolTipRecursively((JComponent) cc, text);
     }
 
     public void setSelectedFiles(File[] selectedFiles){

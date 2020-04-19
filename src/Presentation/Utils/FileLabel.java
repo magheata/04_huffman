@@ -1,6 +1,5 @@
 /* Created by andreea on 09/04/2020 */
 package Presentation.Utils;
-import Presentation.FilesPanel;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;

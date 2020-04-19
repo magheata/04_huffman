@@ -1,7 +1,8 @@
 /* Created by andreea on 16/04/2020 */
-package Presentation;
+package Presentation.Panels;
 
 import Application.Controller;
+import Presentation.TablaFicherosComprimidos;
 import Utils.Constantes;
 
 import javax.swing.*;
@@ -22,18 +23,24 @@ public class CompressionInformationPanel extends JPanel {
 
     private void initComponents() {
         this.setLayout(new BorderLayout());
-        tablaFicherosComprimidos.getPanel().setPreferredSize(Constantes.DIM_TABLA_FICHEROS_COMPRIMIDOS);
-        tablaFicherosComprimidos.getPanel().setSize(Constantes.DIM_TABLA_FICHEROS_COMPRIMIDOS);
 
-        this.add(tablaFicherosComprimidos.getPanel());
         huffmanCodePanel = new JPanel();
         huffmanCodePanel.setBackground(Color.white);
+
         JScrollPane scrollPaneHuffmanCode = new JScrollPane(huffmanCodePanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
         huffmanTreePanel = new JPanel();
+
         JScrollPane scrollPaneHuffmanTrie = new JScrollPane(huffmanTreePanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.addTab(Constantes.TITLE_HUFFMAN_CODE_PANE, scrollPaneHuffmanCode);
+        tabbedPane.addTab(Constantes.TITLE_HUFFMAN_TREE_PANE, scrollPaneHuffmanTrie);
+
+        tablaFicherosComprimidos.getPanel().setPreferredSize(Constantes.DIM_TABLA_FICHEROS_COMPRIMIDOS);
+        tablaFicherosComprimidos.getPanel().setSize(Constantes.DIM_TABLA_FICHEROS_COMPRIMIDOS);
         tablaFicherosComprimidos.getTable().getSelectionModel().addListSelectionListener(e -> {
             if (e.getValueIsAdjusting()){
                 huffmanCodePanel.removeAll();
@@ -41,27 +48,30 @@ public class CompressionInformationPanel extends JPanel {
                 Vector values = Constantes.tableModel.getDataVector().elementAt(tablaFicherosComprimidos.getTable().getSelectedRow());
                 String file = (String) values.get(0);
                 String fileName = file.split("\\.")[0];
-                StringBuilder sb = controller.readFileContent("huffmanCodes/" + fileName + Constantes.EXTENSION_HUFFMAN_CODES);
-                JTextPane fileContent = new JTextPane();
-                fileContent.setFocusable(false);
-                fileContent.setRequestFocusEnabled(false);
-                fileContent.setText(sb.toString());
-                huffmanCodePanel.add(fileContent);
-                huffmanCodePanel.repaint();
-                huffmanTreePanel.add(controller.addTrieToPanel(fileName));
-                huffmanTreePanel.repaint();
+                addContentToHuffmanCodesPanel(fileName);
+                addContentToHuffmanTriePanel(fileName);
                 this.repaint();
             }
         });
 
-        JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.addTab(Constantes.TITLE_HUFFMAN_CODE_PANE, scrollPaneHuffmanCode);
-        tabbedPane.addTab(Constantes.TITLE_HUFFMAN_TREE_PANE, scrollPaneHuffmanTrie);
+        this.add(tablaFicherosComprimidos.getPanel(), BorderLayout.NORTH);
+        this.add(tabbedPane, BorderLayout.CENTER);
+    }
 
-        JPanel wrapper = new JPanel();
-        wrapper.setLayout(new BorderLayout());
-        wrapper.add(tablaFicherosComprimidos.getPanel(), BorderLayout.NORTH);
-        wrapper.add(tabbedPane, BorderLayout.CENTER);
-        this.add(wrapper);
+    public void addContentToHuffmanCodesPanel(String fileName){
+        huffmanCodePanel.removeAll();
+        StringBuilder sb = controller.readFileContent("huffmanCodes/" + fileName + Constantes.EXTENSION_HUFFMAN_CODES);
+        JTextPane fileContent = new JTextPane();
+        fileContent.setFocusable(false);
+        fileContent.setRequestFocusEnabled(false);
+        fileContent.setText(sb.toString());
+        huffmanCodePanel.add(fileContent);
+        huffmanCodePanel.repaint();
+    }
+
+    public void addContentToHuffmanTriePanel(String fileName){
+        huffmanTreePanel.removeAll();
+        huffmanTreePanel.add(controller.addTrieToPanel(fileName));
+        huffmanTreePanel.repaint();
     }
 }

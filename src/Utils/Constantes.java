@@ -1,7 +1,7 @@
 /* Created by andreea on 13/04/2020 */
 package Utils;
 
-import Presentation.TableModel;
+import Domain.TableModel;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -18,7 +18,7 @@ public class Constantes {
     public final static int WIDTH_FILES_PANEL = 450;
     public final static int HEIGHT_FILES_PANEL = 900;
     public final static int WIDTH_WINDOW = 500;
-    public final static int HEIGHT_WINDOW = 600;
+    public final static int HEIGHT_WINDOW = 750;
     public final static int WIDTH_TABLA_FICHEROS_COMPRIMIDOS = 300;
     public final static int HEIGHT_TABLA_FICHEROS_COMPRIMIDOS = 100;
 

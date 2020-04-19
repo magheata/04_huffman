@@ -1,5 +1,5 @@
 /* Created by andreea on 08/04/2020 */
-package Presentation;
+package Presentation.Panels;
 
 import Utils.Constantes;
 

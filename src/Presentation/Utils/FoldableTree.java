@@ -1,11 +1,6 @@
 /* Created by andreea on 17/04/2020 */
-package Presentation;
+package Presentation.Utils;
 
-import javax.swing.JFrame;
-
-import Domain.Node;
-import com.mxgraph.layout.mxCompactTreeLayout;
-import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.util.mxEvent;
 import com.mxgraph.util.mxEventObject;
 import com.mxgraph.view.mxGraph;
@@ -19,7 +14,7 @@ import java.util.List;
  * @author some programmer
  *
  */
-class FoldableTree extends mxGraph {
+public class FoldableTree extends mxGraph {
     /**
      * Need to add some conditions that will get us the expand/collapse icon on the vertex.
      */
@@ -70,21 +65,18 @@ class FoldableTree extends mxGraph {
     private void toggleSubtree(mxGraph graph, Object cellSelected, boolean show)
     {
         List<Object> cellsAffected = new ArrayList<>();
-        graph.traverse(cellSelected, true, new mxICellVisitor() {
-            @Override
-            public boolean visit(Object vertex, Object edge) {
-                // We do not want to hide/show the vertex that was clicked by the user to do not
-                // add it to the list of cells affected.
-                if(vertex != cellSelected)
-                {
-                    cellsAffected.add(vertex);
-                }
-
-                // Do not stop recursing when vertex is the cell the user clicked. Need to keep
-                // going because this may be an expand.
-                // Do stop recursing when the vertex is already collapsed.
-                return vertex == cellSelected || !graph.isCellCollapsed(vertex);
+        graph.traverse(cellSelected, true, (vertex, edge) -> {
+            // We do not want to hide/show the vertex that was clicked by the user to do not
+            // add it to the list of cells affected.
+            if(vertex != cellSelected)
+            {
+                cellsAffected.add(vertex);
             }
+
+            // Do not stop recursing when vertex is the cell the user clicked. Need to keep
+            // going because this may be an expand.
+            // Do stop recursing when the vertex is already collapsed.
+            return vertex == cellSelected || !graph.isCellCollapsed(vertex);
         });
 
         graph.toggleCells(show, cellsAffected.toArray(), true/*includeEdges*/);
