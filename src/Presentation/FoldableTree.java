@@ -19,8 +19,7 @@ import java.util.List;
  * @author some programmer
  *
  */
-class FoldableTree extends mxGraph
-{
+class FoldableTree extends mxGraph {
     /**
      * Need to add some conditions that will get us the expand/collapse icon on the vertex.
      */

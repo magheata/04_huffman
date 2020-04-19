@@ -28,13 +28,16 @@ public class CompressionInformationPanel extends JPanel {
         this.add(tablaFicherosComprimidos.getPanel());
         huffmanCodePanel = new JPanel();
         huffmanCodePanel.setBackground(Color.white);
-        JScrollPane scrollPane = new JScrollPane(huffmanCodePanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+        JScrollPane scrollPaneHuffmanCode = new JScrollPane(huffmanCodePanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
         huffmanTreePanel = new JPanel();
+        JScrollPane scrollPaneHuffmanTrie = new JScrollPane(huffmanTreePanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         tablaFicherosComprimidos.getTable().getSelectionModel().addListSelectionListener(e -> {
             if (e.getValueIsAdjusting()){
                 huffmanCodePanel.removeAll();
+                huffmanTreePanel.removeAll();
                 Vector values = Constantes.tableModel.getDataVector().elementAt(tablaFicherosComprimidos.getTable().getSelectedRow());
                 String file = (String) values.get(0);
                 String fileName = file.split("\\.")[0];
@@ -45,13 +48,15 @@ public class CompressionInformationPanel extends JPanel {
                 fileContent.setText(sb.toString());
                 huffmanCodePanel.add(fileContent);
                 huffmanCodePanel.repaint();
+                huffmanTreePanel.add(controller.addTrieToPanel(fileName));
+                huffmanTreePanel.repaint();
                 this.repaint();
             }
         });
 
         JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.addTab(Constantes.TITLE_HUFFMAN_CODE_PANE, scrollPane);
-        tabbedPane.addTab(Constantes.TITLE_HUFFMAN_TREE_PANE, huffmanTreePanel);
+        tabbedPane.addTab(Constantes.TITLE_HUFFMAN_CODE_PANE, scrollPaneHuffmanCode);
+        tabbedPane.addTab(Constantes.TITLE_HUFFMAN_TREE_PANE, scrollPaneHuffmanTrie);
 
         JPanel wrapper = new JPanel();
         wrapper.setLayout(new BorderLayout());

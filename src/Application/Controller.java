@@ -2,13 +2,17 @@
 package Application;
 
 import Domain.Interficies.IController;
+import Domain.Node;
 import Infrastructure.Compressor;
 import Infrastructure.Reader;
 import Presentation.FilesPanel;
+import Presentation.HuffmanTrie;
 
+import javax.swing.*;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -20,6 +24,8 @@ public class Controller implements IController {
     private Reader reader;
     private Compressor compressor;
     private ExecutorService executorService;
+    private Map<String, Node> rootNodes = new HashMap<>();
+
 
     public void setFiles(HashMap<String, File> files) {
         this.files = files;
@@ -70,6 +76,14 @@ public class Controller implements IController {
 
     }
 
+    public JComponent addTrieToPanel(String fileName) {
+        HuffmanTrie trie = new HuffmanTrie(rootNodes.get(fileName));
+        return trie.getGraphComponent();
+    }
+
+    public void addFileRoot(Node node, String fileName){
+        rootNodes.put(fileName, node);
+    }
     //region SETTERS Y GETTERS
     public void setFilesPanel(FilesPanel filesPanel) {
         this.filesPanel = filesPanel;
@@ -78,5 +92,6 @@ public class Controller implements IController {
     public void setFileDropService(FileDrop fileDropService) {
         this.fileDropService = fileDropService;
     }
+
     //endregion
 }
