@@ -60,4 +60,7 @@ public class Constantes {
     public final static String PATH_COMPRESSED_FILE = "compressed/";
     public final static String PATH_DECOMPRESSED_FILE = "decompressed/";
 
+    public final static String OUTPUT_TYPE_TRIE = "trie_";
+    public final static String OUTPUT_TYPE_CODES = "codes_";
+    public final static String OUTPUT_TYPE_COMPRESSED_FILE = "compressedFile_";
 }

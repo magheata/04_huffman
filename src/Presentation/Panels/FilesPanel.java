@@ -82,7 +82,7 @@ public class FilesPanel extends JPanel {
         deleteFilePanel.setSize(Constantes.DIM_DELETE_FILES_PANEL);
         deleteFilePanel.setPreferredSize(Constantes.DIM_DELETE_FILES_PANEL);
 
-        new DropTargetListener(deleteFilePanel, this);
+        new DropTargetListener(deleteFilePanel, controller);
 
         wrapperFiles.setSize(Constantes.DIM_FILES_PANEL);
         wrapperFiles.setBackground(color);
@@ -173,6 +173,7 @@ public class FilesPanel extends JPanel {
             comprimirArchivoButton.setText("Comprimir archivos (" + totalArchivos + " archivos)");
         }
         selectedFilesPanel.repaint();
+        this.revalidate();
     }
 
     private void inicializarJOptionPane(){
