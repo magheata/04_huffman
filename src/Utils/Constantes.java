@@ -60,4 +60,5 @@ public class Constantes {
     public final static String PATH_COMPRESSED_FILE = "compressed/";
     public final static String PATH_DECOMPRESSED_FILE = "decompressed/";
 
+    public final static String TITLE_COMPRESSED_FOLDER = "compressed";
 }

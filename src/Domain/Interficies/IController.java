@@ -9,5 +9,5 @@ public interface IController {
     void addFiles(File directory, File[] selectedFiles);
     void deleteFile(File file);
     void comprimirFicheros(Set<File> files);
-    void descomprimirFicheros();
+    void descomprimirFicheros( int idx,File file);
 }
