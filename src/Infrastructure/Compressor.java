@@ -101,8 +101,12 @@ public class Compressor implements ICompressor {
         PriorityQueue<Node> pq = crearArbolHuffman(freq);
 
         // traverse the Huffman tree and store the Huffman codes in a map
-        encode(pq.peek(), "", huffmanCode);
 
+        if (pq.size() == 1){
+            encode(pq.peek(), "1", huffmanCode);
+        } else {
+            encode(pq.peek(), "", huffmanCode);
+        }
         String name = file.getName().split("\\.")[0];
 
         controller.addFileRoot(pq.peek(), name);
@@ -210,8 +214,8 @@ public class Compressor implements ICompressor {
      */
     private void writeHuffmanCodes(String outputType, String extension){
         controller.write(outputType, "Extension archivo original: " + extension + "\n\n");
-        controller.write(outputType, "Tamaño archivo original: " + bytesOriginales + "\n\n");
-        controller.write(outputType, "Tamaño archivo comprimido: " + bytesComprimidos + "\n\n");
+        controller.write(outputType, "Total bits archivo original: " + bytesOriginales + "\n\n");
+        controller.write(outputType, "Total bits archivo comprimido: " + bytesComprimidos + "\n\n");
 
         StringBuilder outputString;
         if (extension.equals("txt")){

@@ -38,23 +38,19 @@ public class Decompressor implements Runnable {
 
    private void descomprimir(Reader reader) {
        Node root = controller.getFileRoot(file.getName());
-       binaryOutCompressedFile = new BinaryOut(Constantes.PATH_DECOMPRESSED_FILE+nombre);
+       binaryOutCompressedFile = new BinaryOut(Constantes.PATH_DECOMPRESSED_FILE + nombre);
        bytes = reader.getBytes(file);
        for (int i = 0; i < bytes.length; i++) {
-           Node tmp =root;
+           Node tmp = root;
              if (!tmp.isLeaf()) {
                  if (bytes[i] == 0) {
-                    tmp=tmp.leftNode;
+                    tmp = tmp.leftNode;
                  }else{
-                     tmp=tmp.rightNode;
+                     tmp = tmp.rightNode;
                  }
-
-
-             }else{
+             } else{
                 binaryOutCompressedFile.write(tmp.byteRepresentado);
              }
         }
     }
-
-
 }

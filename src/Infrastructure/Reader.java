@@ -46,35 +46,85 @@ public class Reader {
     }
 
     public Node readTrieFromFile(String fileName){
-        Node root = new Node();
-        Node rightChild;
-        Node leftChild;
-        Node leaf;
+        Node root;
+        Node rightNode;
+        Node leftNode;
+        boolean isLeaf;
+        byte byteRepresentado;
         BinaryIn bIn = new BinaryIn(fileName);
+        bIn.readBoolean();
+        int frecuencia = bIn.readInt();
+
+        //root
+        root = new Node((byte) '\0', frecuencia, null, null);
+
+        // left child
+        isLeaf = bIn.readBoolean();
+        frecuencia = bIn.readInt();
+
+        if (isLeaf){
+            byteRepresentado = bIn.readByte();
+            root.setLeftNode(new Node(byteRepresentado, frecuencia, null, null));
+        } else {
+            leftNode = new Node((byte) '\0', frecuencia, null, null);
+            root.setLeftNode(readTrieFromFilePrivate(leftNode, bIn));
+        }
+
+        isLeaf = bIn.readBoolean();
+        frecuencia = bIn.readInt();
+        if (isLeaf){
+            byteRepresentado = bIn.readByte();
+            root.setRightNode(new Node(byteRepresentado, frecuencia, null, null));
+        } else {
+            rightNode = new Node((byte) '\0', frecuencia, null, null);
+            root.setRightNode(readTrieFromFilePrivate(rightNode, bIn));
+        }
+
+        return root;
+    }
+
+    private Node readTrieFromFilePrivate(Node node, BinaryIn bIn){
+        Node rightNode, leftNode;
+        boolean isLeaf;
         byte byteRepresentado;
         int frecuencia;
-        while(!bIn.isEmpty()){
-            rightChild = new Node();
-            leftChild = new Node();
-            byteRepresentado = bIn.readByte();
-            frecuencia = bIn.readInt();
-            //leaf
-            if (bIn.readBoolean()){
-                leaf = new Node(byteRepresentado, frecuencia, null, null);
-            }
 
-            if (!bIn.isEmpty()){
-                byteRepresentado = bIn.readByte();
-                frecuencia = bIn.readInt();
-
-                //leftChild = new Node(byteRepresentado, frecuencia)
-            }
+        if (bIn.isEmpty()){
+            return node;
         }
-        return null;
-    }
 
-    private Node readTrieFromFilePrivate(Node node){
-        return null;
-    }
+        isLeaf = bIn.readBoolean();
+        frecuencia = bIn.readInt();
 
+        // is leaf
+        if (isLeaf){
+            byteRepresentado = bIn.readByte();;
+            leftNode = new Node(byteRepresentado, frecuencia, null, null);
+            node.setLeftNode(leftNode);
+            if (bIn.isEmpty()){
+                return leftNode;
+            }
+        } else {
+            leftNode = new Node((byte) '\0', frecuencia, null, null);
+            node.setLeftNode(readTrieFromFilePrivate(leftNode, bIn));
+        }
+
+        isLeaf = bIn.readBoolean();
+        frecuencia = bIn.readInt();
+
+        // is leaf
+        if (isLeaf){
+            byteRepresentado = bIn.readByte();;
+            rightNode = new Node(byteRepresentado, frecuencia, null, null);
+            node.setRightNode(rightNode);
+            if (bIn.isEmpty()){
+                return rightNode;
+            }
+        } else {
+            rightNode = new Node((byte) '\0', frecuencia, null, null);
+            node.setRightNode(readTrieFromFilePrivate(rightNode, bIn));
+        }
+
+        return node;
+    }
 }

@@ -41,6 +41,7 @@ public class Controller implements IController {
 
     public Controller() {
         reader = new Reader();
+        reader.readTrieFromFile("huffmanTrees/bat_coronavirus_trie.txt");
     }
 
     /**
@@ -101,24 +102,24 @@ public class Controller implements IController {
         filesPanel.addArchivosPorComprimirAPanel(file, bytesOriginales, bytesComprimidos);
     }
 
-    public void descomprimirFicheros(int idx,File file)  {
+    public void descomprimirFicheros(int idx,File file) {
         String s = file.getName();
-        String nombreFichero= null;
+        String nombreFichero = null;
+    }
 
     /**
      *
      */
     @Override
     public void descomprimirFicheros() {
-
-        try {
+        /*try {
             nombreFichero = getName(idx,s);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        decompressor = new Decompressor(this,file,nombreFichero);
-        decompressor.start();
+        decompressor = new Decompressor(this, file, nombreFichero);
+        decompressor.start();*/
     }
 
     /**
@@ -223,7 +224,7 @@ public class Controller implements IController {
         String s1;
         String s2 ="";
         BufferedReader br;
-      s1= s.substring(0, s.lastIndexOf('.'));
+        s1= s.substring(0, s.lastIndexOf('.'));
         File folder = new File("huffmanCodes");
         int i =0;
         for (final File fileEntry : folder.listFiles()) {
@@ -232,13 +233,14 @@ public class Controller implements IController {
                s2= br.readLine();
 
                s2 = s2.substring(28);
+
                 System.out.println(s2);
                 br.close();
             }
 
              i++;
         }
-        s=s1+"."+s2;
+        s= s1 + "." + s2;
 
         return s;
     }

@@ -4,6 +4,15 @@ package Domain;
 public class Node implements Comparable<Node>{
     public  int frecuencia;
     public  byte byteRepresentado;
+
+    public void setRightNode(Node rightNode) {
+        this.rightNode = rightNode;
+    }
+
+    public void setLeftNode(Node leftNode) {
+        this.leftNode = leftNode;
+    }
+
     public  Node rightNode, leftNode;
 
 
