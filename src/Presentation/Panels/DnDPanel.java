@@ -1,4 +1,4 @@
-/* Created by andreea on 08/04/2020 */
+/* Created by Miruna Andreea Gheata & Rafael Adrián Gil Cañestro */
 package Presentation.Panels;
 
 import Utils.Constantes;
@@ -6,7 +6,11 @@ import Utils.Constantes;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ *
+ */
 public class DnDPanel extends JPanel {
+
     private JLabel texto;
 
     public DnDPanel() {

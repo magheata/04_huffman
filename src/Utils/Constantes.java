@@ -1,4 +1,4 @@
-/* Created by andreea on 13/04/2020 */
+/* Created by Miruna Andreea Gheata & Rafael Adrián Gil Cañestro */
 package Utils;
 
 import Domain.TableModel;
@@ -7,6 +7,9 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 
+/**
+ *
+ */
 public class Constantes {
     public final static int IMAGE_PREVIEW_WIDTH = 150;
     public final static int IMAGE_PREVIEW_HEIGHT = 100;
@@ -38,6 +41,7 @@ public class Constantes {
     public final static String TEXT_DND_PANEL = "O arrastrar archivos aquí";
     public final static String TEXT_FILECHOOSER_PANEL = "Seleccionar un archivo...";
 
+    public final static String TITLE_WINDOW = "Compresor Huffman";
     public final static String TITLE_COMPRIMIR_TABBED_PANE = "Comprimir";
     public final static String TITLE_DESCOMPRIMIR_TABBED_PANE = "Descomprimir";
     public final static String TITLE_FICHEROS_COMPRIMIDOS_TABBED_PANE = "Archivos comprimidos";

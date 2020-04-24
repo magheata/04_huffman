@@ -1,10 +1,10 @@
-/* Created by andreea on 13/04/2020 */
+/* Created by Miruna Andreea Gheata & Rafael Adrián Gil Cañestro */
 package Domain;
 
 public class Node implements Comparable<Node>{
-    public final int frecuencia;
-    public final byte byteRepresentado;
-    public final Node rightNode, leftNode;
+    public  int frecuencia;
+    public  byte byteRepresentado;
+    public  Node rightNode, leftNode;
 
 
     public Node(byte byteRepresentado, int frecuencia, Node leftNode, Node rightNode){
@@ -14,11 +14,23 @@ public class Node implements Comparable<Node>{
         this.leftNode = leftNode;
     }
 
+    public Node() {
+    }
+
+    /**
+     *
+     * @return
+     */
     public boolean isLeaf(){
         assert  ((leftNode == null) && (rightNode == null)) || ((leftNode != null) && (rightNode != null));
         return (leftNode == null) && (rightNode == null);
     }
 
+    /**
+     *
+     * @param node
+     * @return
+     */
     @Override
     public int compareTo(Node node) {
         return this.frecuencia - node.frecuencia;

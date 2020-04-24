@@ -1,4 +1,4 @@
-/* Created by andreea on 16/04/2020 */
+/* Created by Miruna Andreea Gheata & Rafael Adrián Gil Cañestro */
 package Presentation.Panels;
 
 import Application.Controller;
@@ -7,8 +7,12 @@ import Utils.Constantes;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.util.Vector;
 
+/**
+ *
+ */
 public class CompressionInformationPanel extends JPanel {
 
     private TablaFicherosComprimidos tablaFicherosComprimidos;
@@ -21,6 +25,9 @@ public class CompressionInformationPanel extends JPanel {
         initComponents();
     }
 
+    /**
+     *
+     */
     private void initComponents() {
         this.setLayout(new BorderLayout());
 
@@ -58,6 +65,10 @@ public class CompressionInformationPanel extends JPanel {
         this.add(tabbedPane, BorderLayout.CENTER);
     }
 
+    /**
+     *
+     * @param fileName
+     */
     public void addContentToHuffmanCodesPanel(String fileName){
         huffmanCodePanel.removeAll();
         StringBuilder sb = controller.readFileContent("huffmanCodes/" + fileName + Constantes.EXTENSION_HUFFMAN_CODES);
@@ -69,6 +80,10 @@ public class CompressionInformationPanel extends JPanel {
         huffmanCodePanel.repaint();
     }
 
+    /**
+     *
+     * @param fileName
+     */
     public void addContentToHuffmanTriePanel(String fileName){
         huffmanTreePanel.removeAll();
         huffmanTreePanel.add(controller.addTrieToPanel(fileName));

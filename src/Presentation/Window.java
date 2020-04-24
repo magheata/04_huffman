@@ -1,4 +1,6 @@
-package Presentation;/* Created by andreea on 08/04/2020 */
+/* Created by Miruna Andreea Gheata & Rafael Adrián Gil Cañestro */
+
+package Presentation;
 
 import Application.Controller;
 import Presentation.Panels.*;
@@ -7,6 +9,9 @@ import Utils.Constantes;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ *
+ */
 public class Window extends JFrame {
 
     private DnDPanel dragDropComponent;
@@ -14,10 +19,10 @@ public class Window extends JFrame {
     public FilesPanel filesPanel;
     private IntroductionPanel introductionPanel;
     private Controller controller;
+    private JPanel outerPanel;
 
-    JPanel outerPanel;
     public Window(Controller controller) {
-        super("Compresor Huffman");
+        super(Constantes.TITLE_WINDOW);
         this.controller = controller;
         initComponents();
     }
@@ -82,10 +87,17 @@ public class Window extends JFrame {
         this.add(tabbedPane);
     }
 
+    /**
+     *
+     * @return
+     */
     public DnDPanel getDragDropComponent(){
         return this.dragDropComponent;
     }
 
+    /**
+     *
+     */
     public void repaintOuterPanel(){
         outerPanel.revalidate();
     }

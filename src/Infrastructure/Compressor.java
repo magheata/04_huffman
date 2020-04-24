@@ -1,4 +1,4 @@
-/* Created by andreea on 12/04/2020 */
+/* Created by Miruna Andreea Gheata & Rafael Adrián Gil Cañestro */
 package Infrastructure;
 
 import Application.Controller;
@@ -11,6 +11,9 @@ import Utils.Constantes;
 import java.io.File;
 import java.util.*;
 
+/**
+ *
+ */
 public class Compressor implements ICompressor {
 
     private Thread worker;
@@ -26,11 +29,21 @@ public class Compressor implements ICompressor {
         this.bytes = bytes;
         this.file = file;
     }
+
+    /**
+     *
+     */
     public void start() {
         worker = new Thread(this);
         worker.start();
     }
 
+    /**
+     *
+     * @param root
+     * @param str
+     * @param huffmanCode
+     */
     // traverse the Huffman Tree and store Huffman Codes
     // in a map.
     public void encode(Node root, String str, Map<Byte, String> huffmanCode) {
@@ -45,6 +58,13 @@ public class Compressor implements ICompressor {
         encode(root.rightNode, str + "1", huffmanCode);
     }
 
+    /**
+     *
+     * @param root
+     * @param index
+     * @param sb
+     * @return
+     */
     // traverse the Huffman Tree and decode the encoded string
     public int decode(Node root, int index, StringBuilder sb) {
         if (root == null)
@@ -67,6 +87,9 @@ public class Compressor implements ICompressor {
         return index;
     }
 
+    /**
+     *
+     */
     // Builds Huffman Tree and huffmanCode and decode given input text
     public void comprimir() {
         // count frequency of appearance of each character
@@ -97,6 +120,11 @@ public class Compressor implements ICompressor {
         controller.addArchivosPorComprimirAPanel(file, bytesOriginales, bytesComprimidos);
     }
 
+    /**
+     *
+     * @param bytes
+     * @return
+     */
     private Map<Byte, Integer> crearTablaFrecuencias(byte[] bytes){
         StringBuilder bytesOrig = new StringBuilder();
 
@@ -114,6 +142,11 @@ public class Compressor implements ICompressor {
         return freq;
     }
 
+    /**
+     *
+     * @param freq
+     * @return
+     */
     private PriorityQueue<Node> crearArbolHuffman(Map<Byte, Integer> freq){
         // Create a priority queue to store live nodes of Huffman tree
         // Notice that highest priority item has lowest frequency
@@ -142,24 +175,44 @@ public class Compressor implements ICompressor {
         return pq;
     }
 
+    /**
+     *
+     * @param outputType
+     * @param x
+     */
     private void writeTrie(String outputType, Node x){
         writeTriePrivate(outputType, x);
         controller.closeBinaryOutputFile(outputType);
     }
 
+    /**
+     *
+     * @param outputType
+     * @param x
+     */
     private void writeTriePrivate(String outputType, Node x) {
         if (x.isLeaf()) {
             controller.write(outputType, true);
+            controller.write(outputType, x.frecuencia);
             controller.write(outputType, x.byteRepresentado);
             return;
         }
         controller.write(outputType, false);
+        controller.write(outputType, x.frecuencia);
         writeTriePrivate(outputType, x.leftNode);
         writeTriePrivate(outputType, x.rightNode);
     }
 
+    /**
+     *
+     * @param outputType
+     * @param extension
+     */
     private void writeHuffmanCodes(String outputType, String extension){
         controller.write(outputType, "Extension archivo original: " + extension + "\n\n");
+        controller.write(outputType, "Tamaño archivo original: " + bytesOriginales + "\n\n");
+        controller.write(outputType, "Tamaño archivo comprimido: " + bytesComprimidos + "\n\n");
+
         StringBuilder outputString;
         if (extension.equals("txt")){
             // print the Huffman codes
@@ -190,6 +243,11 @@ public class Compressor implements ICompressor {
         controller.closeBinaryOutputFile(outputType);
     }
 
+    /**
+     *
+     * @param outputType
+     * @param bytes
+     */
     private void writeCompressedFile(String outputType, byte [] bytes){
         StringBuilder bytesCompr = new StringBuilder();
         // print encoded string
@@ -208,6 +266,9 @@ public class Compressor implements ICompressor {
         controller.closeBinaryOutputFile(outputType);
     }
 
+    /**
+     *
+     */
     @Override
     public void run() {
         comprimir();

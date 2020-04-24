@@ -1,3 +1,5 @@
+/* Created by Miruna Andreea Gheata & Rafael Adrián Gil Cañestro */
+
 package Domain.Interficies;
 
 import Domain.Node;
@@ -22,4 +24,6 @@ public interface IController {
     void write(String outputFile, String string);
     void write(String outputFile, boolean bool);
     void write(String outputFile, byte b);
+    void write(String outputFile, int integer);
+
 }

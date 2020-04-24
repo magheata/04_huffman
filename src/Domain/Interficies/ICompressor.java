@@ -1,3 +1,4 @@
+/* Created by Miruna Andreea Gheata & Rafael Adrián Gil Cañestro */
 package Domain.Interficies;
 
 import Domain.Node;

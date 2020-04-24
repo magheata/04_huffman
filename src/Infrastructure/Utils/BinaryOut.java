@@ -154,6 +154,17 @@ public class BinaryOut {
     }
 
     /**
+     * Writes the 32-bit int to the binary output stream.
+     * @param x the {@code int} to write
+     */
+    public void write(int x) {
+        writeByte((x >>> 24) & 0xff);
+        writeByte((x >>> 16) & 0xff);
+        writeByte((x >>>  8) & 0xff);
+        writeByte((x >>>  0) & 0xff);
+    }
+
+    /**
      * Writes the 8-bit char to the binary output stream.
      *
      * @param  x the {@code char} to write

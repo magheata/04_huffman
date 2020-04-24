@@ -1,4 +1,4 @@
-/* Created by andreea on 17/04/2020 */
+/* Created by Miruna Andreea Gheata & Rafael Adrián Gil Cañestro */
 package Presentation.Panels;
 
 import Domain.Node;
@@ -9,6 +9,9 @@ import com.mxgraph.util.mxEvent;
 
 import javax.swing.*;
 
+/**
+ *
+ */
 public class HuffmanTriePanel extends JPanel {
 
     private FoldableTree graph;
@@ -42,6 +45,12 @@ public class HuffmanTriePanel extends JPanel {
         this.setVisible(true);
     }
 
+    /**
+     *
+     * @param root
+     * @param rootNode
+     * @return
+     */
     private Object createTree(Node root, Object rootNode){
         Object newNode = graph.insertVertex(rootNode, Integer.toString(root.frecuencia), root.frecuencia, 0, 0, 60, 40);
         graph.insertEdge(rootNode, null,  "0", newNode, createTreeRecursive(root.leftNode, rootNode));
@@ -49,6 +58,12 @@ public class HuffmanTriePanel extends JPanel {
         return newNode;
     }
 
+    /**
+     *
+     * @param node
+     * @param parent
+     * @return
+     */
     private Object createTreeRecursive(Node node, Object parent){
         if ((node.rightNode == null) || (node.leftNode == null)){
             Object newLeaf = graph.insertVertex(parent, Integer.toString(node.frecuencia), node.frecuencia + " \n (" + (node.byteRepresentado) + ")", 0, 0, 60, 40);
@@ -60,6 +75,10 @@ public class HuffmanTriePanel extends JPanel {
         return newTrieNode;
     }
 
+    /**
+     *
+     * @return
+     */
     public mxGraphComponent getGraphComponent() {
         return graphComponent;
     }

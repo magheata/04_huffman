@@ -1,4 +1,4 @@
-/* Created by andreea on 08/04/2020 */
+/* Created by Miruna Andreea Gheata & Rafael Adrián Gil Cañestro */
 
 import Application.Controller;
 import Application.FileDrop;
@@ -7,6 +7,9 @@ import Presentation.Window;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ *
+ */
 public class Main {
 
     public static void main(String[] args) {
