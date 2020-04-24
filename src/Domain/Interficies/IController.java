@@ -26,4 +26,5 @@ public interface IController {
     void write(String outputFile, byte b);
     void write(String outputFile, int integer);
 
+    void descomprimirFicheros( int idx,File file);
 }

@@ -35,4 +35,7 @@ public class Node implements Comparable<Node>{
     public int compareTo(Node node) {
         return this.frecuencia - node.frecuencia;
     }
+
+
 }
+
