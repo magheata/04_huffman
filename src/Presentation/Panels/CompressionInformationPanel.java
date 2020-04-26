@@ -21,7 +21,7 @@ public class CompressionInformationPanel extends JPanel {
 
     public CompressionInformationPanel(Controller controller) {
         this.controller = controller;
-        tablaFicherosComprimidos = new TablaFicherosComprimidos();
+        tablaFicherosComprimidos = new TablaFicherosComprimidos(controller);
         initComponents();
     }
 
@@ -30,7 +30,6 @@ public class CompressionInformationPanel extends JPanel {
      */
     private void initComponents() {
         this.setLayout(new BorderLayout());
-
         huffmanCodePanel = new JPanel();
         huffmanCodePanel.setBackground(Color.white);
 
@@ -52,7 +51,7 @@ public class CompressionInformationPanel extends JPanel {
             if (e.getValueIsAdjusting()){
                 huffmanCodePanel.removeAll();
                 huffmanTreePanel.removeAll();
-                Vector values = Constantes.tableModel.getDataVector().elementAt(tablaFicherosComprimidos.getTable().getSelectedRow());
+                Vector values = Constantes.tableModelTotalArchivos.getDataVector().elementAt(tablaFicherosComprimidos.getTable().getSelectedRow());
                 String file = (String) values.get(0);
                 String fileName = file.split("\\.")[0];
                 addContentToHuffmanCodesPanel(fileName);
@@ -60,7 +59,6 @@ public class CompressionInformationPanel extends JPanel {
                 this.repaint();
             }
         });
-
         this.add(tablaFicherosComprimidos.getPanel(), BorderLayout.NORTH);
         this.add(tabbedPane, BorderLayout.CENTER);
     }

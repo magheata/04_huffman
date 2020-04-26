@@ -1,6 +1,7 @@
 /* Created by Miruna Andreea Gheata & Rafael Adrián Gil Cañestro */
 package Presentation.Panels;
 
+import Presentation.Utils.CellRenderer;
 import Presentation.Utils.HighlightButton;
 import Presentation.TablaFicherosComprimidos;
 import Presentation.Utils.DropTargetListener;

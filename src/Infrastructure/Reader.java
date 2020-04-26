@@ -86,7 +86,7 @@ public class Reader {
     private Node readTrieFromFilePrivate(Node node, BinaryIn bIn){
         Node rightNode, leftNode;
         boolean isLeaf;
-        byte byteRepresentado;
+        char byteRepresentado;
         int frecuencia;
 
         if (bIn.isEmpty()){
@@ -98,8 +98,8 @@ public class Reader {
 
         // is leaf
         if (isLeaf){
-            byteRepresentado = bIn.readByte();;
-            leftNode = new Node(byteRepresentado, frecuencia, null, null);
+            byteRepresentado = bIn.readChar();
+            leftNode = new Node((byte) byteRepresentado, frecuencia, null, null);
             node.setLeftNode(leftNode);
             if (bIn.isEmpty()){
                 return leftNode;
@@ -114,8 +114,8 @@ public class Reader {
 
         // is leaf
         if (isLeaf){
-            byteRepresentado = bIn.readByte();;
-            rightNode = new Node(byteRepresentado, frecuencia, null, null);
+            byteRepresentado = bIn.readChar();
+            rightNode = new Node((byte) byteRepresentado, frecuencia, null, null);
             node.setRightNode(rightNode);
             if (bIn.isEmpty()){
                 return rightNode;
@@ -126,5 +126,29 @@ public class Reader {
         }
 
         return node;
+    }
+
+    public Object[] getOriginalAndCompressedBytes(String path){
+        String bytesOriginalesString = null, bytesComprimidosString = null, extension = null;
+        try{
+            Scanner scanner = new Scanner(new File(path));
+            for (int i = 0; i < 3; i++){
+                if (i == 0){
+                    extension = scanner.nextLine().split(":")[1];
+                }
+                if (i == 1){
+                    bytesOriginalesString = scanner.nextLine().split(":")[1];
+                }
+                if (i == 2){
+                    bytesComprimidosString = scanner.nextLine().split(":")[1];
+                }
+            }
+            scanner.close();
+        } catch (IOException ex){
+
+        } finally{
+
+            return new Object[]{extension.trim(), Integer.parseInt(bytesOriginalesString.trim()), Integer.parseInt(bytesComprimidosString.trim())};
+        }
     }
 }

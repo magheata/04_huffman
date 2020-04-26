@@ -119,8 +119,8 @@ public class Compressor implements ICompressor {
                 Constantes.PATH_COMPRESSED_FILE + name + Constantes.EXTENSION_COMPRESSED_FILE);
 
         writeTrie(Constantes.OUTPUT_TYPE_TRIE + name, pq.peek());
-        writeHuffmanCodes(Constantes.OUTPUT_TYPE_CODES + name, file.getName().split("\\.")[1]);
         writeCompressedFile(Constantes.OUTPUT_TYPE_COMPRESSED_FILE + name, bytes);
+        writeHuffmanCodes(Constantes.OUTPUT_TYPE_CODES + name, file.getName().split("\\.")[1]);
         controller.addArchivosPorComprimirAPanel(file, bytesOriginales, bytesComprimidos);
     }
 
@@ -131,7 +131,6 @@ public class Compressor implements ICompressor {
      */
     private Map<Byte, Integer> crearTablaFrecuencias(byte[] bytes){
         StringBuilder bytesOrig = new StringBuilder();
-
         // count frequency of appearance of each character
         // and store it in a map
         Map<Byte, Integer> freq = new HashMap<>();
@@ -213,9 +212,9 @@ public class Compressor implements ICompressor {
      * @param extension
      */
     private void writeHuffmanCodes(String outputType, String extension){
-        controller.write(outputType, "Extension archivo original: " + extension + "\n\n");
-        controller.write(outputType, "Total bits archivo original: " + bytesOriginales + "\n\n");
-        controller.write(outputType, "Total bits archivo comprimido: " + bytesComprimidos + "\n\n");
+        controller.write(outputType, "Extension archivo original: " + extension + "\n");
+        controller.write(outputType, "Total bits archivo original: " + bytesOriginales + "\n");
+        controller.write(outputType, "Total bits archivo comprimido: " + bytesComprimidos + "\n");
 
         StringBuilder outputString;
         if (extension.equals("txt")){
@@ -258,11 +257,7 @@ public class Compressor implements ICompressor {
         for (int i = 0 ; i < bytes.length; i++) {
             String code = huffmanCode.get(bytes[i]);
             for (char byteChar : code.toCharArray()){
-                if (byteChar == '0'){
-                    controller.write(outputType, false);
-                } else {
-                    controller.write(outputType, true);
-                }
+                controller.write(outputType, byteChar);
             }
             bytesCompr.append(huffmanCode.get(bytes[i]));
         }

@@ -3,18 +3,16 @@
 package Domain.Interficies;
 
 import Domain.Node;
-import Infrastructure.Utils.BinaryOut;
 
 import javax.swing.*;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Set;
-import java.util.function.BinaryOperator;
 
 public interface IController {
     void addFiles(File directory, File[] selectedFiles);
     void deleteFile(File file);
     void comprimirFicheros(Set<File> files);
-    void descomprimirFicheros();
     StringBuilder readFileContent(String fileName);
     void addArchivosPorComprimirAPanel(File file, int bytesOriginales, int bytesComprimidos);
     JComponent addTrieToPanel(String fileName);
@@ -25,6 +23,8 @@ public interface IController {
     void write(String outputFile, boolean bool);
     void write(String outputFile, byte b);
     void write(String outputFile, int integer);
-
-    void descomprimirFicheros( int idx,File file);
+    void initRootNodes();
+    Object[] getOriginalAndCompressedBytes(String path);
+    ArrayList<File> listFilesForFolder(File folder);
+    void descomprimirFicheros(String nombre, File file);
 }

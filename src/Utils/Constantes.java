@@ -54,7 +54,8 @@ public class Constantes {
 
     public final static String [] COLUMNAS_TABLA_FICHEROS = {"Fichero", "# Bits (Original)", "# Bits (Comprimido)"};
 
-    public final static TableModel tableModel = new TableModel(COLUMNAS_TABLA_FICHEROS);
+    public final static TableModel tableModelNewArchivos = new TableModel(COLUMNAS_TABLA_FICHEROS);
+    public final static TableModel tableModelTotalArchivos = new TableModel(COLUMNAS_TABLA_FICHEROS);
 
     public final static String EXTENSION_HUFFMAN_CODES = "_codes.txt";
     public final static String EXTENSION_HUFFMAN_TRIE = "_trie.txt";
@@ -68,5 +69,7 @@ public class Constantes {
     public final static String OUTPUT_TYPE_TRIE = "trie_";
     public final static String OUTPUT_TYPE_CODES = "codes_";
     public final static String OUTPUT_TYPE_COMPRESSED_FILE = "compressedFile_";
+    public final static String OUTPUT_TYPE_DECOMPRESSED_FILE = "decompressedFile_";
+
 
 }

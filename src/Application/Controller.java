@@ -12,15 +12,9 @@ import Presentation.Panels.FilesPanel;
 import Presentation.Panels.HuffmanTriePanel;
 import Utils.Constantes;
 
-
 import javax.swing.*;
-import java.io.*;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-import java.io.File;
 import java.util.*;
+import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -38,10 +32,11 @@ public class Controller implements IController {
     private Map<String, Node> rootNodes = new HashMap<>();
     private HashMap<String, File> files;
     private HashMap<String, BinaryOut> binaryOutFiles = new HashMap<>();
+    private HashMap<String, Boolean> fileIsNew = new HashMap<>();
 
     public Controller() {
         reader = new Reader();
-        reader.readTrieFromFile("huffmanTrees/bat_coronavirus_trie.txt");
+        initRootNodes();
     }
 
     /**
@@ -52,6 +47,10 @@ public class Controller implements IController {
     @Override
     public void addFiles(File directory, File[] selectedFiles) {
         filesPanel.setSelectedFiles(selectedFiles);
+    }
+
+    public boolean isFileNew(String fileName){
+        return fileIsNew.get(fileName);
     }
 
     /**
@@ -102,24 +101,10 @@ public class Controller implements IController {
         filesPanel.addArchivosPorComprimirAPanel(file, bytesOriginales, bytesComprimidos);
     }
 
-    public void descomprimirFicheros(int idx,File file) {
-        String s = file.getName();
-        String nombreFichero = null;
-    }
-
-    /**
-     *
-     */
     @Override
-    public void descomprimirFicheros() {
-        /*try {
-            nombreFichero = getName(idx,s);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        decompressor = new Decompressor(this, file, nombreFichero);
-        decompressor.start();*/
+    public void descomprimirFicheros(String nombre, File file) {
+        decompressor = new Decompressor(this, rootNodes.get(nombre), file, "txt");
+        decompressor.run();
     }
 
     /**
@@ -141,6 +126,7 @@ public class Controller implements IController {
     @Override
     public void addFileRoot(Node node, String fileName){
         rootNodes.put(fileName, node);
+        fileIsNew.put(fileName, true);
     }
 
     /**
@@ -200,6 +186,37 @@ public class Controller implements IController {
         binaryOutFiles.get(outputFile).write(integer);
     }
 
+    @Override
+    public void initRootNodes() {
+        ArrayList<File> files = listFilesForFolder(new File("compressed/"));
+        if (files.size() > 0){
+            for (File fileEntry: files) {
+                if (!fileEntry.getName().equals(".DS_Store")){
+                    String name = fileEntry.getName().substring(0, fileEntry.getName().length() - Constantes.EXTENSION_COMPRESSED_FILE.length());
+                    Object [] bytes = getOriginalAndCompressedBytes(Constantes.PATH_HUFFMAN_CODES + name + Constantes.EXTENSION_HUFFMAN_CODES);
+                    Constantes.tableModelTotalArchivos.addRow(new Object[]{name + "." + bytes[0], bytes[1] + " bits", bytes[2] + " bits"});
+                    Node rootNode = reader.readTrieFromFile(Constantes.PATH_HUFFMAN_TRIE + name + Constantes.EXTENSION_HUFFMAN_TRIE);
+                    rootNodes.put(name, rootNode);
+                    fileIsNew.put(name, false);
+                }
+            }
+        }
+    }
+
+    @Override
+    public Object[] getOriginalAndCompressedBytes(String path) {
+        return reader.getOriginalAndCompressedBytes(path);
+    }
+
+    @Override
+    public ArrayList<File> listFilesForFolder(File folder) {
+        ArrayList<File> files = new ArrayList<>();
+        for (final File fileEntry : folder.listFiles()) {
+            files.add(fileEntry);
+        }
+        return files;
+    }
+
     /**
      *
      * @param file
@@ -219,31 +236,6 @@ public class Controller implements IController {
     }
 
     public Node getFileRoot(String fileName){return rootNodes.get(fileName);}
-
-    private String getName(int idx, String s) throws IOException {
-        String s1;
-        String s2 ="";
-        BufferedReader br;
-        s1= s.substring(0, s.lastIndexOf('.'));
-        File folder = new File("huffmanCodes");
-        int i =0;
-        for (final File fileEntry : folder.listFiles()) {
-            if(i==idx){
-                br = new BufferedReader(new FileReader(fileEntry));
-               s2= br.readLine();
-
-               s2 = s2.substring(28);
-
-                System.out.println(s2);
-                br.close();
-            }
-
-             i++;
-        }
-        s= s1 + "." + s2;
-
-        return s;
-    }
 
     public HashMap<String, File> getFiles() {
         return files;

@@ -67,7 +67,7 @@ public class Window extends JFrame {
         outerPanel.add(panel, BorderLayout.NORTH);
         outerPanel.add(filesPanel, BorderLayout.CENTER);
 
-        dcomPanel = new DcomPanel(this,controller);
+        dcomPanel = new DcomPanel(controller);
         dcomPanel.setVisible(true);
 
         introductionPanel = new IntroductionPanel();
