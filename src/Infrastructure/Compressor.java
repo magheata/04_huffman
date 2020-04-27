@@ -219,6 +219,7 @@ public class Compressor implements ICompressor {
         controller.write(outputType, "Extension archivo original: " + extension + "\n");
         controller.write(outputType, "Total bits archivo original: " + bytesOriginales + "\n");
         controller.write(outputType, "Total bits archivo comprimido: " + bytesComprimidos + "\n");
+        controller.write(outputType, "Ruta archivo: " + file.getAbsolutePath() + "\n\n");
 
         StringBuilder outputString;
         if (extension.equals("txt")){

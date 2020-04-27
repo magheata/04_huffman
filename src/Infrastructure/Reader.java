@@ -151,4 +151,21 @@ public class Reader {
             return new Object[]{extension.trim(), Integer.parseInt(bytesOriginalesString.trim()), Integer.parseInt(bytesComprimidosString.trim())};
         }
     }
+
+    public String getPathArchivoOriginal(String path){
+        String rutaArchivoOriginal = null;
+        try{
+            Scanner scanner = new Scanner(new File(path));
+            for (int i = 0; i < 4; i++){
+                if (i == 3){
+                    rutaArchivoOriginal = scanner.nextLine().split(":")[1];
+                }
+                scanner.nextLine();
+            }
+            scanner.close();
+        } catch (IOException ex){
+        } finally{
+            return rutaArchivoOriginal.trim();
+        }
+    }
 }

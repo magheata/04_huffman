@@ -8,6 +8,7 @@ import Infrastructure.Compressor;
 import Infrastructure.Decompressor;
 import Infrastructure.Reader;
 import Infrastructure.Utils.BinaryOut;
+import Presentation.Panels.DecompressPanel;
 import Presentation.Panels.FilesPanel;
 import Presentation.Panels.HuffmanTriePanel;
 import Utils.Constantes;
@@ -28,6 +29,12 @@ import java.util.concurrent.Executors;
 public class Controller implements IController {
 
     private FilesPanel filesPanel;
+
+    public void setDecompressPanel(DecompressPanel decompressPanel) {
+        this.decompressPanel = decompressPanel;
+    }
+
+    private DecompressPanel decompressPanel;
     private Reader reader;
     private Compressor compressor;
     private Decompressor decompressor;
@@ -95,6 +102,10 @@ public class Controller implements IController {
         compressor.start();
     }
 
+    public String getPathArchivoOriginal(String path){
+        return reader.getPathArchivoOriginal(path);
+    }
+
     public byte[] getBytes(String name){
         return reader.getBytes(new File(name));
     }
@@ -113,8 +124,13 @@ public class Controller implements IController {
     public void descomprimirFicheros(String nombre, File file) {
         decompressor = new Decompressor(this, rootNodes.get(nombre), file, "txt");
         decompressor.run();
+        decompressPanel.addContentToArchivoOriginalPanel();
+        decompressPanel.addContentToArchivoDescomprimidoPanel();
     }
 
+    public void resizePanels(int width, int height){
+        decompressPanel.resizePanels(width, height);
+    }
     /**
      *
      * @param fileName
