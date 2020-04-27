@@ -16,7 +16,6 @@ package Infrastructure.Utils;
  ******************************************************************************/
 
 import java.io.*;
-import java.net.Socket;
 
 /**
  *  <i>Binary output</i>. This class provides methods for converting
@@ -34,27 +33,11 @@ import java.net.Socket;
  *  @author Robert Sedgewick
  *  @author Kevin Wayne
  */
-public final class BinaryOut {
+public class BinaryOut {
 
     private BufferedOutputStream out;  // the output stream
     private int buffer;                // 8-bit buffer of bits to write out
     private int n;                     // number of bits remaining in buffer
-
-
-    /**
-     * Initializes a binary output stream from standard output.
-     */
-    public BinaryOut() {
-        out = new BufferedOutputStream(System.out);
-    }
-
-    /**
-     * Initializes a binary output stream from an {@code OutputStream}.
-     * @param os the {@code OutputStream}
-     */
-    public BinaryOut(OutputStream os) {
-        out = new BufferedOutputStream(os);
-    }
 
     /**
      * Initializes a binary output stream from a file.
@@ -71,21 +54,6 @@ public final class BinaryOut {
             e.printStackTrace();
         }
     }
-
-    /**
-     * Initializes a binary output stream from a socket.
-     * @param socket the socket
-     */
-    public BinaryOut(Socket socket) {
-        try {
-            OutputStream os = socket.getOutputStream();
-            out = new BufferedOutputStream(os);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 
     /**
      * Writes the specified bit to the binary output stream.
@@ -192,68 +160,6 @@ public final class BinaryOut {
     public void write(int x) {
         writeByte((x >>> 24) & 0xff);
         writeByte((x >>> 16) & 0xff);
-        writeByte((x >>>  8) & 0xff);
-        writeByte((x >>>  0) & 0xff);
-    }
-
-    /**
-     * Writes the r-bit int to the binary output stream.
-     *
-     * @param  x the {@code int} to write
-     * @param  r the number of relevant bits in the char
-     * @throws IllegalArgumentException unless {@code r} is between 1 and 32
-     * @throws IllegalArgumentException unless {@code x} is between 0 and 2<sup>r</sup> - 1
-     */
-    public void write(int x, int r) {
-        if (r == 32) {
-            write(x);
-            return;
-        }
-        if (r < 1 || r > 32) throw new IllegalArgumentException("Illegal value for r = " + r);
-        if (x >= (1 << r))   throw new IllegalArgumentException("Illegal " + r + "-bit char = " + x);
-        for (int i = 0; i < r; i++) {
-            boolean bit = ((x >>> (r - i - 1)) & 1) == 1;
-            writeBit(bit);
-        }
-    }
-
-
-    /**
-     * Writes the 64-bit double to the binary output stream.
-     * @param x the {@code double} to write
-     */
-    public void write(double x) {
-        write(Double.doubleToRawLongBits(x));
-    }
-
-    /**
-     * Writes the 64-bit long to the binary output stream.
-     * @param x the {@code long} to write
-     */
-    public void write(long x) {
-        writeByte((int) ((x >>> 56) & 0xff));
-        writeByte((int) ((x >>> 48) & 0xff));
-        writeByte((int) ((x >>> 40) & 0xff));
-        writeByte((int) ((x >>> 32) & 0xff));
-        writeByte((int) ((x >>> 24) & 0xff));
-        writeByte((int) ((x >>> 16) & 0xff));
-        writeByte((int) ((x >>>  8) & 0xff));
-        writeByte((int) ((x >>>  0) & 0xff));
-    }
-
-    /**
-     * Writes the 32-bit float to the binary output stream.
-     * @param x the {@code float} to write
-     */
-    public void write(float x) {
-        write(Float.floatToRawIntBits(x));
-    }
-
-    /**
-     * Write the 16-bit int to the binary output stream.
-     * @param x the {@code short} to write.
-     */
-    public void write(short x) {
         writeByte((x >>>  8) & 0xff);
         writeByte((x >>>  0) & 0xff);
     }

@@ -1,6 +1,7 @@
-/* Created by andreea on 09/04/2020 */
+/* Created by Miruna Andreea Gheata & Rafael Adrián Gil Cañestro */
 package Presentation.Panels;
 
+import Presentation.Utils.CellRenderer;
 import Presentation.Utils.HighlightButton;
 import Presentation.TablaFicherosComprimidos;
 import Presentation.Utils.DropTargetListener;
@@ -15,6 +16,9 @@ import java.awt.*;
 import java.io.File;
 import java.util.HashMap;
 
+/**
+ *
+ */
 public class FilesPanel extends JPanel {
 
     private JPanel selectedFilesPanel, deleteFilePanel;
@@ -38,6 +42,9 @@ public class FilesPanel extends JPanel {
         initComponents();
     }
 
+    /**
+     *
+     */
     private void initComponents() {
         ToolTipManager.sharedInstance().setInitialDelay(1);
         controller.setFiles(files);
@@ -82,7 +89,7 @@ public class FilesPanel extends JPanel {
         deleteFilePanel.setSize(Constantes.DIM_DELETE_FILES_PANEL);
         deleteFilePanel.setPreferredSize(Constantes.DIM_DELETE_FILES_PANEL);
 
-        new DropTargetListener(deleteFilePanel, this);
+        new DropTargetListener(deleteFilePanel, controller);
 
         wrapperFiles.setSize(Constantes.DIM_FILES_PANEL);
         wrapperFiles.setBackground(color);
@@ -99,6 +106,12 @@ public class FilesPanel extends JPanel {
         this.setVisible(true);
     }
 
+    /**
+     *
+     * @param file
+     * @param totalBytesOriginales
+     * @param totalBytesComprimidos
+     */
     public void addArchivosPorComprimirAPanel(File file, int totalBytesOriginales, int totalBytesComprimidos) {
         if(!archivosComprimidos.getPanel().isVisible()){
             archivosComprimidos.getPanel().setVisible(true);
@@ -108,6 +121,10 @@ public class FilesPanel extends JPanel {
         this.revalidate();
     }
 
+    /**
+     *
+     * @param selectedFiles
+     */
     public void setSelectedFiles(File[] selectedFiles){
         int archivosRepetidos = contarArchivosRepetidos(selectedFiles);
         totalArchivos = totalArchivos + (selectedFiles.length - archivosRepetidos);
@@ -161,6 +178,10 @@ public class FilesPanel extends JPanel {
         window.repaintOuterPanel();
     }
 
+    /**
+     *
+     * @param file
+     */
     public void removeFile(File file){
         selectedFilesPanel.remove(labels.get(file));
         labels.remove(file);
@@ -173,13 +194,20 @@ public class FilesPanel extends JPanel {
             comprimirArchivoButton.setText("Comprimir archivos (" + totalArchivos + " archivos)");
         }
         selectedFilesPanel.repaint();
+        this.revalidate();
     }
 
+    /**
+     *
+     */
     private void inicializarJOptionPane(){
         mensajeFicheros = new JOptionPane();
         addActionListenerBotonesJOptionPane();
     }
 
+    /**
+     *
+     */
     private void addActionListenerBotonesJOptionPane(){
         Constantes.BTN_CANCELAR.addActionListener(e -> removeDialog(Constantes.BTN_CANCELAR));
         Constantes.BTN_REEMPLAZAR.addActionListener(e -> {
@@ -192,6 +220,10 @@ public class FilesPanel extends JPanel {
         });
     }
 
+    /**
+     *
+     * @param button
+     */
     private void removeDialog(JButton button){
         JDialog w = (JDialog) SwingUtilities.getWindowAncestor(button);
         if (w != null) {
@@ -199,6 +231,11 @@ public class FilesPanel extends JPanel {
         }
     }
 
+    /**
+     *
+     * @param files
+     * @return
+     */
     private int contarArchivosRepetidos(File[] files){
         int archivosRepetidos = 0;
         for (File file : files){
@@ -209,6 +246,12 @@ public class FilesPanel extends JPanel {
         return archivosRepetidos;
     }
 
+    /**
+     *
+     * @param oldFile
+     * @param newFile
+     * @param newButton
+     */
     private void replaceFile(File oldFile, File newFile, JLabel newButton){
         selectedFilesPanel.remove(labels.get(oldFile));
         files.remove(oldFile.getName());

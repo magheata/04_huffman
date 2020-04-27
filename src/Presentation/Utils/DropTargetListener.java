@@ -1,7 +1,7 @@
 /* Created by andreea on 09/04/2020 */
 package Presentation.Utils;
 
-import Presentation.Panels.FilesPanel;
+import Application.Controller;
 
 import javax.swing.*;
 import java.awt.datatransfer.Transferable;
@@ -15,10 +15,10 @@ import static Presentation.Utils.JLabelTransferable.jLabelFlavor;
 
 public class DropTargetListener extends DropTargetAdapter {
 
-    private final FilesPanel parentComponent;
+    private final Controller controller;
 
-    public DropTargetListener(JPanel panel, FilesPanel parentComponent) {
-        this.parentComponent = parentComponent;
+    public DropTargetListener(JPanel panel, Controller controller) {
+        this.controller = controller;
         new DropTarget(panel, DnDConstants.ACTION_COPY, this, true, null);
     }
 
@@ -29,8 +29,7 @@ public class DropTargetListener extends DropTargetAdapter {
             evt.acceptDrop(java.awt.dnd.DnDConstants.ACTION_COPY_OR_MOVE);
             // Get a useful list
             JLabel fileList = (JLabel) tr.getTransferData(jLabelFlavor);
-            parentComponent.removeFile(new File(fileList.getName()));
-            parentComponent.revalidate();
+            controller.deleteFile(new File(fileList.getName()));
             // Mark that drop is completed.
             evt.getDropTargetContext().dropComplete(true);
         } catch (Exception e) {

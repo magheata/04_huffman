@@ -2,26 +2,23 @@ package Infrastructure;
 
 import Application.Controller;
 import Domain.Node;
-import Infrastructure.Reader;
-import Infrastructure.Utils.BinaryOut;
 import Utils.Constantes;
 
 import java.io.File;
-import java.util.Map;
 
 public class Decompressor implements Runnable {
     private Controller controller;
     private Thread worker;
+    private Node root;
     private File file;
-    private byte[] bytes;
-    private BinaryOut binaryOutCompressedFile;
-    private String nombre;
-    // Class constructor
-    public Decompressor(Controller controller, File file, String nombre ) {
-    this.controller = controller;
-    this.file=file;
-    this.nombre = nombre;
+    private String extension;
 
+    // Class constructor
+    public Decompressor(Controller controller, Node root, File file, String extension) {
+        this.controller = controller;
+        this.root = root;
+        this.file = file;
+        this.extension = extension;
     }
 
     public void start() {
@@ -32,29 +29,28 @@ public class Decompressor implements Runnable {
 
     @Override
     public void run() {
-    Reader reader = new Reader();
-    descomprimir(reader);
+        descomprimir();
     }
 
-   private void descomprimir(Reader reader) {
-       Node root = controller.getFileRoot(file.getName());
-       binaryOutCompressedFile = new BinaryOut(Constantes.PATH_DECOMPRESSED_FILE+nombre);
-       bytes = reader.getBytes(file);
-       for (int i = 0; i < bytes.length; i++) {
-           Node tmp =root;
-             if (!tmp.isLeaf()) {
-                 if (bytes[i] == 0) {
-                    tmp=tmp.leftNode;
-                 }else{
-                     tmp=tmp.rightNode;
-                 }
-
-
-             }else{
-                binaryOutCompressedFile.write(tmp.byteRepresentado);
-             }
+    private void descomprimir() {
+        String name = file.getName().substring(0, file.getName().indexOf("_compressed.txt"));
+        controller.createOutputFile(Constantes.OUTPUT_TYPE_DECOMPRESSED_FILE + name,
+                Constantes.PATH_DECOMPRESSED_FILE + name + "." + extension);
+        Node tmp = root;
+        byte[] fileBytes = controller.getBytes(file.getAbsolutePath());
+        for (int i = 0; i < fileBytes.length; i++){
+            byte code = fileBytes[i];
+            if (!tmp.isLeaf()){
+                if ((char) code == '0'){
+                    tmp = tmp.leftNode;
+                } else {
+                    tmp = tmp.rightNode;
+                }
+            } else {
+                controller.write(Constantes.OUTPUT_TYPE_DECOMPRESSED_FILE + name, new byte[] {tmp.byteRepresentado});
+                tmp = root;
+            }
         }
+        controller.closeOutputFile(Constantes.OUTPUT_TYPE_DECOMPRESSED_FILE + name);
     }
-
-
 }

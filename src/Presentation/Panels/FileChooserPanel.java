@@ -1,4 +1,4 @@
-/* Created by andreea on 08/04/2020 */
+/* Created by Miruna Andreea Gheata & Rafael Adrián Gil Cañestro */
 package Presentation.Panels;
 
 import Application.Controller;
@@ -9,6 +9,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 
+/**
+ *
+ */
 public class FileChooserPanel extends JPanel {
 
     private JFileChooser fileChooser;
@@ -20,6 +23,9 @@ public class FileChooserPanel extends JPanel {
         initComponents();
     }
 
+    /**
+     *
+     */
     private void initComponents() {
         fileChooser = new JFileChooser();
         chooseFileButton = new JButton();

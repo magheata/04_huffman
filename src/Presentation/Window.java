@@ -1,4 +1,6 @@
-package Presentation;/* Created by andreea on 08/04/2020 */
+/* Created by Miruna Andreea Gheata & Rafael Adrián Gil Cañestro */
+
+package Presentation;
 
 import Application.Controller;
 import Presentation.Panels.*;
@@ -7,18 +9,21 @@ import Utils.Constantes;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ *
+ */
 public class Window extends JFrame {
 
     private DnDPanel dragDropComponent;
     private FileChooserPanel fileChooserPanelComponent;
     public FilesPanel filesPanel;
-    public DcomPanel dcomPanel;
+    public DecompressPanel decompressPanel;
     private IntroductionPanel introductionPanel;
     private Controller controller;
+    private JPanel outerPanel;
 
-    JPanel outerPanel;
     public Window(Controller controller) {
-        super("Compresor Huffman");
+        super(Constantes.TITLE_WINDOW);
         this.controller = controller;
         initComponents();
     }
@@ -62,8 +67,8 @@ public class Window extends JFrame {
         outerPanel.add(panel, BorderLayout.NORTH);
         outerPanel.add(filesPanel, BorderLayout.CENTER);
 
-        dcomPanel = new DcomPanel(this,controller);
-        dcomPanel.setVisible(true);
+        decompressPanel = new DecompressPanel(controller);
+        decompressPanel.setVisible(true);
 
         introductionPanel = new IntroductionPanel();
         introductionPanel.setVisible(true);
@@ -73,7 +78,7 @@ public class Window extends JFrame {
 
         tabbedPane.addTab(Constantes.TITLE_INFO_TABBED_PANE, introductionPanel);
         tabbedPane.addTab(Constantes.TITLE_COMPRIMIR_TABBED_PANE, outerPanel);
-        tabbedPane.addTab(Constantes.TITLE_DESCOMPRIMIR_TABBED_PANE, dcomPanel);
+        tabbedPane.addTab(Constantes.TITLE_DESCOMPRIMIR_TABBED_PANE, decompressPanel);
         tabbedPane.addTab(Constantes.TITLE_FICHEROS_COMPRIMIDOS_TABBED_PANE, panelArchivosComprimidos);
 
         this.setPreferredSize(Constantes.DIM_WINDOW);
@@ -83,10 +88,17 @@ public class Window extends JFrame {
         this.add(tabbedPane);
     }
 
+    /**
+     *
+     * @return
+     */
     public DnDPanel getDragDropComponent(){
         return this.dragDropComponent;
     }
 
+    /**
+     *
+     */
     public void repaintOuterPanel(){
         outerPanel.revalidate();
     }

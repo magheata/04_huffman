@@ -1,4 +1,5 @@
-/* Created by andreea on 09/04/2020 */
+/* Created by Miruna Andreea Gheata & Rafael Adrián Gil Cañestro */
+
 package Application;
 
 import Domain.Interficies.IController;
@@ -6,56 +7,68 @@ import Domain.Node;
 import Infrastructure.Compressor;
 import Infrastructure.Decompressor;
 import Infrastructure.Reader;
+import Infrastructure.Utils.BinaryOut;
 import Presentation.Panels.FilesPanel;
 import Presentation.Panels.HuffmanTriePanel;
 import Utils.Constantes;
 
-
 import javax.swing.*;
-import java.io.*;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.*;
+import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ *
+ */
 
 public class Controller implements IController {
 
     private FilesPanel filesPanel;
-    private FileDrop fileDropService;
     private Reader reader;
     private Compressor compressor;
     private Decompressor decompressor;
     private ExecutorService executorService;
     private Map<String, Node> rootNodes = new HashMap<>();
-
-
-    public void setFiles(HashMap<String, File> files) {
-        this.files = files;
-    }
-
-    public HashMap<String, File> getFiles() {
-        return files;
-    }
-
     private HashMap<String, File> files;
+    private HashMap<String, BinaryOut> binaryOutFiles = new HashMap<>();
+    private HashMap<String, FileOutputStream> outFiles = new HashMap<>();
+
+    private HashMap<String, Boolean> fileIsNew = new HashMap<>();
 
     public Controller() {
         reader = new Reader();
+        initRootNodes();
     }
 
+    /**
+     *
+     * @param directory
+     * @param selectedFiles
+     */
     @Override
     public void addFiles(File directory, File[] selectedFiles) {
         filesPanel.setSelectedFiles(selectedFiles);
     }
 
-    @Override
-    public void deleteFile(File file) {
-        filesPanel.removeFile(file);
+    public boolean isFileNew(String fileName){
+        return fileIsNew.get(fileName);
     }
 
+    /**
+     *
+     * @param file
+     */
+    @Override
+    public void deleteFile(File file) { filesPanel.removeFile(file); }
+
+    /**
+     *
+     * @param files
+     */
     @Override
     public void comprimirFicheros(Set<File> files) {
         executorService = Executors.newFixedThreadPool(files.size());
@@ -66,6 +79,12 @@ public class Controller implements IController {
 
 
 
+    /**
+     *
+     * @param fileName
+     * @return
+     */
+    @Override
     public StringBuilder readFileContent(String fileName){
         return reader.getFileContent(fileName);
     }
@@ -76,66 +95,185 @@ public class Controller implements IController {
         compressor.start();
     }
 
+    public byte[] getBytes(String name){
+        return reader.getBytes(new File(name));
+    }
+    /**
+     *
+     * @param file
+     * @param bytesOriginales
+     * @param bytesComprimidos
+     */
+    @Override
     public void addArchivosPorComprimirAPanel(File file, int bytesOriginales, int bytesComprimidos){
         filesPanel.addArchivosPorComprimirAPanel(file, bytesOriginales, bytesComprimidos);
     }
 
-    public void descomprimirFicheros(int idx,File file)  {
-        String s = file.getName();
-        String nombreFichero= null;
-
-        try {
-            nombreFichero = getName(idx,s);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        decompressor = new Decompressor(this,file,nombreFichero);
-        decompressor.start();
+    @Override
+    public void descomprimirFicheros(String nombre, File file) {
+        decompressor = new Decompressor(this, rootNodes.get(nombre), file, "txt");
+        decompressor.run();
     }
 
+    /**
+     *
+     * @param fileName
+     * @return
+     */
+    @Override
     public JComponent addTrieToPanel(String fileName) {
         HuffmanTriePanel trie = new HuffmanTriePanel(rootNodes.get(fileName));
         return trie.getGraphComponent();
     }
 
+    /**
+     *
+     * @param node
+     * @param fileName
+     */
+    @Override
     public void addFileRoot(Node node, String fileName){
         rootNodes.put(fileName, node);
+        fileIsNew.put(fileName, true);
     }
+
+    /**
+     *
+     * @param outputType
+     * @param path
+     */
+    @Override
+    public void createBinaryOutputFile(String outputType, String path) {
+        binaryOutFiles.put(outputType, new BinaryOut(path));
+    }
+
+    public void createOutputFile(String outputType, String path) {
+        try {
+            outFiles.put(outputType, new FileOutputStream(path, false));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     *
+     * @param binaryOutputFile
+     */
+    @Override
+    public void closeBinaryOutputFile(String binaryOutputFile) {
+        BinaryOut bOut = binaryOutFiles.get(binaryOutputFile);
+        bOut.flush();
+        bOut.close();
+        binaryOutFiles.remove(binaryOutputFile);
+    }
+
+    public void closeOutputFile(String binaryOutputFile) {
+        FileOutputStream bOut = outFiles.get(binaryOutputFile);
+        try {
+            bOut.flush();
+            bOut.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        outFiles.remove(binaryOutputFile);
+    }
+
+    /**
+     *
+     * @param outputFile
+     * @param string
+     */
+    @Override
+    public void write(String outputFile, String string) {
+        binaryOutFiles.get(outputFile).write(string);
+    }
+
+    public void write(String outputFile, byte[] bytes) {
+        try {
+            outFiles.get(outputFile).write(bytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     *
+     * @param outputFile
+     * @param bool
+     */
+    @Override
+    public void write(String outputFile, boolean bool) {
+        binaryOutFiles.get(outputFile).write(bool);
+    }
+
+    /**
+     *
+     * @param outputFile
+     * @param b
+     */
+    @Override
+    public void write(String outputFile, byte b) {
+        binaryOutFiles.get(outputFile).write(b);
+    }
+
+    @Override
+    public void write(String outputFile, int integer) {
+        binaryOutFiles.get(outputFile).write(integer);
+    }
+
+    @Override
+    public void initRootNodes() {
+        ArrayList<File> files = listFilesForFolder(new File("compressed/"));
+        if (files.size() > 0){
+            for (File fileEntry: files) {
+                if (!fileEntry.getName().equals(".DS_Store")){
+                    String name = fileEntry.getName().substring(0, fileEntry.getName().length() - Constantes.EXTENSION_COMPRESSED_FILE.length());
+                    Object [] bytes = getOriginalAndCompressedBytes(Constantes.PATH_HUFFMAN_CODES + name + Constantes.EXTENSION_HUFFMAN_CODES);
+                    Constantes.tableModelTotalArchivos.addRow(new Object[]{name + "." + bytes[0], bytes[1] + " bits", bytes[2] + " bits"});
+                    Node rootNode = reader.readTrieFromFile(Constantes.PATH_HUFFMAN_TRIE + name + Constantes.EXTENSION_HUFFMAN_TRIE);
+                    rootNodes.put(name, rootNode);
+                    fileIsNew.put(name, false);
+                }
+            }
+        }
+    }
+
+    @Override
+    public Object[] getOriginalAndCompressedBytes(String path) {
+        return reader.getOriginalAndCompressedBytes(path);
+    }
+
+    @Override
+    public ArrayList<File> listFilesForFolder(File folder) {
+        ArrayList<File> files = new ArrayList<>();
+        for (final File fileEntry : folder.listFiles()) {
+            files.add(fileEntry);
+        }
+        return files;
+    }
+
+    /**
+     *
+     * @param file
+     */
+    private void comrimirFichero(File file){
+        compressor = new Compressor(this, reader.getBytes(file), file);
+        compressor.start();
+    }
+
     //region SETTERS Y GETTERS
     public void setFilesPanel(FilesPanel filesPanel) {
         this.filesPanel = filesPanel;
     }
 
-    public void setFileDropService(FileDrop fileDropService) {
-        this.fileDropService = fileDropService;
+    public void setFiles(HashMap<String, File> files) {
+        this.files = files;
     }
 
     public Node getFileRoot(String fileName){return rootNodes.get(fileName);}
 
-    private String getName(int idx, String s) throws IOException {
-        String s1;
-        String s2 ="";
-        BufferedReader br;
-      s1= s.substring(0, s.lastIndexOf('.'));
-        File folder = new File("huffmanCodes");
-        int i =0;
-        for (final File fileEntry : folder.listFiles()) {
-            if(i==idx){
-                br = new BufferedReader(new FileReader(fileEntry));
-               s2= br.readLine();
-
-               s2 = s2.substring(28);
-                System.out.println(s2);
-                br.close();
-            }
-
-             i++;
-        }
-        s=s1+"."+s2;
-
-        return s;
+    public HashMap<String, File> getFiles() {
+        return files;
     }
-
     //endregion
 }

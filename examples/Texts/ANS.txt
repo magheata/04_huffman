@@ -1,0 +1,1024 @@
+Parsing Arta_2018.csv ...
+Parsing Cala_Millor_2018.csv ...
+Parsing Campos_2018.csv ...
+Parsing Castell_Alaro_2018.csv ...
+Parsing Manacor_2018.csv ...
+Parsing Palma_2018.csv ...
+Parsing Pollenca_2018.csv ...
+Parsing Santa_Maria_2018.csv ...
+Parsing Son_Bugadelles_2018.csv ...
+Parsing Valldemossa_2018.csv ...
+
+1. Display days with missing data
+---------------------------------
+Arta (0)
+
+Cala Millor (8):
+  06/02/2018
+  07/02/2018
+  08/02/2018
+  08/03/2018
+  09/03/2018
+  10/03/2018
+  11/03/2018
+  12/03/2018
+
+Campos (0)
+
+Castell Alaro (39):
+  16/02/2018
+  19/02/2018
+  26/02/2018
+  01/03/2018
+  03/03/2018
+  04/03/2018
+  08/03/2018
+  09/03/2018
+  10/03/2018
+  11/03/2018
+  14/03/2018
+  17/03/2018
+  18/03/2018
+  19/03/2018
+  20/03/2018
+  21/03/2018
+  22/03/2018
+  23/03/2018
+  25/03/2018
+  26/03/2018
+  27/03/2018
+  28/03/2018
+  29/03/2018
+  30/03/2018
+  01/04/2018
+  02/04/2018
+  03/04/2018
+  04/04/2018
+  05/04/2018
+  06/04/2018
+  09/04/2018
+  10/04/2018
+  11/04/2018
+  12/04/2018
+  13/04/2018
+  14/04/2018
+  15/04/2018
+  16/04/2018
+  12/08/2018
+
+Manacor (0)
+
+Palma (0)
+
+Pollenca (0)
+
+Santa Maria (0)
+
+Son Bugadelles (54):
+  10/04/2018
+  11/04/2018
+  24/08/2018
+  25/08/2018
+  26/08/2018
+  27/08/2018
+  28/08/2018
+  16/10/2018
+  17/10/2018
+  18/10/2018
+  19/10/2018
+  20/10/2018
+  21/10/2018
+  22/10/2018
+  23/10/2018
+  24/10/2018
+  25/10/2018
+  26/10/2018
+  27/10/2018
+  28/10/2018
+  29/10/2018
+  31/10/2018
+  01/11/2018
+  02/11/2018
+  03/11/2018
+  04/11/2018
+  05/11/2018
+  06/11/2018
+  07/11/2018
+  08/11/2018
+  09/11/2018
+  10/11/2018
+  11/11/2018
+  12/11/2018
+  13/11/2018
+  21/11/2018
+  22/11/2018
+  23/11/2018
+  24/11/2018
+  25/11/2018
+  26/11/2018
+  16/12/2018
+  17/12/2018
+  18/12/2018
+  19/12/2018
+  20/12/2018
+  21/12/2018
+  22/12/2018
+  23/12/2018
+  24/12/2018
+  25/12/2018
+  26/12/2018
+  27/12/2018
+  28/12/2018
+
+Valldemossa (2):
+  12/07/2018
+  13/07/2018
+
+
+
+2. Display top days
+-------------------
+TOP             STATION         DATE            MAGNITUDE
+Coldest day     Castell Alaro   10/02/2018       -1,8
+Warmest day     Son Bugadelles  04/08/2018       38,2
+Rainiest day    Arta            09/10/2018      149,8
+Windiest day    Castell Alaro   24/03/2018       38,2
+
+
+
+3. Compute the maximum thermal amplitude for each station in every month
+------------------------------------------------------------------------
+Arta:
+  January     14,8
+  February    14,6
+  March       14,6
+  April       16,2
+  May         15,2
+  June        16,0
+  July        15,4
+  August      13,7
+  September   13,3
+  October     15,1
+  November    13,8
+  December    13,0
+
+Cala Millor:
+  January     10,1
+  February     8,8
+  March       10,0
+  April       11,3
+  May          9,8
+  June        11,2
+  July         8,3
+  August       8,5
+  September    9,2
+  October     11,6
+  November    10,9
+  December    10,0
+
+Campos:
+  January     12,4
+  February    12,6
+  March       13,6
+  April       13,9
+  May         12,8
+  June        13,1
+  July        12,9
+  August      12,9
+  September   12,0
+  October     13,7
+  November    11,8
+  December    12,4
+
+Castell Alaro:
+  January      7,8
+  February     9,0
+  March        3,5
+  April        8,6
+  May          9,0
+  June         9,4
+  July        11,7
+  August      10,0
+  September   10,1
+  October      8,0
+  November     6,9
+  December     8,2
+
+Manacor:
+  January     12,7
+  February    13,2
+  March       11,7
+  April       13,2
+  May         11,3
+  June        12,0
+  July        12,5
+  August      11,1
+  September   12,6
+  October     13,5
+  November    13,4
+  December    11,7
+
+Palma:
+  January      9,2
+  February    10,5
+  March       11,7
+  April       11,7
+  May         10,7
+  June        12,0
+  July        10,8
+  August      11,1
+  September   10,3
+  October     11,3
+  November    10,4
+  December     9,8
+
+Pollenca:
+  January     12,0
+  February    10,7
+  March       13,3
+  April       11,5
+  May         11,4
+  June        12,6
+  July        12,5
+  August       9,4
+  September   10,2
+  October     10,6
+  November    10,3
+  December    11,0
+
+Santa Maria:
+  January     13,3
+  February    14,1
+  March       14,0
+  April       16,0
+  May         14,1
+  June        16,0
+  July        14,5
+  August      13,7
+  September   14,5
+  October     14,8
+  November    13,6
+  December    13,5
+
+Son Bugadelles:
+  January     12,6
+  February    13,3
+  March       15,4
+  April       16,7
+  May         14,8
+  June        15,8
+  July        15,0
+  August      15,0
+  September   14,2
+  October     11,7
+  November    12,5
+  December    13,1
+
+Valldemossa:
+  January      8,5
+  February    10,2
+  March       10,9
+  April       10,6
+  May         11,2
+  June        11,9
+  July        11,0
+  August       9,8
+  September    8,8
+  October      9,7
+  November     8,8
+  December     8,3
+
+
+
+4. Compute total rainfall for every station
+-------------------------------------------
+Arta             1107,6
+Cala Millor       619,8
+Campos            493,0
+Castell Alaro     699,4
+Manacor           827,4
+Palma             493,4
+Pollenca         1192,4
+Santa Maria       642,0
+Son Bugadelles    276,6
+Valldemossa      1276,4
+
+
+
+5. Compute the most consecutive rainy days in a station
+-------------------------------------------------------
+Arta             [06/10/2018, 22/10/2018] (17)
+Cala Millor      [26/10/2018, 02/11/2018] (8)
+Campos           [25/10/2018, 02/11/2018] (9)
+Castell Alaro    [04/02/2018, 13/02/2018] (10)
+Manacor          [07/10/2018, 22/10/2018] (16)
+Palma            [27/10/2018, 06/11/2018] (11)
+Pollenca         [04/02/2018, 10/02/2018] (7)
+Santa Maria      [07/10/2018, 22/10/2018] (16)
+Son Bugadelles   [29/01/2018, 10/02/2018] (13)
+Valldemossa      [14/10/2018, 21/10/2018] (8)
+
+
+
+5. Compute the most consecutive dry days in a station
+-----------------------------------------------------
+Arta             [30/06/2018, 21/07/2018] (22)
+Cala Millor      [30/06/2018, 21/07/2018] (22)
+Campos           [17/07/2018, 13/08/2018] (28)
+Castell Alaro    [23/07/2018, 05/08/2018] (14)
+Manacor          [11/06/2018, 28/06/2018] (18)
+Palma            [11/07/2018, 10/08/2018] (31)
+Pollenca         [11/06/2018, 21/07/2018] (41)
+Santa Maria      [29/06/2018, 12/07/2018] (14)
+Son Bugadelles   [11/07/2018, 13/08/2018] (34)
+Valldemossa      [14/07/2018, 13/08/2018] (31)
+
+
+
+6. Compute the most consecutive dry days in Mallorca
+----------------------------------------------------
+[24/07/2018, 05/08/2018] (13)
+
+
+
+7. Compute the prevailing wind direction for each station
+---------------------------------------------------------
+Arta            OSO
+Cala Millor     ENE
+Campos          S
+Castell Alaro   SO
+Manacor         SO
+Palma           OSO
+Pollenca        SO
+Santa Maria     SO
+Son Bugadelles  SO
+Valldemossa     E
+
+
+
+8. Compute the warmest and coldest station for each month
+---------------------------------------------------------
+MONTH           WARMEST         COLDEST
+January         Arta            Santa Maria
+February        Arta            Castell Alaro
+March           Arta            Castell Alaro
+April           Son Bugadelles  Arta
+May             Santa Maria     Castell Alaro
+June            Son Bugadelles  Castell Alaro
+July            Son Bugadelles  Castell Alaro
+August          Son Bugadelles  Castell Alaro
+September       Son Bugadelles  Castell Alaro
+October         Arta            Castell Alaro
+November        Palma           Santa Maria
+December        Campos          Santa Maria
+
+
+
+9. Compute the warmest and coldest station taking 10 consecutive days
+---------------------------------------------------------------------
+[01/01/2018, 10/01/2018] (W) Arta             (C) Santa Maria
+[02/01/2018, 11/01/2018] (W) Arta             (C) Castell Alaro
+[03/01/2018, 12/01/2018] (W) Arta             (C) Castell Alaro
+[04/01/2018, 13/01/2018] (W) Arta             (C) Santa Maria
+[05/01/2018, 14/01/2018] (W) Arta             (C) Santa Maria
+[06/01/2018, 15/01/2018] (W) Campos           (C) Santa Maria
+[07/01/2018, 16/01/2018] (W) Pollenca         (C) Santa Maria
+[08/01/2018, 17/01/2018] (W) Pollenca         (C) Santa Maria
+[09/01/2018, 18/01/2018] (W) Pollenca         (C) Santa Maria
+[10/01/2018, 19/01/2018] (W) Pollenca         (C) Santa Maria
+[11/01/2018, 20/01/2018] (W) Palma            (C) Santa Maria
+[12/01/2018, 21/01/2018] (W) Manacor          (C) Santa Maria
+[13/01/2018, 22/01/2018] (W) Arta             (C) Santa Maria
+[14/01/2018, 23/01/2018] (W) Arta             (C) Santa Maria
+[15/01/2018, 24/01/2018] (W) Arta             (C) Santa Maria
+[16/01/2018, 25/01/2018] (W) Arta             (C) Santa Maria
+[17/01/2018, 26/01/2018] (W) Arta             (C) Castell Alaro
+[18/01/2018, 27/01/2018] (W) Arta             (C) Castell Alaro
+[19/01/2018, 28/01/2018] (W) Arta             (C) Castell Alaro
+[20/01/2018, 29/01/2018] (W) Arta             (C) Castell Alaro
+[21/01/2018, 30/01/2018] (W) Arta             (C) Castell Alaro
+[22/01/2018, 31/01/2018] (W) Arta             (C) Castell Alaro
+[23/01/2018, 01/02/2018] (W) Arta             (C) Castell Alaro
+[24/01/2018, 02/02/2018] (W) Arta             (C) Castell Alaro
+[25/01/2018, 03/02/2018] (W) Campos           (C) Castell Alaro
+[26/01/2018, 04/02/2018] (W) Campos           (C) Castell Alaro
+[27/01/2018, 05/02/2018] (W) Campos           (C) Castell Alaro
+[28/01/2018, 06/02/2018] (W) Campos           (C) Castell Alaro
+[29/01/2018, 07/02/2018] (W) Campos           (C) Castell Alaro
+[30/01/2018, 08/02/2018] (W) Campos           (C) Castell Alaro
+[31/01/2018, 09/02/2018] (W) Arta             (C) Castell Alaro
+[01/02/2018, 10/02/2018] (W) Arta             (C) Castell Alaro
+[02/02/2018, 11/02/2018] (W) Arta             (C) Castell Alaro
+[03/02/2018, 12/02/2018] (W) Arta             (C) Castell Alaro
+[04/02/2018, 13/02/2018] (W) Arta             (C) Castell Alaro
+[05/02/2018, 14/02/2018] (W) Campos           (C) Castell Alaro
+[06/02/2018, 15/02/2018] (W) Arta             (C) Castell Alaro
+[07/02/2018, 16/02/2018] (W) Arta             (C) Castell Alaro
+[08/02/2018, 17/02/2018] (W) Arta             (C) Castell Alaro
+[09/02/2018, 18/02/2018] (W) Arta             (C) Castell Alaro
+[10/02/2018, 19/02/2018] (W) Arta             (C) Castell Alaro
+[11/02/2018, 20/02/2018] (W) Arta             (C) Castell Alaro
+[12/02/2018, 21/02/2018] (W) Arta             (C) Castell Alaro
+[13/02/2018, 22/02/2018] (W) Arta             (C) Castell Alaro
+[14/02/2018, 23/02/2018] (W) Arta             (C) Castell Alaro
+[15/02/2018, 24/02/2018] (W) Arta             (C) Santa Maria
+[16/02/2018, 25/02/2018] (W) Son Bugadelles   (C) Santa Maria
+[17/02/2018, 26/02/2018] (W) Son Bugadelles   (C) Santa Maria
+[18/02/2018, 27/02/2018] (W) Campos           (C) Castell Alaro
+[19/02/2018, 28/02/2018] (W) Campos           (C) Castell Alaro
+[20/02/2018, 01/03/2018] (W) Arta             (C) Castell Alaro
+[21/02/2018, 02/03/2018] (W) Arta             (C) Castell Alaro
+[22/02/2018, 03/03/2018] (W) Arta             (C) Castell Alaro
+[23/02/2018, 04/03/2018] (W) Arta             (C) Castell Alaro
+[24/02/2018, 05/03/2018] (W) Arta             (C) Castell Alaro
+[25/02/2018, 06/03/2018] (W) Arta             (C) Castell Alaro
+[26/02/2018, 07/03/2018] (W) Arta             (C) Castell Alaro
+[27/02/2018, 08/03/2018] (W) Arta             (C) Castell Alaro
+[28/02/2018, 09/03/2018] (W) Arta             (C) Castell Alaro
+[01/03/2018, 10/03/2018] (W) Arta             (C) Castell Alaro
+[02/03/2018, 11/03/2018] (W) Arta             (C) Castell Alaro
+[03/03/2018, 12/03/2018] (W) Arta             (C) Castell Alaro
+[04/03/2018, 13/03/2018] (W) Arta             (C) Castell Alaro
+[05/03/2018, 14/03/2018] (W) Arta             (C) Castell Alaro
+[06/03/2018, 15/03/2018] (W) Arta             (C) Castell Alaro
+[07/03/2018, 16/03/2018] (W) Arta             (C) Castell Alaro
+[08/03/2018, 17/03/2018] (W) Arta             (C) Arta
+[09/03/2018, 18/03/2018] (W) Arta             (C) Arta
+[10/03/2018, 19/03/2018] (W) Arta             (C) Valldemossa
+[11/03/2018, 20/03/2018] (W) Arta             (C) Valldemossa
+[12/03/2018, 21/03/2018] (W) Arta             (C) Valldemossa
+[13/03/2018, 22/03/2018] (W) Arta             (C) Valldemossa
+[14/03/2018, 23/03/2018] (W) Arta             (C) Valldemossa
+[15/03/2018, 24/03/2018] (W) Arta             (C) Castell Alaro
+[16/03/2018, 25/03/2018] (W) Arta             (C) Castell Alaro
+[17/03/2018, 26/03/2018] (W) Arta             (C) Castell Alaro
+[18/03/2018, 27/03/2018] (W) Arta             (C) Castell Alaro
+[19/03/2018, 28/03/2018] (W) Arta             (C) Castell Alaro
+[20/03/2018, 29/03/2018] (W) Arta             (C) Castell Alaro
+[21/03/2018, 30/03/2018] (W) Arta             (C) Castell Alaro
+[22/03/2018, 31/03/2018] (W) Arta             (C) Castell Alaro
+[23/03/2018, 01/04/2018] (W) Arta             (C) Castell Alaro
+[24/03/2018, 02/04/2018] (W) Arta             (C) Castell Alaro
+[25/03/2018, 03/04/2018] (W) Arta             (C) Arta
+[26/03/2018, 04/04/2018] (W) Arta             (C) Arta
+[27/03/2018, 05/04/2018] (W) Arta             (C) Arta
+[28/03/2018, 06/04/2018] (W) Arta             (C) Arta
+[29/03/2018, 07/04/2018] (W) Son Bugadelles   (C) Arta
+[30/03/2018, 08/04/2018] (W) Son Bugadelles   (C) Arta
+[31/03/2018, 09/04/2018] (W) Son Bugadelles   (C) Arta
+[01/04/2018, 10/04/2018] (W) Son Bugadelles   (C) Arta
+[02/04/2018, 11/04/2018] (W) Son Bugadelles   (C) Arta
+[03/04/2018, 12/04/2018] (W) Son Bugadelles   (C) Valldemossa
+[04/04/2018, 13/04/2018] (W) Son Bugadelles   (C) Valldemossa
+[05/04/2018, 14/04/2018] (W) Son Bugadelles   (C) Valldemossa
+[06/04/2018, 15/04/2018] (W) Arta             (C) Valldemossa
+[07/04/2018, 16/04/2018] (W) Arta             (C) Valldemossa
+[08/04/2018, 17/04/2018] (W) Arta             (C) Valldemossa
+[09/04/2018, 18/04/2018] (W) Son Bugadelles   (C) Valldemossa
+[10/04/2018, 19/04/2018] (W) Son Bugadelles   (C) Valldemossa
+[11/04/2018, 20/04/2018] (W) Son Bugadelles   (C) Valldemossa
+[12/04/2018, 21/04/2018] (W) Son Bugadelles   (C) Valldemossa
+[13/04/2018, 22/04/2018] (W) Son Bugadelles   (C) Santa Maria
+[14/04/2018, 23/04/2018] (W) Son Bugadelles   (C) Santa Maria
+[15/04/2018, 24/04/2018] (W) Son Bugadelles   (C) Santa Maria
+[16/04/2018, 25/04/2018] (W) Son Bugadelles   (C) Santa Maria
+[17/04/2018, 26/04/2018] (W) Son Bugadelles   (C) Santa Maria
+[18/04/2018, 27/04/2018] (W) Son Bugadelles   (C) Santa Maria
+[19/04/2018, 28/04/2018] (W) Son Bugadelles   (C) Arta
+[20/04/2018, 29/04/2018] (W) Son Bugadelles   (C) Castell Alaro
+[21/04/2018, 30/04/2018] (W) Son Bugadelles   (C) Castell Alaro
+[22/04/2018, 01/05/2018] (W) Son Bugadelles   (C) Castell Alaro
+[23/04/2018, 02/05/2018] (W) Son Bugadelles   (C) Castell Alaro
+[24/04/2018, 03/05/2018] (W) Son Bugadelles   (C) Castell Alaro
+[25/04/2018, 04/05/2018] (W) Son Bugadelles   (C) Castell Alaro
+[26/04/2018, 05/05/2018] (W) Arta             (C) Castell Alaro
+[27/04/2018, 06/05/2018] (W) Arta             (C) Castell Alaro
+[28/04/2018, 07/05/2018] (W) Arta             (C) Castell Alaro
+[29/04/2018, 08/05/2018] (W) Son Bugadelles   (C) Castell Alaro
+[30/04/2018, 09/05/2018] (W) Son Bugadelles   (C) Castell Alaro
+[01/05/2018, 10/05/2018] (W) Son Bugadelles   (C) Castell Alaro
+[02/05/2018, 11/05/2018] (W) Son Bugadelles   (C) Castell Alaro
+[03/05/2018, 12/05/2018] (W) Son Bugadelles   (C) Castell Alaro
+[04/05/2018, 13/05/2018] (W) Son Bugadelles   (C) Castell Alaro
+[05/05/2018, 14/05/2018] (W) Son Bugadelles   (C) Castell Alaro
+[06/05/2018, 15/05/2018] (W) Son Bugadelles   (C) Castell Alaro
+[07/05/2018, 16/05/2018] (W) Son Bugadelles   (C) Castell Alaro
+[08/05/2018, 17/05/2018] (W) Son Bugadelles   (C) Castell Alaro
+[09/05/2018, 18/05/2018] (W) Son Bugadelles   (C) Castell Alaro
+[10/05/2018, 19/05/2018] (W) Son Bugadelles   (C) Castell Alaro
+[11/05/2018, 20/05/2018] (W) Son Bugadelles   (C) Castell Alaro
+[12/05/2018, 21/05/2018] (W) Son Bugadelles   (C) Castell Alaro
+[13/05/2018, 22/05/2018] (W) Son Bugadelles   (C) Castell Alaro
+[14/05/2018, 23/05/2018] (W) Son Bugadelles   (C) Castell Alaro
+[15/05/2018, 24/05/2018] (W) Son Bugadelles   (C) Castell Alaro
+[16/05/2018, 25/05/2018] (W) Santa Maria      (C) Arta
+[17/05/2018, 26/05/2018] (W) Santa Maria      (C) Arta
+[18/05/2018, 27/05/2018] (W) Santa Maria      (C) Castell Alaro
+[19/05/2018, 28/05/2018] (W) Santa Maria      (C) Castell Alaro
+[20/05/2018, 29/05/2018] (W) Santa Maria      (C) Castell Alaro
+[21/05/2018, 30/05/2018] (W) Santa Maria      (C) Castell Alaro
+[22/05/2018, 31/05/2018] (W) Santa Maria      (C) Castell Alaro
+[23/05/2018, 01/06/2018] (W) Santa Maria      (C) Castell Alaro
+[24/05/2018, 02/06/2018] (W) Son Bugadelles   (C) Castell Alaro
+[25/05/2018, 03/06/2018] (W) Son Bugadelles   (C) Castell Alaro
+[26/05/2018, 04/06/2018] (W) Son Bugadelles   (C) Castell Alaro
+[27/05/2018, 05/06/2018] (W) Son Bugadelles   (C) Castell Alaro
+[28/05/2018, 06/06/2018] (W) Son Bugadelles   (C) Castell Alaro
+[29/05/2018, 07/06/2018] (W) Son Bugadelles   (C) Castell Alaro
+[30/05/2018, 08/06/2018] (W) Arta             (C) Castell Alaro
+[31/05/2018, 09/06/2018] (W) Santa Maria      (C) Castell Alaro
+[01/06/2018, 10/06/2018] (W) Santa Maria      (C) Castell Alaro
+[02/06/2018, 11/06/2018] (W) Santa Maria      (C) Castell Alaro
+[03/06/2018, 12/06/2018] (W) Santa Maria      (C) Castell Alaro
+[04/06/2018, 13/06/2018] (W) Santa Maria      (C) Castell Alaro
+[05/06/2018, 14/06/2018] (W) Santa Maria      (C) Castell Alaro
+[06/06/2018, 15/06/2018] (W) Santa Maria      (C) Castell Alaro
+[07/06/2018, 16/06/2018] (W) Santa Maria      (C) Castell Alaro
+[08/06/2018, 17/06/2018] (W) Santa Maria      (C) Castell Alaro
+[09/06/2018, 18/06/2018] (W) Santa Maria      (C) Castell Alaro
+[10/06/2018, 19/06/2018] (W) Son Bugadelles   (C) Castell Alaro
+[11/06/2018, 20/06/2018] (W) Campos           (C) Castell Alaro
+[12/06/2018, 21/06/2018] (W) Son Bugadelles   (C) Castell Alaro
+[13/06/2018, 22/06/2018] (W) Son Bugadelles   (C) Castell Alaro
+[14/06/2018, 23/06/2018] (W) Son Bugadelles   (C) Castell Alaro
+[15/06/2018, 24/06/2018] (W) Son Bugadelles   (C) Castell Alaro
+[16/06/2018, 25/06/2018] (W) Son Bugadelles   (C) Castell Alaro
+[17/06/2018, 26/06/2018] (W) Son Bugadelles   (C) Castell Alaro
+[18/06/2018, 27/06/2018] (W) Son Bugadelles   (C) Castell Alaro
+[19/06/2018, 28/06/2018] (W) Son Bugadelles   (C) Castell Alaro
+[20/06/2018, 29/06/2018] (W) Son Bugadelles   (C) Santa Maria
+[21/06/2018, 30/06/2018] (W) Son Bugadelles   (C) Arta
+[22/06/2018, 01/07/2018] (W) Son Bugadelles   (C) Arta
+[23/06/2018, 02/07/2018] (W) Son Bugadelles   (C) Arta
+[24/06/2018, 03/07/2018] (W) Son Bugadelles   (C) Arta
+[25/06/2018, 04/07/2018] (W) Son Bugadelles   (C) Arta
+[26/06/2018, 05/07/2018] (W) Son Bugadelles   (C) Castell Alaro
+[27/06/2018, 06/07/2018] (W) Son Bugadelles   (C) Castell Alaro
+[28/06/2018, 07/07/2018] (W) Son Bugadelles   (C) Castell Alaro
+[29/06/2018, 08/07/2018] (W) Campos           (C) Castell Alaro
+[30/06/2018, 09/07/2018] (W) Son Bugadelles   (C) Castell Alaro
+[01/07/2018, 10/07/2018] (W) Son Bugadelles   (C) Castell Alaro
+[02/07/2018, 11/07/2018] (W) Son Bugadelles   (C) Castell Alaro
+[03/07/2018, 12/07/2018] (W) Son Bugadelles   (C) Castell Alaro
+[04/07/2018, 13/07/2018] (W) Son Bugadelles   (C) Castell Alaro
+[05/07/2018, 14/07/2018] (W) Son Bugadelles   (C) Castell Alaro
+[06/07/2018, 15/07/2018] (W) Son Bugadelles   (C) Castell Alaro
+[07/07/2018, 16/07/2018] (W) Son Bugadelles   (C) Arta
+[08/07/2018, 17/07/2018] (W) Son Bugadelles   (C) Arta
+[09/07/2018, 18/07/2018] (W) Son Bugadelles   (C) Arta
+[10/07/2018, 19/07/2018] (W) Son Bugadelles   (C) Arta
+[11/07/2018, 20/07/2018] (W) Son Bugadelles   (C) Arta
+[12/07/2018, 21/07/2018] (W) Son Bugadelles   (C) Arta
+[13/07/2018, 22/07/2018] (W) Son Bugadelles   (C) Castell Alaro
+[14/07/2018, 23/07/2018] (W) Son Bugadelles   (C) Castell Alaro
+[15/07/2018, 24/07/2018] (W) Arta             (C) Castell Alaro
+[16/07/2018, 25/07/2018] (W) Son Bugadelles   (C) Castell Alaro
+[17/07/2018, 26/07/2018] (W) Son Bugadelles   (C) Castell Alaro
+[18/07/2018, 27/07/2018] (W) Son Bugadelles   (C) Castell Alaro
+[19/07/2018, 28/07/2018] (W) Arta             (C) Castell Alaro
+[20/07/2018, 29/07/2018] (W) Arta             (C) Castell Alaro
+[21/07/2018, 30/07/2018] (W) Arta             (C) Castell Alaro
+[22/07/2018, 31/07/2018] (W) Arta             (C) Castell Alaro
+[23/07/2018, 01/08/2018] (W) Campos           (C) Santa Maria
+[24/07/2018, 02/08/2018] (W) Campos           (C) Arta
+[25/07/2018, 03/08/2018] (W) Son Bugadelles   (C) Arta
+[26/07/2018, 04/08/2018] (W) Son Bugadelles   (C) Arta
+[27/07/2018, 05/08/2018] (W) Son Bugadelles   (C) Arta
+[28/07/2018, 06/08/2018] (W) Son Bugadelles   (C) Arta
+[29/07/2018, 07/08/2018] (W) Son Bugadelles   (C) Arta
+[30/07/2018, 08/08/2018] (W) Son Bugadelles   (C) Arta
+[31/07/2018, 09/08/2018] (W) Son Bugadelles   (C) Arta
+[01/08/2018, 10/08/2018] (W) Son Bugadelles   (C) Castell Alaro
+[02/08/2018, 11/08/2018] (W) Son Bugadelles   (C) Castell Alaro
+[03/08/2018, 12/08/2018] (W) Son Bugadelles   (C) Castell Alaro
+[04/08/2018, 13/08/2018] (W) Son Bugadelles   (C) Castell Alaro
+[05/08/2018, 14/08/2018] (W) Son Bugadelles   (C) Castell Alaro
+[06/08/2018, 15/08/2018] (W) Son Bugadelles   (C) Castell Alaro
+[07/08/2018, 16/08/2018] (W) Son Bugadelles   (C) Castell Alaro
+[08/08/2018, 17/08/2018] (W) Son Bugadelles   (C) Castell Alaro
+[09/08/2018, 18/08/2018] (W) Son Bugadelles   (C) Castell Alaro
+[10/08/2018, 19/08/2018] (W) Son Bugadelles   (C) Castell Alaro
+[11/08/2018, 20/08/2018] (W) Son Bugadelles   (C) Castell Alaro
+[12/08/2018, 21/08/2018] (W) Son Bugadelles   (C) Castell Alaro
+[13/08/2018, 22/08/2018] (W) Son Bugadelles   (C) Castell Alaro
+[14/08/2018, 23/08/2018] (W) Son Bugadelles   (C) Castell Alaro
+[15/08/2018, 24/08/2018] (W) Son Bugadelles   (C) Castell Alaro
+[16/08/2018, 25/08/2018] (W) Son Bugadelles   (C) Castell Alaro
+[17/08/2018, 26/08/2018] (W) Son Bugadelles   (C) Castell Alaro
+[18/08/2018, 27/08/2018] (W) Son Bugadelles   (C) Castell Alaro
+[19/08/2018, 28/08/2018] (W) Son Bugadelles   (C) Castell Alaro
+[20/08/2018, 29/08/2018] (W) Son Bugadelles   (C) Castell Alaro
+[21/08/2018, 30/08/2018] (W) Son Bugadelles   (C) Castell Alaro
+[22/08/2018, 31/08/2018] (W) Son Bugadelles   (C) Castell Alaro
+[23/08/2018, 01/09/2018] (W) Santa Maria      (C) Castell Alaro
+[24/08/2018, 02/09/2018] (W) Son Bugadelles   (C) Castell Alaro
+[25/08/2018, 03/09/2018] (W) Son Bugadelles   (C) Castell Alaro
+[26/08/2018, 04/09/2018] (W) Son Bugadelles   (C) Castell Alaro
+[27/08/2018, 05/09/2018] (W) Son Bugadelles   (C) Castell Alaro
+[28/08/2018, 06/09/2018] (W) Son Bugadelles   (C) Castell Alaro
+[29/08/2018, 07/09/2018] (W) Son Bugadelles   (C) Castell Alaro
+[30/08/2018, 08/09/2018] (W) Son Bugadelles   (C) Castell Alaro
+[31/08/2018, 09/09/2018] (W) Son Bugadelles   (C) Castell Alaro
+[01/09/2018, 10/09/2018] (W) Son Bugadelles   (C) Castell Alaro
+[02/09/2018, 11/09/2018] (W) Son Bugadelles   (C) Castell Alaro
+[03/09/2018, 12/09/2018] (W) Son Bugadelles   (C) Castell Alaro
+[04/09/2018, 13/09/2018] (W) Son Bugadelles   (C) Castell Alaro
+[05/09/2018, 14/09/2018] (W) Arta             (C) Castell Alaro
+[06/09/2018, 15/09/2018] (W) Son Bugadelles   (C) Castell Alaro
+[07/09/2018, 16/09/2018] (W) Son Bugadelles   (C) Castell Alaro
+[08/09/2018, 17/09/2018] (W) Campos           (C) Castell Alaro
+[09/09/2018, 18/09/2018] (W) Campos           (C) Castell Alaro
+[10/09/2018, 19/09/2018] (W) Campos           (C) Castell Alaro
+[11/09/2018, 20/09/2018] (W) Campos           (C) Castell Alaro
+[12/09/2018, 21/09/2018] (W) Manacor          (C) Castell Alaro
+[13/09/2018, 22/09/2018] (W) Manacor          (C) Castell Alaro
+[14/09/2018, 23/09/2018] (W) Manacor          (C) Castell Alaro
+[15/09/2018, 24/09/2018] (W) Manacor          (C) Castell Alaro
+[16/09/2018, 25/09/2018] (W) Manacor          (C) Castell Alaro
+[17/09/2018, 26/09/2018] (W) Manacor          (C) Castell Alaro
+[18/09/2018, 27/09/2018] (W) Manacor          (C) Castell Alaro
+[19/09/2018, 28/09/2018] (W) Manacor          (C) Castell Alaro
+[20/09/2018, 29/09/2018] (W) Manacor          (C) Castell Alaro
+[21/09/2018, 30/09/2018] (W) Manacor          (C) Castell Alaro
+[22/09/2018, 01/10/2018] (W) Son Bugadelles   (C) Castell Alaro
+[23/09/2018, 02/10/2018] (W) Son Bugadelles   (C) Castell Alaro
+[24/09/2018, 03/10/2018] (W) Son Bugadelles   (C) Castell Alaro
+[25/09/2018, 04/10/2018] (W) Son Bugadelles   (C) Castell Alaro
+[26/09/2018, 05/10/2018] (W) Son Bugadelles   (C) Castell Alaro
+[27/09/2018, 06/10/2018] (W) Son Bugadelles   (C) Castell Alaro
+[28/09/2018, 07/10/2018] (W) Son Bugadelles   (C) Castell Alaro
+[29/09/2018, 08/10/2018] (W) Son Bugadelles   (C) Castell Alaro
+[30/09/2018, 09/10/2018] (W) Son Bugadelles   (C) Castell Alaro
+[01/10/2018, 10/10/2018] (W) Arta             (C) Castell Alaro
+[02/10/2018, 11/10/2018] (W) Arta             (C) Castell Alaro
+[03/10/2018, 12/10/2018] (W) Arta             (C) Castell Alaro
+[04/10/2018, 13/10/2018] (W) Arta             (C) Castell Alaro
+[05/10/2018, 14/10/2018] (W) Arta             (C) Castell Alaro
+[06/10/2018, 15/10/2018] (W) Arta             (C) Castell Alaro
+[07/10/2018, 16/10/2018] (W) Arta             (C) Castell Alaro
+[08/10/2018, 17/10/2018] (W) Arta             (C) Castell Alaro
+[09/10/2018, 18/10/2018] (W) Arta             (C) Santa Maria
+[10/10/2018, 19/10/2018] (W) Arta             (C) Castell Alaro
+[11/10/2018, 20/10/2018] (W) Arta             (C) Castell Alaro
+[12/10/2018, 21/10/2018] (W) Arta             (C) Castell Alaro
+[13/10/2018, 22/10/2018] (W) Santa Maria      (C) Castell Alaro
+[14/10/2018, 23/10/2018] (W) Campos           (C) Castell Alaro
+[15/10/2018, 24/10/2018] (W) Cala Millor      (C) Campos
+[16/10/2018, 25/10/2018] (W) Cala Millor      (C) Campos
+[17/10/2018, 26/10/2018] (W) Cala Millor      (C) Campos
+[18/10/2018, 27/10/2018] (W) Cala Millor      (C) Castell Alaro
+[19/10/2018, 28/10/2018] (W) Cala Millor      (C) Castell Alaro
+[20/10/2018, 29/10/2018] (W) Cala Millor      (C) Castell Alaro
+[21/10/2018, 30/10/2018] (W) Cala Millor      (C) Castell Alaro
+[22/10/2018, 31/10/2018] (W) Cala Millor      (C) Castell Alaro
+[23/10/2018, 01/11/2018] (W) Cala Millor      (C) Castell Alaro
+[24/10/2018, 02/11/2018] (W) Cala Millor      (C) Castell Alaro
+[25/10/2018, 03/11/2018] (W) Arta             (C) Castell Alaro
+[26/10/2018, 04/11/2018] (W) Arta             (C) Castell Alaro
+[27/10/2018, 05/11/2018] (W) Son Bugadelles   (C) Castell Alaro
+[28/10/2018, 06/11/2018] (W) Son Bugadelles   (C) Castell Alaro
+[29/10/2018, 07/11/2018] (W) Son Bugadelles   (C) Castell Alaro
+[30/10/2018, 08/11/2018] (W) Son Bugadelles   (C) Castell Alaro
+[31/10/2018, 09/11/2018] (W) Arta             (C) Castell Alaro
+[01/11/2018, 10/11/2018] (W) Arta             (C) Castell Alaro
+[02/11/2018, 11/11/2018] (W) Arta             (C) Castell Alaro
+[03/11/2018, 12/11/2018] (W) Santa Maria      (C) Castell Alaro
+[04/11/2018, 13/11/2018] (W) Palma            (C) Castell Alaro
+[05/11/2018, 14/11/2018] (W) Palma            (C) Castell Alaro
+[06/11/2018, 15/11/2018] (W) Palma            (C) Castell Alaro
+[07/11/2018, 16/11/2018] (W) Palma            (C) Castell Alaro
+[08/11/2018, 17/11/2018] (W) Palma            (C) Castell Alaro
+[09/11/2018, 18/11/2018] (W) Palma            (C) Castell Alaro
+[10/11/2018, 19/11/2018] (W) Palma            (C) Castell Alaro
+[11/11/2018, 20/11/2018] (W) Palma            (C) Castell Alaro
+[12/11/2018, 21/11/2018] (W) Palma            (C) Castell Alaro
+[13/11/2018, 22/11/2018] (W) Palma            (C) Castell Alaro
+[14/11/2018, 23/11/2018] (W) Son Bugadelles   (C) Castell Alaro
+[15/11/2018, 24/11/2018] (W) Son Bugadelles   (C) Castell Alaro
+[16/11/2018, 25/11/2018] (W) Son Bugadelles   (C) Santa Maria
+[17/11/2018, 26/11/2018] (W) Son Bugadelles   (C) Castell Alaro
+[18/11/2018, 27/11/2018] (W) Cala Millor      (C) Castell Alaro
+[19/11/2018, 28/11/2018] (W) Cala Millor      (C) Santa Maria
+[20/11/2018, 29/11/2018] (W) Cala Millor      (C) Santa Maria
+[21/11/2018, 30/11/2018] (W) Cala Millor      (C) Santa Maria
+[22/11/2018, 01/12/2018] (W) Cala Millor      (C) Santa Maria
+[23/11/2018, 02/12/2018] (W) Cala Millor      (C) Santa Maria
+[24/11/2018, 03/12/2018] (W) Son Bugadelles   (C) Santa Maria
+[25/11/2018, 04/12/2018] (W) Campos           (C) Santa Maria
+[26/11/2018, 05/12/2018] (W) Campos           (C) Santa Maria
+[27/11/2018, 06/12/2018] (W) Campos           (C) Santa Maria
+[28/11/2018, 07/12/2018] (W) Campos           (C) Santa Maria
+[29/11/2018, 08/12/2018] (W) Campos           (C) Santa Maria
+[30/11/2018, 09/12/2018] (W) Campos           (C) Castell Alaro
+[01/12/2018, 10/12/2018] (W) Campos           (C) Castell Alaro
+[02/12/2018, 11/12/2018] (W) Campos           (C) Santa Maria
+[03/12/2018, 12/12/2018] (W) Campos           (C) Santa Maria
+[04/12/2018, 13/12/2018] (W) Campos           (C) Santa Maria
+[05/12/2018, 14/12/2018] (W) Arta             (C) Castell Alaro
+[06/12/2018, 15/12/2018] (W) Campos           (C) Castell Alaro
+[07/12/2018, 16/12/2018] (W) Arta             (C) Castell Alaro
+[08/12/2018, 17/12/2018] (W) Arta             (C) Castell Alaro
+[09/12/2018, 18/12/2018] (W) Arta             (C) Santa Maria
+[10/12/2018, 19/12/2018] (W) Arta             (C) Santa Maria
+[11/12/2018, 20/12/2018] (W) Arta             (C) Santa Maria
+[12/12/2018, 21/12/2018] (W) Arta             (C) Santa Maria
+[13/12/2018, 22/12/2018] (W) Arta             (C) Santa Maria
+[14/12/2018, 23/12/2018] (W) Arta             (C) Santa Maria
+[15/12/2018, 24/12/2018] (W) Arta             (C) Santa Maria
+[16/12/2018, 25/12/2018] (W) Arta             (C) Santa Maria
+[17/12/2018, 26/12/2018] (W) Arta             (C) Santa Maria
+[18/12/2018, 27/12/2018] (W) Arta             (C) Santa Maria
+[19/12/2018, 28/12/2018] (W) Arta             (C) Arta
+[20/12/2018, 29/12/2018] (W) Arta             (C) Arta
+[21/12/2018, 30/12/2018] (W) Arta             (C) Santa Maria
+[22/12/2018, 31/12/2018] (W) Arta             (C) Santa Maria
+
+
+
+10. Compute the average time of the warmest temperature (using 12:00 as center) for each station/month
+------------------------------------------------------------------------------------------------------
+Arta
+  January     14:07
+  February    11:35
+  March       13:12
+  April       15:05
+  May         15:12
+  June        15:27
+  July        14:54
+  August      14:40
+  September   14:46
+  October     14:02
+  November    13:10
+  December    13:57
+
+Cala Millor
+  January     13:35
+  February    11:23
+  March       11:38
+  April       12:20
+  May         13:01
+  June        11:42
+  July        12:54
+  August      13:21
+  September   11:46
+  October     10:53
+  November    10:13
+  December    10:07
+
+Campos
+  January     13:04
+  February    12:10
+  March       12:48
+  April       13:58
+  May         15:28
+  June        14:32
+  July        14:12
+  August      14:26
+  September   14:58
+  October     13:57
+  November    13:52
+  December    14:17
+
+Castell Alaro
+  January     13:16
+  February    12:36
+  March       12:31
+  April       14:49
+  May         14:44
+  June        15:15
+  July        14:06
+  August      15:03
+  September   14:35
+  October     13:46
+  November    13:10
+  December    12:29
+
+Manacor
+  January     14:45
+  February    12:23
+  March       12:55
+  April       14:56
+  May         15:58
+  June        15:27
+  July        15:20
+  August      14:40
+  September   14:29
+  October     14:09
+  November    13:20
+  December    14:18
+
+Palma
+  January     13:55
+  February    13:12
+  March       12:59
+  April       14:30
+  May         15:18
+  June        14:13
+  July        14:12
+  August      14:36
+  September   14:31
+  October     13:46
+  November    12:53
+  December    13:47
+
+Pollenca
+  January     12:47
+  February    12:13
+  March       11:43
+  April       14:50
+  May         14:17
+  June        14:27
+  July        14:57
+  August      14:15
+  September   14:01
+  October     13:06
+  November    13:59
+  December    13:00
+
+Santa Maria
+  January     13:18
+  February    12:35
+  March       13:20
+  April       14:58
+  May         15:10
+  June        14:40
+  July        14:15
+  August      14:47
+  September   14:57
+  October     13:46
+  November    13:01
+  December    13:30
+
+Son Bugadelles
+  January     13:44
+  February    13:23
+  March       13:45
+  April       14:05
+  May         15:05
+  June        14:42
+  July        14:50
+  August      14:47
+  September   14:45
+  October     14:42
+  November    08:37
+  December    04:20
+
+Valldemossa
+  January     12:57
+  February    12:37
+  March       12:11
+  April       15:38
+  May         14:36
+  June        14:22
+  July        14:42
+  August      14:15
+  September   14:13
+  October     13:20
+  November    12:48
+  December    13:10
+
+
+
+10. Compute the average time of the coldest temperature (using 00:00 as center) for each station/month
+------------------------------------------------------------------------------------------------------
+Arta
+  January     12:07
+  February    10:53
+  March       09:20
+  April       09:40
+  May         06:57
+  June        06:52
+  July        08:20
+  August      08:06
+  September   08:45
+  October     12:15
+  November    12:52
+  December    09:58
+
+Cala Millor
+  January     10:13
+  February    09:06
+  March       09:53
+  April       07:55
+  May         05:30
+  June        05:51
+  July        05:59
+  August      05:48
+  September   08:09
+  October     12:17
+  November    11:30
+  December    09:07
+
+Campos
+  January     11:58
+  February    11:41
+  March       10:55
+  April       07:43
+  May         06:44
+  June        06:05
+  July        06:22
+  August      06:57
+  September   08:30
+  October     09:48
+  November    09:01
+  December    08:56
+
+Castell Alaro
+  January     09:19
+  February    11:52
+  March       14:32
+  April       11:06
+  May         06:55
+  June        07:13
+  July        06:52
+  August      08:28
+  September   09:07
+  October     11:17
+  November    11:43
+  December    09:54
+
+Manacor
+  January     11:11
+  February    10:38
+  March       09:57
+  April       08:30
+  May         06:20
+  June        06:32
+  July        07:51
+  August      06:33
+  September   08:25
+  October     11:17
+  November    09:32
+  December    07:37
+
+Palma
+  January     09:49
+  February    10:17
+  March       10:37
+  April       07:33
+  May         07:00
+  June        06:04
+  July        06:03
+  August      07:33
+  September   08:19
+  October     08:18
+  November    11:19
+  December    09:04
+
+Pollenca
+  January     12:01
+  February    09:58
+  March       11:16
+  April       07:59
+  May         06:55
+  June        08:04
+  July        06:58
+  August      06:40
+  September   08:40
+  October     10:09
+  November    10:59
+  December    11:31
+
+Santa Maria
+  January     11:32
+  February    11:21
+  March       11:37
+  April       08:30
+  May         06:54
+  June        06:26
+  July        07:10
+  August      06:57
+  September   08:06
+  October     09:25
+  November    10:22
+  December    08:24
+
+Son Bugadelles
+  January     10:32
+  February    10:14
+  March       10:10
+  April       09:40
+  May         08:29
+  June        06:52
+  July        07:06
+  August      08:03
+  September   09:27
+  October     11:16
+  November    13:30
+  December    17:09
+
+Valldemossa
+  January     11:04
+  February    10:40
+  March       09:36
+  April       08:44
+  May         08:37
+  June        08:18
+  July        07:01
+  August      07:11
+  September   07:44
+  October     12:50
+  November    11:33
+  December    10:35
+
+--- FIN ---

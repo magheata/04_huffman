@@ -1,4 +1,4 @@
-/* Created by andreea on 16/04/2020 */
+/* Created by Miruna Andreea Gheata & Rafael Adrián Gil Cañestro */
 package Presentation.Panels;
 
 import Application.Controller;
@@ -7,8 +7,12 @@ import Utils.Constantes;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.util.Vector;
 
+/**
+ *
+ */
 public class CompressionInformationPanel extends JPanel {
 
     private TablaFicherosComprimidos tablaFicherosComprimidos;
@@ -17,13 +21,15 @@ public class CompressionInformationPanel extends JPanel {
 
     public CompressionInformationPanel(Controller controller) {
         this.controller = controller;
-        tablaFicherosComprimidos = new TablaFicherosComprimidos();
+        tablaFicherosComprimidos = new TablaFicherosComprimidos(controller);
         initComponents();
     }
 
+    /**
+     *
+     */
     private void initComponents() {
         this.setLayout(new BorderLayout());
-
         huffmanCodePanel = new JPanel();
         huffmanCodePanel.setBackground(Color.white);
 
@@ -45,7 +51,7 @@ public class CompressionInformationPanel extends JPanel {
             if (e.getValueIsAdjusting()){
                 huffmanCodePanel.removeAll();
                 huffmanTreePanel.removeAll();
-                Vector values = Constantes.tableModel.getDataVector().elementAt(tablaFicherosComprimidos.getTable().getSelectedRow());
+                Vector values = Constantes.tableModelTotalArchivos.getDataVector().elementAt(tablaFicherosComprimidos.getTable().getSelectedRow());
                 String file = (String) values.get(0);
                 String fileName = file.split("\\.")[0];
                 addContentToHuffmanCodesPanel(fileName);
@@ -53,11 +59,14 @@ public class CompressionInformationPanel extends JPanel {
                 this.repaint();
             }
         });
-
         this.add(tablaFicherosComprimidos.getPanel(), BorderLayout.NORTH);
         this.add(tabbedPane, BorderLayout.CENTER);
     }
 
+    /**
+     *
+     * @param fileName
+     */
     public void addContentToHuffmanCodesPanel(String fileName){
         huffmanCodePanel.removeAll();
         StringBuilder sb = controller.readFileContent("huffmanCodes/" + fileName + Constantes.EXTENSION_HUFFMAN_CODES);
@@ -69,6 +78,10 @@ public class CompressionInformationPanel extends JPanel {
         huffmanCodePanel.repaint();
     }
 
+    /**
+     *
+     * @param fileName
+     */
     public void addContentToHuffmanTriePanel(String fileName){
         huffmanTreePanel.removeAll();
         huffmanTreePanel.add(controller.addTrieToPanel(fileName));

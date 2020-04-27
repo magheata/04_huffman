@@ -1,10 +1,13 @@
-/* Created by andreea on 19/04/2020 */
+/* Created by Miruna Andreea Gheata & Rafael Adrián Gil Cañestro */
 package Presentation.Panels;
 
 import javax.swing.*;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 
+/**
+ *
+ */
 public class IntroductionPanel extends JEditorPane {
 
     public IntroductionPanel() {
