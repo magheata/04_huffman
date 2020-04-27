@@ -21,11 +21,11 @@ import java.util.HashMap;
  */
 public class FilesPanel extends JPanel {
 
-    private JPanel selectedFilesPanel, deleteFilePanel;
+    private JPanel selectedFilesPanel, deleteFilePanel, comprimirFicherosPanel;
     private TablaFicherosComprimidos archivosComprimidos;
     private HashMap<File, JLabel> labels = new HashMap<>();
     private HashMap<String, File> files = new HashMap<>();
-
+    private JProgressBar progressBar;
     private HighlightButton comprimirArchivoButton;
     private Color color;
     private Presentation.Window window;
@@ -48,6 +48,8 @@ public class FilesPanel extends JPanel {
     private void initComponents() {
         ToolTipManager.sharedInstance().setInitialDelay(1);
         controller.setFiles(files);
+        progressBar = new JProgressBar();
+
         this.setLayout(new BorderLayout());
         archivosComprimidos = new TablaFicherosComprimidos();
         archivosComprimidos.getPanel().setVisible(false);
@@ -96,7 +98,7 @@ public class FilesPanel extends JPanel {
         wrapperFiles.add(selectedFilesScrollPane);
         wrapperFiles.add(deleteFilePanel);
 
-        JPanel comprimirFicherosPanel = new JPanel();
+        comprimirFicherosPanel = new JPanel();
         comprimirFicherosPanel.setLayout(new BorderLayout());
         comprimirFicherosPanel.add(wrapperFiles, BorderLayout.NORTH);
         comprimirFicherosPanel.add(comprimirArchivoButton, BorderLayout.CENTER);
@@ -116,7 +118,8 @@ public class FilesPanel extends JPanel {
         if(!archivosComprimidos.getPanel().isVisible()){
             archivosComprimidos.getPanel().setVisible(true);
         }
-        archivosComprimidos.addRow(new Object[]{file.getName(), totalBytesOriginales + " bytes", totalBytesComprimidos + " bytes"});
+        archivosComprimidos.addRow(new Object[]{file.getName(), totalBytesOriginales + " bytes", totalBytesComprimidos + " bytes",
+                controller.getPercentageCompression(totalBytesOriginales, totalBytesComprimidos)});
         removeFile(file);
         this.revalidate();
     }
@@ -259,5 +262,20 @@ public class FilesPanel extends JPanel {
         labels.put(newFile, newButton);
         files.remove(newFile.getName(), newFile);
         selectedFilesPanel.add(newButton);
+    }
+
+    public void replaceComprimirButton() {
+        comprimirFicherosPanel.remove(comprimirArchivoButton);
+        comprimirFicherosPanel.add(progressBar);
+        comprimirFicherosPanel.revalidate();
+        progressBar.setIndeterminate(true);
+    }
+
+    public void replaceProgressBar(){
+        comprimirFicherosPanel.remove(progressBar);
+        comprimirFicherosPanel.add(comprimirArchivoButton);
+        progressBar.setIndeterminate(false);
+        comprimirArchivoButton.setVisible(false);
+        comprimirFicherosPanel.revalidate();
     }
 }

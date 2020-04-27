@@ -105,11 +105,8 @@ public class Compressor implements ICompressor {
 
         // traverse the Huffman tree and store the Huffman codes in a map
 
-        if (pq.size() == 1){
-            encode(pq.peek(), "1", huffmanCode);
-        } else {
-            encode(pq.peek(), "", huffmanCode);
-        }
+        encode(pq.peek(), "", huffmanCode);
+
         String name = file.getName().split("\\.")[0];
 
         controller.addFileRoot(pq.peek(), name);

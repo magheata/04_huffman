@@ -52,7 +52,7 @@ public class Constantes {
 
     public final static String PATH_TRASH_ICON = "src/Presentation/Images/delete.png";
 
-    public final static String [] COLUMNAS_TABLA_FICHEROS = {"Fichero", "# Bits (Original)", "# Bits (Comprimido)"};
+    public final static String [] COLUMNAS_TABLA_FICHEROS = {"Fichero", "# Bits (Original)", "# Bits (Comprimido)", "% compresion"};
 
     public final static TableModel tableModelNewArchivos = new TableModel(COLUMNAS_TABLA_FICHEROS);
     public final static TableModel tableModelTotalArchivos = new TableModel(COLUMNAS_TABLA_FICHEROS);

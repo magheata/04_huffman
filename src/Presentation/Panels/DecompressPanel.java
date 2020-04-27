@@ -5,21 +5,15 @@ import Presentation.Utils.HighlightButton;
 import Presentation.TablaFicherosComprimidos;
 import Application.Controller;
 
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.io.File;
 
-import Presentation.Window;
 import Utils.Constantes;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Vector;
-import java.util.concurrent.Flow;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class DecompressPanel extends JPanel {
 
@@ -27,8 +21,11 @@ public class DecompressPanel extends JPanel {
     private TablaFicherosComprimidos tablaFicherosComprimidos;
     private Controller controller;
     private String nombreArchivoSeleccionado, extensionArchivo;
-    private JPanel archivoDescomprimido, archivoOriginal;
+    private JPanel archivoDescomprimido, archivoOriginal, wrapperTable;
     private JScrollPane scrollPaneArchivoDescomprimido, scrollPaneArchivoOriginal;
+    private JProgressBar progressBar;
+
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();;
 
     public DecompressPanel(Controller controller) {
         this.controller = controller;
@@ -40,7 +37,8 @@ public class DecompressPanel extends JPanel {
         this.setLayout(new BorderLayout());
         this.setSize(Constantes.DIM_FILES_PANEL);
 
-        JPanel wrapperTable = new JPanel();
+        progressBar = new JProgressBar();
+        wrapperTable = new JPanel();
         wrapperTable.setLayout(new BorderLayout());
 
         archivoDescomprimido = new JPanel();
@@ -89,8 +87,10 @@ public class DecompressPanel extends JPanel {
 
         descomprimirArchivoButton = new HighlightButton("Descomprimir archivo");
         descomprimirArchivoButton.addActionListener(e -> {
-              controller.descomprimirFicheros(nombreArchivoSeleccionado, new File("compressed/"+ nombreArchivoSeleccionado + "_compressed.txt"));
+            replaceComprimirButton();
+            controller.descomprimirFichero(nombreArchivoSeleccionado, new File("compressed/"+ nombreArchivoSeleccionado + "_compressed.txt"));
         });
+
         tablaFicherosComprimidos.getPanel().setPreferredSize(Constantes.DIM_TABLA_FICHEROS_COMPRIMIDOS);
         tablaFicherosComprimidos.getPanel().setSize(Constantes.DIM_TABLA_FICHEROS_COMPRIMIDOS);
         tablaFicherosComprimidos.getTable().getSelectionModel().addListSelectionListener(e -> {
@@ -122,31 +122,35 @@ public class DecompressPanel extends JPanel {
      *
      */
     public void addContentToArchivoDescomprimidoPanel(){
-        archivoDescomprimido.removeAll();
-        StringBuilder sb = controller.readFileContent("decompressed/" + nombreArchivoSeleccionado + "." + extensionArchivo);
-        JTextPane fileContent = new JTextPane();
-        fileContent.setFocusable(false);
-        fileContent.setRequestFocusEnabled(false);
-        fileContent.setText(sb.toString());
-        archivoDescomprimido.add(fileContent);
-        archivoDescomprimido.repaint();
-        this.revalidate();
+        executorService.submit(() -> {
+            archivoDescomprimido.removeAll();
+            StringBuilder sb = controller.readFileContent("decompressed/" + nombreArchivoSeleccionado + "." + extensionArchivo);
+            JTextPane fileContent = new JTextPane();
+            fileContent.setFocusable(false);
+            fileContent.setRequestFocusEnabled(false);
+            fileContent.setText(sb.toString());
+            archivoDescomprimido.add(fileContent);
+            archivoDescomprimido.repaint();
+            this.revalidate();
+        });
     }
 
     /**
      *
      */
     public void addContentToArchivoOriginalPanel(){
-        archivoOriginal.removeAll();
-        String pathArchivoOriginal = controller.getPathArchivoOriginal(Constantes.PATH_HUFFMAN_CODES + nombreArchivoSeleccionado + Constantes.EXTENSION_HUFFMAN_CODES);
-        StringBuilder sb = controller.readFileContent(pathArchivoOriginal);
-        JTextPane fileContent = new JTextPane();
-        fileContent.setFocusable(false);
-        fileContent.setRequestFocusEnabled(false);
-        fileContent.setText(sb.toString());
-        archivoOriginal.add(fileContent);
-        archivoOriginal.repaint();
-        this.revalidate();
+        executorService.submit(() -> {
+            archivoOriginal.removeAll();
+            String pathArchivoOriginal = controller.getPathArchivoOriginal(Constantes.PATH_HUFFMAN_CODES + nombreArchivoSeleccionado + Constantes.EXTENSION_HUFFMAN_CODES);
+            StringBuilder sb = controller.readFileContent(pathArchivoOriginal);
+            JTextPane fileContent = new JTextPane();
+            fileContent.setFocusable(false);
+            fileContent.setRequestFocusEnabled(false);
+            fileContent.setText(sb.toString());
+            archivoOriginal.add(fileContent);
+            archivoOriginal.repaint();
+            this.revalidate();
+        });
     }
 
     public void resizePanels(int width, int height){
@@ -154,5 +158,21 @@ public class DecompressPanel extends JPanel {
         scrollPaneArchivoOriginal.setPreferredSize(new Dimension(width / 2, height - 150));
         scrollPaneArchivoDescomprimido.setSize(new Dimension(width / 2, height - 150));
         scrollPaneArchivoOriginal.setSize(new Dimension(width / 2, height - 150));
+    }
+
+
+    public void replaceComprimirButton() {
+        wrapperTable.remove(descomprimirArchivoButton);
+        wrapperTable.add(progressBar);
+        wrapperTable.revalidate();
+        progressBar.setIndeterminate(true);
+    }
+
+    public void replaceProgressBar(){
+        wrapperTable.remove(progressBar);
+        wrapperTable.add(descomprimirArchivoButton);
+        progressBar.setIndeterminate(false);
+        descomprimirArchivoButton.setVisible(true);
+        wrapperTable.revalidate();
     }
 }

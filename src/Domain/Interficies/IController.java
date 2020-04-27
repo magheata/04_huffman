@@ -26,5 +26,5 @@ public interface IController {
     void initRootNodes();
     Object[] getOriginalAndCompressedBytes(String path);
     ArrayList<File> listFilesForFolder(File folder);
-    void descomprimirFicheros(String nombre, File file);
+    void descomprimirFichero(String nombre, File file);
 }
