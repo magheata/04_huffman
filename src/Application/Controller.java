@@ -74,11 +74,12 @@ public class Controller implements IController {
      * @param files
      */
     @Override
-    public void comprimirFicheros(Set<File> files) {
+    public synchronized void comprimirFicheros(Set<File> files) {
         executorService = Executors.newFixedThreadPool(files.size());
         for (Iterator i = files.iterator(); i.hasNext();){
             executorService.submit(() -> comprimirFichero((File) i.next()));
         }
+        filesPanel.replaceProgressBar();
     }
 
     /**
@@ -129,7 +130,6 @@ public class Controller implements IController {
     @Override
     public void addArchivosPorComprimirAPanel(File file, int bytesOriginales, int bytesComprimidos){
         filesPanel.addArchivosPorComprimirAPanel(file, bytesOriginales, bytesComprimidos);
-        filesPanel.replaceProgressBar();
     }
 
     @Override
@@ -175,10 +175,12 @@ public class Controller implements IController {
      */
     @Override
     public void addFileRoot(Node node, String fileName){
-        rootNodes.put(fileName, node);
-        if (fileIsNew.get(fileName) != null){
-            fileIsNew.remove(fileName);
+        if (rootNodes.get(fileName) != null){
+            rootNodes.remove(fileName);
         }
+
+        rootNodes.put(fileName, node);
+
         fileIsNew.put(fileName, true);
     }
 

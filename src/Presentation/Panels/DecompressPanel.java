@@ -11,6 +11,7 @@ import Utils.Constantes;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -122,35 +123,45 @@ public class DecompressPanel extends JPanel {
      *
      */
     public void addContentToArchivoDescomprimidoPanel(){
-        executorService.submit(() -> {
-            archivoDescomprimido.removeAll();
-            StringBuilder sb = controller.readFileContent("decompressed/" + nombreArchivoSeleccionado + "." + extensionArchivo);
-            JTextPane fileContent = new JTextPane();
-            fileContent.setFocusable(false);
-            fileContent.setRequestFocusEnabled(false);
-            fileContent.setText(sb.toString());
-            archivoDescomprimido.add(fileContent);
-            archivoDescomprimido.repaint();
-            this.revalidate();
-        });
+        if (extensionArchivo.equals("txt")){
+            executorService.submit(() -> {
+                archivoDescomprimido.removeAll();
+                StringBuilder sb = controller.readFileContent("decompressed/" + nombreArchivoSeleccionado + "." + extensionArchivo);
+                JTextPane fileContent = new JTextPane();
+                fileContent.setFocusable(false);
+                fileContent.setRequestFocusEnabled(false);
+                fileContent.setText(sb.toString());
+                archivoDescomprimido.add(fileContent);
+                archivoDescomprimido.repaint();
+                this.revalidate();
+            });
+        } else {
+            try {
+                Desktop.getDesktop().open(new File("decompressed/" + nombreArchivoSeleccionado + "." + extensionArchivo));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
      *
      */
     public void addContentToArchivoOriginalPanel(){
-        executorService.submit(() -> {
-            archivoOriginal.removeAll();
-            String pathArchivoOriginal = controller.getPathArchivoOriginal(Constantes.PATH_HUFFMAN_CODES + nombreArchivoSeleccionado + Constantes.EXTENSION_HUFFMAN_CODES);
-            StringBuilder sb = controller.readFileContent(pathArchivoOriginal);
-            JTextPane fileContent = new JTextPane();
-            fileContent.setFocusable(false);
-            fileContent.setRequestFocusEnabled(false);
-            fileContent.setText(sb.toString());
-            archivoOriginal.add(fileContent);
-            archivoOriginal.repaint();
-            this.revalidate();
-        });
+        if (extensionArchivo.equals("txt")){
+            executorService.submit(() -> {
+                archivoOriginal.removeAll();
+                String pathArchivoOriginal = controller.getPathArchivoOriginal(Constantes.PATH_HUFFMAN_CODES + nombreArchivoSeleccionado + Constantes.EXTENSION_HUFFMAN_CODES);
+                StringBuilder sb = controller.readFileContent(pathArchivoOriginal);
+                JTextPane fileContent = new JTextPane();
+                fileContent.setFocusable(false);
+                fileContent.setRequestFocusEnabled(false);
+                fileContent.setText(sb.toString());
+                archivoOriginal.add(fileContent);
+                archivoOriginal.repaint();
+                this.revalidate();
+            });
+        }
     }
 
     public void resizePanels(int width, int height){
