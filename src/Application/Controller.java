@@ -13,6 +13,9 @@ import Presentation.Panels.HuffmanTriePanel;
 import Utils.Constantes;
 
 import javax.swing.*;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.*;
 import java.io.File;
 import java.util.concurrent.ExecutorService;
@@ -32,6 +35,8 @@ public class Controller implements IController {
     private Map<String, Node> rootNodes = new HashMap<>();
     private HashMap<String, File> files;
     private HashMap<String, BinaryOut> binaryOutFiles = new HashMap<>();
+    private HashMap<String, FileOutputStream> outFiles = new HashMap<>();
+
     private HashMap<String, Boolean> fileIsNew = new HashMap<>();
 
     public Controller() {
@@ -90,6 +95,9 @@ public class Controller implements IController {
         compressor.start();
     }
 
+    public byte[] getBytes(String name){
+        return reader.getBytes(new File(name));
+    }
     /**
      *
      * @param file
@@ -139,6 +147,14 @@ public class Controller implements IController {
         binaryOutFiles.put(outputType, new BinaryOut(path));
     }
 
+    public void createOutputFile(String outputType, String path) {
+        try {
+            outFiles.put(outputType, new FileOutputStream(path, false));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      *
      * @param binaryOutputFile
@@ -151,6 +167,17 @@ public class Controller implements IController {
         binaryOutFiles.remove(binaryOutputFile);
     }
 
+    public void closeOutputFile(String binaryOutputFile) {
+        FileOutputStream bOut = outFiles.get(binaryOutputFile);
+        try {
+            bOut.flush();
+            bOut.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        outFiles.remove(binaryOutputFile);
+    }
+
     /**
      *
      * @param outputFile
@@ -159,6 +186,14 @@ public class Controller implements IController {
     @Override
     public void write(String outputFile, String string) {
         binaryOutFiles.get(outputFile).write(string);
+    }
+
+    public void write(String outputFile, byte[] bytes) {
+        try {
+            outFiles.get(outputFile).write(bytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

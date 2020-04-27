@@ -19,7 +19,7 @@ import java.util.Vector;
 ;
 
 
-public class DcomPanel extends JPanel {
+public class DecompressPanel extends JPanel {
 
     private HighlightButton descomprimirArchivoButton;
     private TablaFicherosComprimidos tablaFicherosComprimidos;
@@ -27,7 +27,7 @@ public class DcomPanel extends JPanel {
     private String nombreArchivoSeleccionado;
 
 
-    public DcomPanel(Controller controller) {
+    public DecompressPanel(Controller controller) {
         this.controller = controller;
         tablaFicherosComprimidos = new TablaFicherosComprimidos(controller);
         initComponents();

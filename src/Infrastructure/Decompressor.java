@@ -2,13 +2,9 @@ package Infrastructure;
 
 import Application.Controller;
 import Domain.Node;
-import Infrastructure.Reader;
-import Infrastructure.Utils.BinaryIn;
-import Infrastructure.Utils.BinaryOut;
 import Utils.Constantes;
 
 import java.io.File;
-import java.util.Map;
 
 public class Decompressor implements Runnable {
     private Controller controller;
@@ -37,30 +33,24 @@ public class Decompressor implements Runnable {
     }
 
     private void descomprimir() {
-        BinaryIn bIn = new BinaryIn(file.getAbsolutePath());
         String name = file.getName().substring(0, file.getName().indexOf("_compressed.txt"));
-        controller.createBinaryOutputFile(Constantes.OUTPUT_TYPE_DECOMPRESSED_FILE + name,
+        controller.createOutputFile(Constantes.OUTPUT_TYPE_DECOMPRESSED_FILE + name,
                 Constantes.PATH_DECOMPRESSED_FILE + name + "." + extension);
         Node tmp = root;
-        String code = "";
-        char currentChar;
-        while(!bIn.isEmpty()){
-            currentChar = bIn.readChar();
-            if (!tmp.isLeaf()) {
-                if (currentChar == '1') {
-                    code = code.concat("1");
-                    tmp = tmp.rightNode;
-                } else {
+        byte[] fileBytes = controller.getBytes(file.getAbsolutePath());
+        for (int i = 0; i < fileBytes.length; i++){
+            byte code = fileBytes[i];
+            if (!tmp.isLeaf()){
+                if ((char) code == '0'){
                     tmp = tmp.leftNode;
-                    code = code.concat("0");
+                } else {
+                    tmp = tmp.rightNode;
                 }
             } else {
-                System.out.println((char) tmp.byteRepresentado);
-                controller.write(Constantes.OUTPUT_TYPE_DECOMPRESSED_FILE + name, tmp.byteRepresentado);
-                code = "";
+                controller.write(Constantes.OUTPUT_TYPE_DECOMPRESSED_FILE + name, new byte[] {tmp.byteRepresentado});
                 tmp = root;
             }
         }
-        controller.closeBinaryOutputFile(Constantes.OUTPUT_TYPE_DECOMPRESSED_FILE + name);
+        controller.closeOutputFile(Constantes.OUTPUT_TYPE_DECOMPRESSED_FILE + name);
     }
 }

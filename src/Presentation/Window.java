@@ -17,7 +17,7 @@ public class Window extends JFrame {
     private DnDPanel dragDropComponent;
     private FileChooserPanel fileChooserPanelComponent;
     public FilesPanel filesPanel;
-    public DcomPanel dcomPanel;
+    public DecompressPanel decompressPanel;
     private IntroductionPanel introductionPanel;
     private Controller controller;
     private JPanel outerPanel;
@@ -67,8 +67,8 @@ public class Window extends JFrame {
         outerPanel.add(panel, BorderLayout.NORTH);
         outerPanel.add(filesPanel, BorderLayout.CENTER);
 
-        dcomPanel = new DcomPanel(controller);
-        dcomPanel.setVisible(true);
+        decompressPanel = new DecompressPanel(controller);
+        decompressPanel.setVisible(true);
 
         introductionPanel = new IntroductionPanel();
         introductionPanel.setVisible(true);
@@ -78,7 +78,7 @@ public class Window extends JFrame {
 
         tabbedPane.addTab(Constantes.TITLE_INFO_TABBED_PANE, introductionPanel);
         tabbedPane.addTab(Constantes.TITLE_COMPRIMIR_TABBED_PANE, outerPanel);
-        tabbedPane.addTab(Constantes.TITLE_DESCOMPRIMIR_TABBED_PANE, dcomPanel);
+        tabbedPane.addTab(Constantes.TITLE_DESCOMPRIMIR_TABBED_PANE, decompressPanel);
         tabbedPane.addTab(Constantes.TITLE_FICHEROS_COMPRIMIDOS_TABBED_PANE, panelArchivosComprimidos);
 
         this.setPreferredSize(Constantes.DIM_WINDOW);

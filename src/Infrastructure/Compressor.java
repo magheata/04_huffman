@@ -9,6 +9,9 @@ import Utils.Constantes;
 
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -94,7 +97,7 @@ public class Compressor implements ICompressor {
     public void comprimir() {
         // count frequency of appearance of each character
         // and store it in a map
-        Map<Byte, Integer> freq = crearTablaFrecuencias(bytes);
+        Map<Byte, Integer> freq = crearTablaFrecuencias();
 
         // Create a priority queue to store live nodes of Huffman tree
         // Notice that highest priority item has lowest frequency
@@ -115,21 +118,22 @@ public class Compressor implements ICompressor {
                 Constantes.PATH_HUFFMAN_TRIE + name + Constantes.EXTENSION_HUFFMAN_TRIE);
         controller.createBinaryOutputFile(Constantes.OUTPUT_TYPE_CODES + name,
                 Constantes.PATH_HUFFMAN_CODES + name + Constantes.EXTENSION_HUFFMAN_CODES);
-        controller.createBinaryOutputFile(Constantes.OUTPUT_TYPE_COMPRESSED_FILE + name,
+/*        controller.createBinaryOutputFile(Constantes.OUTPUT_TYPE_COMPRESSED_FILE + name,
+                Constantes.PATH_COMPRESSED_FILE + name + Constantes.EXTENSION_COMPRESSED_FILE);*/
+        controller.createOutputFile(Constantes.OUTPUT_TYPE_COMPRESSED_FILE + name,
                 Constantes.PATH_COMPRESSED_FILE + name + Constantes.EXTENSION_COMPRESSED_FILE);
 
         writeTrie(Constantes.OUTPUT_TYPE_TRIE + name, pq.peek());
-        writeCompressedFile(Constantes.OUTPUT_TYPE_COMPRESSED_FILE + name, bytes);
+        writeCompressedFile(Constantes.OUTPUT_TYPE_COMPRESSED_FILE + name);
         writeHuffmanCodes(Constantes.OUTPUT_TYPE_CODES + name, file.getName().split("\\.")[1]);
         controller.addArchivosPorComprimirAPanel(file, bytesOriginales, bytesComprimidos);
     }
 
     /**
      *
-     * @param bytes
      * @return
      */
-    private Map<Byte, Integer> crearTablaFrecuencias(byte[] bytes){
+    private Map<Byte, Integer> crearTablaFrecuencias(){
         StringBuilder bytesOrig = new StringBuilder();
         // count frequency of appearance of each character
         // and store it in a map
@@ -249,20 +253,17 @@ public class Compressor implements ICompressor {
     /**
      *
      * @param outputType
-     * @param bytes
      */
-    private void writeCompressedFile(String outputType, byte [] bytes){
+    private void writeCompressedFile(String outputType){
         StringBuilder bytesCompr = new StringBuilder();
         // print encoded string
         for (int i = 0 ; i < bytes.length; i++) {
             String code = huffmanCode.get(bytes[i]);
-            for (char byteChar : code.toCharArray()){
-                controller.write(outputType, byteChar);
-            }
+            controller.write(outputType, code.getBytes());
             bytesCompr.append(huffmanCode.get(bytes[i]));
         }
         bytesComprimidos = bytesCompr.length();
-        controller.closeBinaryOutputFile(outputType);
+        controller.closeOutputFile(outputType);
     }
 
     /**
