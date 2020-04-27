@@ -19,8 +19,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 import java.io.File;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  *
@@ -93,7 +95,14 @@ public class Controller implements IController {
      */
     @Override
     public StringBuilder readFileContent(String fileName){
-        return reader.getFileContent(fileName);
+        try {
+            Future<StringBuilder> fileContent = reader.getFileContent(fileName);
+            while (!fileContent.isDone()){}
+            return  fileContent.get();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
 
@@ -103,7 +112,16 @@ public class Controller implements IController {
     }
 
     public String getPathArchivoOriginal(String path){
-        return reader.getPathArchivoOriginal(path);
+        try {
+            Future <String> pathOriginal = reader.getPathArchivoOriginal(path);
+            while (!pathOriginal.isDone()){}
+            return pathOriginal.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     public byte[] getBytes(String name){
@@ -246,9 +264,14 @@ public class Controller implements IController {
                     String name = fileEntry.getName().substring(0, fileEntry.getName().length() - Constantes.EXTENSION_COMPRESSED_FILE.length());
                     Object [] bytes = getOriginalAndCompressedBytes(Constantes.PATH_HUFFMAN_CODES + name + Constantes.EXTENSION_HUFFMAN_CODES);
                     Constantes.tableModelTotalArchivos.addRow(new Object[]{name + "." + bytes[0], bytes[1] + " bits", bytes[2] + " bits"});
-                    Node rootNode = reader.readTrieFromFile(Constantes.PATH_HUFFMAN_TRIE + name + Constantes.EXTENSION_HUFFMAN_TRIE);
-                    rootNodes.put(name, rootNode);
-                    fileIsNew.put(name, false);
+                    Future<Node> rootNode = reader.readTrieFromFile(Constantes.PATH_HUFFMAN_TRIE + name + Constantes.EXTENSION_HUFFMAN_TRIE);
+                    while(!rootNode.isDone()){}
+                    try{
+                        rootNodes.put(name, rootNode.get());
+                        fileIsNew.put(name, false);
+                    } catch (InterruptedException | ExecutionException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -256,7 +279,16 @@ public class Controller implements IController {
 
     @Override
     public Object[] getOriginalAndCompressedBytes(String path) {
-        return reader.getOriginalAndCompressedBytes(path);
+        try {
+            Future<Object[]> objects = reader.getOriginalAndCompressedBytes(path);
+            while (!objects.isDone()){}
+            return objects.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override

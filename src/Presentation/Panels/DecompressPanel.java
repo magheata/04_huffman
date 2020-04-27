@@ -46,10 +46,22 @@ public class DecompressPanel extends JPanel {
         archivoDescomprimido = new JPanel();
         archivoDescomprimido.setVisible(true);
         archivoDescomprimido.setBackground(Color.white);
+
         scrollPaneArchivoDescomprimido = new JScrollPane(archivoDescomprimido, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
         scrollPaneArchivoDescomprimido.setPreferredSize(new Dimension(this.getWidth() / 2, this.getHeight()/2));
         scrollPaneArchivoDescomprimido.setSize(new Dimension(this.getWidth() / 2, this.getHeight()/2));
+
+
+        JPanel archivoComprimidoWrapper = new JPanel();
+        archivoComprimidoWrapper.setLayout(new BorderLayout());
+
+        JLabel archivoComprimidoLabel = new JLabel("Archivo descomprimido");
+        archivoComprimidoLabel.setHorizontalAlignment(JLabel.CENTER);
+
+        archivoComprimidoWrapper.add(archivoComprimidoLabel, BorderLayout.NORTH);
+        archivoComprimidoWrapper.add(scrollPaneArchivoDescomprimido, BorderLayout.CENTER);
 
         JPanel wrapperArchivos = new JPanel();
         wrapperArchivos.setLayout(new BorderLayout());
@@ -58,10 +70,22 @@ public class DecompressPanel extends JPanel {
         archivoOriginal = new JPanel();
         archivoOriginal.setVisible(true);
         archivoOriginal.setBackground(Color.white);
+
+
         scrollPaneArchivoOriginal = new JScrollPane(archivoOriginal, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPaneArchivoOriginal.setPreferredSize(new Dimension(this.getWidth() / 2, this.getHeight()/2));
-        scrollPaneArchivoOriginal.setSize(new Dimension(this.getWidth() / 2, this.getHeight()/2));
+        scrollPaneArchivoOriginal.setPreferredSize(new Dimension(this.getWidth() / 2, this.getHeight() - 150));
+        scrollPaneArchivoOriginal.setSize(new Dimension(this.getWidth() / 2, this.getHeight() - 150));
+
+        JPanel archivoOriginalWrapper = new JPanel();
+        archivoOriginalWrapper.setLayout(new BorderLayout());
+
+        JLabel archivoOriginalLabel = new JLabel("Archivo original");
+        archivoOriginalLabel.setHorizontalAlignment(JLabel.CENTER);
+
+        archivoOriginalWrapper.add(archivoOriginalLabel, BorderLayout.NORTH);
+        archivoOriginalWrapper.add(scrollPaneArchivoOriginal, BorderLayout.CENTER);
+
 
         descomprimirArchivoButton = new HighlightButton("Descomprimir archivo");
         descomprimirArchivoButton.addActionListener(e -> {
@@ -86,8 +110,8 @@ public class DecompressPanel extends JPanel {
         wrapperTable.add(tablaFicherosComprimidos.getPanel(), BorderLayout.NORTH);
         wrapperTable.add(descomprimirArchivoButton, BorderLayout.CENTER);
 
-        wrapperArchivos.add(scrollPaneArchivoOriginal, BorderLayout.WEST);
-        wrapperArchivos.add(scrollPaneArchivoDescomprimido);
+        wrapperArchivos.add(archivoOriginalWrapper, BorderLayout.WEST);
+        wrapperArchivos.add(archivoComprimidoWrapper);
 
         this.add(wrapperTable, BorderLayout.NORTH);
         this.add(wrapperArchivos, BorderLayout.CENTER);
@@ -106,6 +130,7 @@ public class DecompressPanel extends JPanel {
         fileContent.setText(sb.toString());
         archivoDescomprimido.add(fileContent);
         archivoDescomprimido.repaint();
+        this.revalidate();
     }
 
     /**
@@ -121,12 +146,13 @@ public class DecompressPanel extends JPanel {
         fileContent.setText(sb.toString());
         archivoOriginal.add(fileContent);
         archivoOriginal.repaint();
+        this.revalidate();
     }
 
     public void resizePanels(int width, int height){
-        scrollPaneArchivoDescomprimido.setPreferredSize(new Dimension(width / 2, height/2));
-        scrollPaneArchivoOriginal.setPreferredSize(new Dimension(width / 2, height/2));
-        scrollPaneArchivoDescomprimido.setSize(new Dimension(width / 2, height/2));
-        scrollPaneArchivoOriginal.setSize(new Dimension(width / 2, height/2));
+        scrollPaneArchivoDescomprimido.setPreferredSize(new Dimension(width / 2, height - 150));
+        scrollPaneArchivoOriginal.setPreferredSize(new Dimension(width / 2, height - 150));
+        scrollPaneArchivoDescomprimido.setSize(new Dimension(width / 2, height - 150));
+        scrollPaneArchivoOriginal.setSize(new Dimension(width / 2, height - 150));
     }
 }
