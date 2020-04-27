@@ -20,8 +20,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Vector;
 import java.util.concurrent.Flow;
-;
-
 
 public class DecompressPanel extends JPanel {
 
@@ -69,7 +67,6 @@ public class DecompressPanel extends JPanel {
         descomprimirArchivoButton.addActionListener(e -> {
               controller.descomprimirFicheros(nombreArchivoSeleccionado, new File("compressed/"+ nombreArchivoSeleccionado + "_compressed.txt"));
         });
-        descomprimirArchivoButton.setPreferredSize(new Dimension(300, 5));
         tablaFicherosComprimidos.getPanel().setPreferredSize(Constantes.DIM_TABLA_FICHEROS_COMPRIMIDOS);
         tablaFicherosComprimidos.getPanel().setSize(Constantes.DIM_TABLA_FICHEROS_COMPRIMIDOS);
         tablaFicherosComprimidos.getTable().getSelectionModel().addListSelectionListener(e -> {
@@ -87,7 +84,7 @@ public class DecompressPanel extends JPanel {
         descomprimirArchivoButton.setFont(new Font("Tahoma", Font.BOLD, 12));
 
         wrapperTable.add(tablaFicherosComprimidos.getPanel(), BorderLayout.NORTH);
-        wrapperTable.add(descomprimirArchivoButton, BorderLayout.SOUTH);
+        wrapperTable.add(descomprimirArchivoButton, BorderLayout.CENTER);
 
         wrapperArchivos.add(scrollPaneArchivoOriginal, BorderLayout.WEST);
         wrapperArchivos.add(scrollPaneArchivoDescomprimido);
