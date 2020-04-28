@@ -79,7 +79,10 @@ public class Window extends JFrame {
         CompressionInformationPanel panelArchivosComprimidos = new CompressionInformationPanel(controller);
         panelArchivosComprimidos.setVisible(true);
 
-        tabbedPane.addTab(Constantes.TITLE_INFO_TABBED_PANE, introductionPanel);
+        JScrollPane introductionScrollPane = new JScrollPane(introductionPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+        tabbedPane.addTab(Constantes.TITLE_INFO_TABBED_PANE, introductionScrollPane);
         tabbedPane.addTab(Constantes.TITLE_COMPRIMIR_TABBED_PANE, outerPanel);
         tabbedPane.addTab(Constantes.TITLE_DESCOMPRIMIR_TABBED_PANE, decompressPanel);
         tabbedPane.addTab(Constantes.TITLE_FICHEROS_COMPRIMIDOS_TABBED_PANE, panelArchivosComprimidos);

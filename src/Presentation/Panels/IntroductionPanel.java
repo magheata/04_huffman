@@ -59,10 +59,14 @@ public class IntroductionPanel extends JEditorPane {
                 "Tras la compresión del archivo se puede acceder a los códigos de Huffman generados y al árbol resultante.";
         String listaPasosVisualizarArchivo =
                 "<ol>" +
-                        "<li>Ir a la pestaña de <i>Archivos comprimidos</i>" +
+                        "<li>Ir a la pestaña de <i>Archivos comprimidos</i></li>" +
                         "<li>Elegir uno de los archivos de la tabla de archivos comprimidos</li>" +
                 "</ol>" + "Los códigos Huffman y el árbol Huffman apareceran en las pestañas correspondientes.";
 
+        String descomprimirArchivoInfo = "<h2> Descomprimir un archivo </h2>" +
+                "Si es un archivo de texto (extensión .txt), saldrá el archivo original y el descomprimido para que se" +
+                "aprecie la calidad de la descompresión. En el caso de los otros archivos, tras la descompresión se abrirá" +
+                "dicho archivo.";
 
         String carpetasResultantes = "<h2> Ficheros resultantes de la compresión </h2>" +
                 "Tras haber comprimido un archivo se crean distintos ficheros: " +
@@ -78,6 +82,7 @@ public class IntroductionPanel extends JEditorPane {
                 comprimirArchivoInfo + listaPasosComprimirArchivo +
                 eliminarArchivoInfo + listaPasosEliminarArchivo +
                 visualizarArchivoInfo + listaPasosVisualizarArchivo +
+                descomprimirArchivoInfo +
                 carpetasResultantes);
     }
 }

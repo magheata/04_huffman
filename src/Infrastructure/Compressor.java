@@ -21,6 +21,7 @@ public class Compressor implements ICompressor {
 
     private Thread worker;
     private Map<Byte, String> huffmanCode = new HashMap<>();
+    private Map<Byte, Integer> freq;
     private byte[] bytes;
     private File file;
     private Controller controller;
@@ -97,7 +98,7 @@ public class Compressor implements ICompressor {
     public void comprimir() {
         // count frequency of appearance of each character
         // and store it in a map
-        Map<Byte, Integer> freq = crearTablaFrecuencias();
+        freq = crearTablaFrecuencias();
 
         // Create a priority queue to store live nodes of Huffman tree
         // Notice that highest priority item has lowest frequency
@@ -115,8 +116,6 @@ public class Compressor implements ICompressor {
                 Constantes.PATH_HUFFMAN_TRIE + name + Constantes.EXTENSION_HUFFMAN_TRIE);
         controller.createBinaryOutputFile(Constantes.OUTPUT_TYPE_CODES + name,
                 Constantes.PATH_HUFFMAN_CODES + name + Constantes.EXTENSION_HUFFMAN_CODES);
-/*        controller.createBinaryOutputFile(Constantes.OUTPUT_TYPE_COMPRESSED_FILE + name,
-                Constantes.PATH_COMPRESSED_FILE + name + Constantes.EXTENSION_COMPRESSED_FILE);*/
         controller.createOutputFile(Constantes.OUTPUT_TYPE_COMPRESSED_FILE + name,
                 Constantes.PATH_COMPRESSED_FILE + name + Constantes.EXTENSION_COMPRESSED_FILE);
 
@@ -221,7 +220,7 @@ public class Compressor implements ICompressor {
         StringBuilder outputString;
         if (extension.equals("txt")){
             // print the Huffman codes
-            controller.write(outputType, "BYTE |    CHARACTER     |     HUFFMAN CODE\n");
+            controller.write(outputType, "BYTE |    CHARACTER     |     HUFFMAN CODE      |    FREQUENCY     |\n");
             controller.write(outputType, "------------------------------------------\n");
             for (Map.Entry<Byte, String> entry : huffmanCode.entrySet()) {
                 outputString = new StringBuilder();
@@ -231,17 +230,20 @@ public class Compressor implements ICompressor {
                 } else {
                     outputString.append((char) (entry.getKey() & 0xFF) + "                     ");
                 }
-                outputString.append(entry.getValue() + "\n");
+                outputString.append(entry.getValue() + "                     ");
+                outputString.append(freq.get(entry.getKey())+ "\n");
+
                 controller.write(outputType, outputString.toString());
             }
         } else {
             // print the Huffman codes
-            controller.write(outputType, "BYTE |     HUFFMAN CODE\n");
+            controller.write(outputType, "BYTE |     HUFFMAN CODE      |    FREQUENCY     |\n");
             controller.write(outputType, "-----------------------\n");
             for (Map.Entry<Byte, String> entry : huffmanCode.entrySet()) {
                 outputString = new StringBuilder();
                 outputString.append(entry.getKey() + "           ");
-                outputString.append(entry.getValue() + "\n");
+                outputString.append(entry.getValue() + "                     ");
+                outputString.append(freq.get(entry.getKey())+ "\n");
                 controller.write(outputType, outputString.toString());
             }
         }

@@ -23,6 +23,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *
@@ -42,6 +43,9 @@ public class Controller implements IController {
     private HashMap<String, FileOutputStream> outFiles = new HashMap<>();
 
     private HashMap<String, Boolean> fileIsNew = new HashMap<>();
+
+    private AtomicInteger filesCompressed = new AtomicInteger(0);
+    private int totalFiles = 0;
 
     public Controller() {
         reader = new Reader();
@@ -74,12 +78,19 @@ public class Controller implements IController {
      * @param files
      */
     @Override
-    public synchronized void comprimirFicheros(Set<File> files) {
-        executorService = Executors.newFixedThreadPool(files.size());
+    public void comprimirFicheros(Set<File> files) {
+        totalFiles = files.size();
         for (Iterator i = files.iterator(); i.hasNext();){
+            executorService = Executors.newSingleThreadExecutor();
             executorService.submit(() -> comprimirFichero((File) i.next()));
         }
-        filesPanel.replaceProgressBar();
+    }
+
+    public void replaceProgressBarFilesPanel() {
+        if (filesCompressed.incrementAndGet() == totalFiles){
+            filesPanel.replaceProgressBar();
+            filesCompressed.set(0);
+        }
     }
 
     /**
@@ -130,6 +141,7 @@ public class Controller implements IController {
     @Override
     public void addArchivosPorComprimirAPanel(File file, int bytesOriginales, int bytesComprimidos){
         filesPanel.addArchivosPorComprimirAPanel(file, bytesOriginales, bytesComprimidos);
+        replaceProgressBarFilesPanel();
     }
 
     @Override
