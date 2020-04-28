@@ -8,6 +8,7 @@ import Infrastructure.Compressor;
 import Infrastructure.Decompressor;
 import Infrastructure.Reader;
 import Infrastructure.Utils.BinaryOut;
+import Presentation.Panels.DecompressPanel;
 import Presentation.Panels.FilesPanel;
 import Presentation.Panels.HuffmanTriePanel;
 import Utils.Constantes;
@@ -18,8 +19,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 import java.io.File;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *
@@ -28,6 +32,7 @@ import java.util.concurrent.Executors;
 public class Controller implements IController {
 
     private FilesPanel filesPanel;
+    private DecompressPanel decompressPanel;
     private Reader reader;
     private Compressor compressor;
     private Decompressor decompressor;
@@ -38,6 +43,9 @@ public class Controller implements IController {
     private HashMap<String, FileOutputStream> outFiles = new HashMap<>();
 
     private HashMap<String, Boolean> fileIsNew = new HashMap<>();
+
+    private AtomicInteger filesCompressed = new AtomicInteger(0);
+    private int totalFiles = 0;
 
     public Controller() {
         reader = new Reader();
@@ -71,13 +79,19 @@ public class Controller implements IController {
      */
     @Override
     public void comprimirFicheros(Set<File> files) {
-        executorService = Executors.newFixedThreadPool(files.size());
+        totalFiles = files.size();
         for (Iterator i = files.iterator(); i.hasNext();){
+            executorService = Executors.newSingleThreadExecutor();
             executorService.submit(() -> comprimirFichero((File) i.next()));
         }
     }
 
-
+    public void replaceProgressBarFilesPanel() {
+        if (filesCompressed.incrementAndGet() == totalFiles){
+            filesPanel.replaceProgressBar();
+            filesCompressed.set(0);
+        }
+    }
 
     /**
      *
@@ -86,13 +100,33 @@ public class Controller implements IController {
      */
     @Override
     public StringBuilder readFileContent(String fileName){
-        return reader.getFileContent(fileName);
+        try {
+            Future<StringBuilder> fileContent = reader.getFileContent(fileName);
+            while (!fileContent.isDone()){}
+            return  fileContent.get();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
-
     private void comprimirFichero(File file){
+        filesPanel.replaceComprimirButton();
         compressor = new Compressor(this, reader.getBytes(file), file);
         compressor.start();
+    }
+
+    public String getPathArchivoOriginal(String path){
+        try {
+            Future <String> pathOriginal = reader.getPathArchivoOriginal(path);
+            while (!pathOriginal.isDone()){}
+            return pathOriginal.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     public byte[] getBytes(String name){
@@ -107,14 +141,34 @@ public class Controller implements IController {
     @Override
     public void addArchivosPorComprimirAPanel(File file, int bytesOriginales, int bytesComprimidos){
         filesPanel.addArchivosPorComprimirAPanel(file, bytesOriginales, bytesComprimidos);
+        replaceProgressBarFilesPanel();
     }
 
     @Override
-    public void descomprimirFicheros(String nombre, File file) {
-        decompressor = new Decompressor(this, rootNodes.get(nombre), file, "txt");
-        decompressor.run();
+    public void descomprimirFichero(String nombre, File file) {
+        executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(() -> descomprimirFicheroPrivate(nombre, file));
     }
 
+    private void descomprimirFicheroPrivate(String nombre, File file){
+        try {
+            Future<Object[]> objects = reader.getOriginalAndCompressedBytes(Constantes.PATH_HUFFMAN_CODES + nombre + Constantes.EXTENSION_HUFFMAN_CODES);
+            while (!objects.isDone()){}
+            decompressor = new Decompressor(this, rootNodes.get(nombre), file, (String) objects.get()[0]);
+            decompressor.run();
+            decompressPanel.addContentToArchivoOriginalPanel();
+            decompressPanel.addContentToArchivoDescomprimidoPanel();
+            decompressPanel.replaceProgressBar();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void resizePanels(int width, int height){
+        decompressPanel.resizePanels(width, height);
+    }
     /**
      *
      * @param fileName
@@ -133,7 +187,12 @@ public class Controller implements IController {
      */
     @Override
     public void addFileRoot(Node node, String fileName){
+        if (rootNodes.get(fileName) != null){
+            rootNodes.remove(fileName);
+        }
+
         rootNodes.put(fileName, node);
+
         fileIsNew.put(fileName, true);
     }
 
@@ -229,10 +288,15 @@ public class Controller implements IController {
                 if (!fileEntry.getName().equals(".DS_Store")){
                     String name = fileEntry.getName().substring(0, fileEntry.getName().length() - Constantes.EXTENSION_COMPRESSED_FILE.length());
                     Object [] bytes = getOriginalAndCompressedBytes(Constantes.PATH_HUFFMAN_CODES + name + Constantes.EXTENSION_HUFFMAN_CODES);
-                    Constantes.tableModelTotalArchivos.addRow(new Object[]{name + "." + bytes[0], bytes[1] + " bits", bytes[2] + " bits"});
-                    Node rootNode = reader.readTrieFromFile(Constantes.PATH_HUFFMAN_TRIE + name + Constantes.EXTENSION_HUFFMAN_TRIE);
-                    rootNodes.put(name, rootNode);
-                    fileIsNew.put(name, false);
+                    Constantes.tableModelTotalArchivos.addRow(new Object[]{name + "." + bytes[0], bytes[1] + " bits", bytes[2] + " bits", getPercentageCompression((int) bytes[1], (int) bytes[2])});
+                    Future<Node> rootNode = reader.readTrieFromFile(Constantes.PATH_HUFFMAN_TRIE + name + Constantes.EXTENSION_HUFFMAN_TRIE);
+                    while(!rootNode.isDone()){}
+                    try{
+                        rootNodes.put(name, rootNode.get());
+                        fileIsNew.put(name, false);
+                    } catch (InterruptedException | ExecutionException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -240,7 +304,16 @@ public class Controller implements IController {
 
     @Override
     public Object[] getOriginalAndCompressedBytes(String path) {
-        return reader.getOriginalAndCompressedBytes(path);
+        try {
+            Future<Object[]> objects = reader.getOriginalAndCompressedBytes(path);
+            while (!objects.isDone()){}
+            return objects.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
@@ -250,15 +323,6 @@ public class Controller implements IController {
             files.add(fileEntry);
         }
         return files;
-    }
-
-    /**
-     *
-     * @param file
-     */
-    private void comrimirFichero(File file){
-        compressor = new Compressor(this, reader.getBytes(file), file);
-        compressor.start();
     }
 
     //region SETTERS Y GETTERS
@@ -274,6 +338,14 @@ public class Controller implements IController {
 
     public HashMap<String, File> getFiles() {
         return files;
+    }
+
+    public int getPercentageCompression(int original, int comprimido) {
+        return 100 - ((100 * comprimido) / original);
+    }
+
+    public void setDecompressPanel(DecompressPanel decompressPanel) {
+        this.decompressPanel = decompressPanel;
     }
     //endregion
 }

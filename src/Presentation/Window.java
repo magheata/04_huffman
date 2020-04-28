@@ -8,6 +8,8 @@ import Utils.Constantes;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 /**
  *
@@ -69,6 +71,7 @@ public class Window extends JFrame {
 
         decompressPanel = new DecompressPanel(controller);
         decompressPanel.setVisible(true);
+        controller.setDecompressPanel(decompressPanel);
 
         introductionPanel = new IntroductionPanel();
         introductionPanel.setVisible(true);
@@ -76,11 +79,21 @@ public class Window extends JFrame {
         CompressionInformationPanel panelArchivosComprimidos = new CompressionInformationPanel(controller);
         panelArchivosComprimidos.setVisible(true);
 
-        tabbedPane.addTab(Constantes.TITLE_INFO_TABBED_PANE, introductionPanel);
+        JScrollPane introductionScrollPane = new JScrollPane(introductionPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+        tabbedPane.addTab(Constantes.TITLE_INFO_TABBED_PANE, introductionScrollPane);
         tabbedPane.addTab(Constantes.TITLE_COMPRIMIR_TABBED_PANE, outerPanel);
         tabbedPane.addTab(Constantes.TITLE_DESCOMPRIMIR_TABBED_PANE, decompressPanel);
         tabbedPane.addTab(Constantes.TITLE_FICHEROS_COMPRIMIDOS_TABBED_PANE, panelArchivosComprimidos);
 
+        this.getContentPane().addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+                controller.resizePanels(e.getComponent().getWidth(), e.getComponent().getHeight());
+            }
+        });
         this.setPreferredSize(Constantes.DIM_WINDOW);
         this.setLayout(new BorderLayout());
         this.setResizable(true);

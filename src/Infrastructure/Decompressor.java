@@ -38,19 +38,22 @@ public class Decompressor implements Runnable {
                 Constantes.PATH_DECOMPRESSED_FILE + name + "." + extension);
         Node tmp = root;
         byte[] fileBytes = controller.getBytes(file.getAbsolutePath());
-        for (int i = 0; i < fileBytes.length; i++){
-            byte code = fileBytes[i];
+        int idx = 0;
+        while (idx < fileBytes.length){
             if (!tmp.isLeaf()){
+                byte code = fileBytes[idx];
                 if ((char) code == '0'){
                     tmp = tmp.leftNode;
                 } else {
                     tmp = tmp.rightNode;
                 }
+                idx++;
             } else {
                 controller.write(Constantes.OUTPUT_TYPE_DECOMPRESSED_FILE + name, new byte[] {tmp.byteRepresentado});
                 tmp = root;
             }
         }
+        controller.write(Constantes.OUTPUT_TYPE_DECOMPRESSED_FILE + name, new byte[] {tmp.byteRepresentado});
         controller.closeOutputFile(Constantes.OUTPUT_TYPE_DECOMPRESSED_FILE + name);
     }
 }
