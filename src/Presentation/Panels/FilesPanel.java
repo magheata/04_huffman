@@ -1,7 +1,6 @@
 /* Created by Miruna Andreea Gheata & Rafael Adrián Gil Cañestro */
 package Presentation.Panels;
 
-import Presentation.Utils.CellRenderer;
 import Presentation.Utils.HighlightButton;
 import Presentation.TablaFicherosComprimidos;
 import Presentation.Utils.DropTargetListener;
@@ -17,7 +16,10 @@ import java.io.File;
 import java.util.HashMap;
 
 /**
- *
+ * Panel que contiene los elementos para la compresión de un archivo:
+ * 1. El selector de archivos
+ * 2. La región en la que se pueden arrastrar los archivos que se desean comprimir
+ * 3. Una tabla que muestra los archivos comprimidos
  */
 public class FilesPanel extends JPanel {
 
@@ -32,7 +34,7 @@ public class FilesPanel extends JPanel {
     private JOptionPane mensajeFicheros;
     private boolean reemplazarArchivo = false;
     private boolean reemplazarArchivos = false;
-    private int totalArchivos;
+    private int totalArchivos = 0;
     private Controller controller;
 
     public FilesPanel(Window window, Controller controller) {
@@ -46,14 +48,46 @@ public class FilesPanel extends JPanel {
      *
      */
     private void initComponents() {
-        ToolTipManager.sharedInstance().setInitialDelay(1);
-        controller.setFiles(files);
-        progressBar = new JProgressBar();
-
         this.setLayout(new BorderLayout());
+        progressBar = new JProgressBar();
         archivosComprimidos = new TablaFicherosComprimidos();
         archivosComprimidos.getPanel().setVisible(false);
-        totalArchivos = 0;
+        inicializarJOptionPane();
+        initDeleteFilePanel();
+        initComprimirArchivosButton();
+        initComprimirFicherosPanel();
+        initSelectedFilesPanel();
+        initSelectedFilesPanel();
+        this.add(comprimirFicherosPanel, BorderLayout.NORTH);
+        this.add(archivosComprimidos.getPanel(), BorderLayout.CENTER);
+        this.setVisible(true);
+    }
+
+    private void initSelectedFilesPanel(){
+        selectedFilesPanel = new JPanel();
+        selectedFilesPanel.setLayout(new BoxLayout(selectedFilesPanel, BoxLayout.PAGE_AXIS));
+    }
+
+    private void initComprimirFicherosPanel(){
+        JScrollPane selectedFilesScrollPane = new JScrollPane(selectedFilesPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        selectedFilesScrollPane.setSize(Constantes.DIM_SELECTED_FILES_SCROLL_PANEL);
+        selectedFilesScrollPane.setPreferredSize(Constantes.DIM_SELECTED_FILES_SCROLL_PANEL);
+
+        JPanel wrapperFiles = new JPanel();
+        wrapperFiles.setLayout(new FlowLayout());
+        wrapperFiles.setSize(Constantes.DIM_FILES_PANEL);
+        wrapperFiles.setBackground(color);
+        wrapperFiles.add(selectedFilesScrollPane);
+        wrapperFiles.add(deleteFilePanel);
+
+        comprimirFicherosPanel = new JPanel();
+        comprimirFicherosPanel.setLayout(new BorderLayout());
+        comprimirFicherosPanel.add(wrapperFiles, BorderLayout.NORTH);
+        comprimirFicherosPanel.add(comprimirArchivoButton, BorderLayout.CENTER);
+    }
+
+    private void initComprimirArchivosButton(){
         comprimirArchivoButton = new HighlightButton("Comprimir archivo");
         comprimirArchivoButton.addActionListener(e -> {
             controller.comprimirFicheros(labels.keySet());
@@ -64,48 +98,24 @@ public class FilesPanel extends JPanel {
         comprimirArchivoButton.setFocusPainted(false);
         comprimirArchivoButton.setFont(new Font("Tahoma", Font.BOLD, 12));
         comprimirArchivoButton.setVisible(false);
+    }
 
-        JPanel wrapperFiles = new JPanel();
-        wrapperFiles.setLayout(new FlowLayout());
-
-        selectedFilesPanel = new JPanel();
+    private void initDeleteFilePanel(){
+        ToolTipManager.sharedInstance().setInitialDelay(1);
         deleteFilePanel = new JPanel();
-
         deleteFilePanel.setLayout(new FlowLayout());
-        inicializarJOptionPane();
 
         ImageIcon trashIcon = new ImageIcon(Constantes.PATH_TRASH_ICON);
         JLabel label = new JLabel(trashIcon, JLabel.CENTER);
-        deleteFilePanel.add(label);
-        deleteFilePanel.setToolTipText("Arrastrar archivo aquí para eliminar");
-        JScrollPane selectedFilesScrollPane = new JScrollPane(selectedFilesPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
+        deleteFilePanel.add(label);
+        deleteFilePanel.setToolTipText(Constantes.TEXT_DELETE_FILE_TOOLTIP);
         deleteFilePanel.setBackground(new Color(231, 29, 54));
         deleteFilePanel.setBorder(Constantes.BORDER_DELETE_FILES_PANEL);
-        selectedFilesPanel.setLayout(new BoxLayout(selectedFilesPanel, BoxLayout.PAGE_AXIS));
-
-        selectedFilesScrollPane.setSize(Constantes.DIM_SELECTED_FILES_SCROLL_PANEL);
-        selectedFilesScrollPane.setPreferredSize(Constantes.DIM_SELECTED_FILES_SCROLL_PANEL);
-
         deleteFilePanel.setSize(Constantes.DIM_DELETE_FILES_PANEL);
         deleteFilePanel.setPreferredSize(Constantes.DIM_DELETE_FILES_PANEL);
 
         new DropTargetListener(deleteFilePanel, controller);
-
-        wrapperFiles.setSize(Constantes.DIM_FILES_PANEL);
-        wrapperFiles.setBackground(color);
-        wrapperFiles.add(selectedFilesScrollPane);
-        wrapperFiles.add(deleteFilePanel);
-
-        comprimirFicherosPanel = new JPanel();
-        comprimirFicherosPanel.setLayout(new BorderLayout());
-        comprimirFicherosPanel.add(wrapperFiles, BorderLayout.NORTH);
-        comprimirFicherosPanel.add(comprimirArchivoButton, BorderLayout.CENTER);
-
-        this.add(comprimirFicherosPanel, BorderLayout.NORTH);
-        this.add(archivosComprimidos.getPanel(), BorderLayout.CENTER);
-        this.setVisible(true);
     }
 
     /**
@@ -118,7 +128,7 @@ public class FilesPanel extends JPanel {
         if(!archivosComprimidos.getPanel().isVisible()){
             archivosComprimidos.getPanel().setVisible(true);
         }
-        archivosComprimidos.addRow(new Object[]{file.getName(), totalBytesOriginales + " bytes", totalBytesComprimidos + " bytes",
+        archivosComprimidos.addRow(new Object[]{file.getName(), totalBytesOriginales + " bits", totalBytesComprimidos + " bits",
                 controller.getPercentageCompression(totalBytesOriginales, totalBytesComprimidos)});
         removeFile(file);
         this.revalidate();

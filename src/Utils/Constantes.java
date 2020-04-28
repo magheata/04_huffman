@@ -40,6 +40,10 @@ public class Constantes {
 
     public final static String TEXT_DND_PANEL = "O arrastrar archivos aquí";
     public final static String TEXT_FILECHOOSER_PANEL = "Seleccionar un archivo...";
+    public final static String TEXT_DELETE_FILE_TOOLTIP = "Arrastrar archivo aquí para eliminar";
+    public final static String TEXT_ARCHIVO_ORIGINAL_PANEL = "Archivo original";
+    public final static String TEXT_ARCHIVO_DESCOMPRIMIDO_PANEL = "Archivo descomprimido";
+
 
     public final static String TITLE_WINDOW = "Compresor Huffman";
     public final static String TITLE_COMPRIMIR_TABBED_PANE = "Comprimir";
@@ -48,7 +52,6 @@ public class Constantes {
     public final static String TITLE_INFO_TABBED_PANE = "Instrucciones uso";
     public final static String TITLE_HUFFMAN_CODE_PANE = "Códigos Huffman";
     public final static String TITLE_HUFFMAN_TREE_PANE = "Árbol Huffman";
-    public final static String TITLE_COMPRESSED_FOLDER = "compressed";
 
     public final static String PATH_TRASH_ICON = "src/Presentation/Images/delete.png";
 

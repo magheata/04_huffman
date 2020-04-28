@@ -1,6 +1,7 @@
 /* Created by Miruna Andreea Gheata & Rafael Adrián Gil Cañestro */
 package Infrastructure;
 
+import Domain.Interficies.IReader;
 import Domain.Node;
 import Infrastructure.Utils.BinaryIn;
 
@@ -11,17 +12,32 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class Reader {
+/**
+ * Clase encargada de realizar las lecturas de los ficheros
+ */
+public class Reader implements IReader {
 
+    /**
+     * Thread que se lanza cuando se quiere obtener el contenido del fichero
+     */
     private ExecutorService executorGetFileContent = Executors.newSingleThreadExecutor();
+
+    /**
+     * Thread que se lanza cuando se quiere obtener el árbol Huffman asociado al fichero
+     */
     private ExecutorService executorGetTrie = Executors.newSingleThreadExecutor();
+
+    /**
+     * Thread que se lanza cuando se quiere obtener los bytes del fichero
+     */
     private ExecutorService executorGetBytes = Executors.newSingleThreadExecutor();
 
     /**
-     *
-     * @param file
-     * @return
+     * Método que retorna los bytes del fichero
+     * @param file fichero que se desea leer
+     * @return bytes del fichero
      */
+    @Override
     public byte[] getBytes(File file){
         try {
             return Files.readAllBytes(file.toPath());
@@ -32,10 +48,11 @@ public class Reader {
     }
 
     /**
-     *
-     * @param path
-     * @return
+     * Método que retorna el contenio del fichero
+     * @param path ruta del fichero que se quiere leer
+     * @return Stringbuilder con el contenido del fichero
      */
+    @Override
     public Future<StringBuilder> getFileContent(String path){
         return  executorGetFileContent.submit(() -> {
             StringBuilder sb = new StringBuilder();
@@ -54,6 +71,12 @@ public class Reader {
         });
     }
 
+    /**
+     * Metodo que retorna el árbol Huffman correspondiente al fichero
+     * @param fileName fichero donde se encuentra el árbol
+     * @return nodo raíz del árbol Huffman
+     */
+    @Override
     public Future<Node> readTrieFromFile(String fileName){
         return executorGetTrie.submit(() ->{
             Node root;
@@ -80,6 +103,7 @@ public class Reader {
                 root.setLeftNode(readTrieFromFilePrivate(leftNode, bIn));
             }
 
+            // right child
             isLeaf = bIn.readBoolean();
             frecuencia = bIn.readInt();
             if (isLeaf){
@@ -94,6 +118,67 @@ public class Reader {
         });
     }
 
+    /**
+     * Método que retorna la información de compresión del archivo dado por parámetro
+     * @param path ruta donde se encuentra el archivo en el huffmanCodes/
+     * @return lista de objetos que contiene la extensión, los bytes originales y los bytes comprimidos, respectivamente
+     */
+    @Override
+    public Future<Object[]> getOriginalAndCompressedBytes(String path){
+        return executorGetBytes.submit(() -> {
+            String bytesOriginalesString = null, bytesComprimidosString = null, extension = null;
+            try{
+                Scanner scanner = new Scanner(new File(path));
+                for (int i = 0; i < 3; i++){
+                    if (i == 0){
+                        extension = scanner.nextLine().split(":")[1];
+                    }
+                    if (i == 1){
+                        bytesOriginalesString = scanner.nextLine().split(":")[1];
+                    }
+                    if (i == 2){
+                        bytesComprimidosString = scanner.nextLine().split(":")[1];
+                    }
+                }
+                scanner.close();
+            } catch (IOException ex){
+            } finally{
+                return new Object[]{extension.trim(), Integer.parseInt(bytesOriginalesString.trim()), Integer.parseInt(bytesComprimidosString.trim())};
+            }
+        });
+    }
+
+    /**
+     * Método que retorna la ruta al archivo original
+     * @param path ruta del archivo dentro de huffmanCodes/
+     * @return ruta al archivo original
+     */
+    @Override
+    public Future<String> getPathArchivoOriginal(String path){
+        return executorGetBytes.submit(() -> {
+            String rutaArchivoOriginal = null;
+            try{
+                Scanner scanner = new Scanner(new File(path));
+                for (int i = 0; i < 4; i++){
+                    if (i == 3){
+                        rutaArchivoOriginal = scanner.nextLine().split(":")[1];
+                    }
+                    scanner.nextLine();
+                }
+                scanner.close();
+            } catch (IOException ex){
+            } finally{
+                return rutaArchivoOriginal.trim();
+            }
+        });
+    }
+
+    /**
+     * Método recursivo que retorna el nodo raíz del árbol
+     * @param node nodo padre
+     * @param bIn instancia de lectura del archivo
+     * @return nodo leído
+     */
     private Node readTrieFromFilePrivate(Node node, BinaryIn bIn){
         Node rightNode, leftNode;
         boolean isLeaf;
@@ -139,48 +224,4 @@ public class Reader {
         return node;
     }
 
-    public Future<Object[]> getOriginalAndCompressedBytes(String path){
-        return executorGetBytes.submit(() -> {
-            String bytesOriginalesString = null, bytesComprimidosString = null, extension = null;
-            try{
-                Scanner scanner = new Scanner(new File(path));
-                for (int i = 0; i < 3; i++){
-                    if (i == 0){
-                        extension = scanner.nextLine().split(":")[1];
-                    }
-                    if (i == 1){
-                        bytesOriginalesString = scanner.nextLine().split(":")[1];
-                    }
-                    if (i == 2){
-                        bytesComprimidosString = scanner.nextLine().split(":")[1];
-                    }
-                }
-                scanner.close();
-            } catch (IOException ex){
-
-            } finally{
-
-                return new Object[]{extension.trim(), Integer.parseInt(bytesOriginalesString.trim()), Integer.parseInt(bytesComprimidosString.trim())};
-            }
-        });
-    }
-
-    public Future<String> getPathArchivoOriginal(String path){
-        return executorGetBytes.submit(() -> {
-            String rutaArchivoOriginal = null;
-            try{
-                Scanner scanner = new Scanner(new File(path));
-                for (int i = 0; i < 4; i++){
-                    if (i == 3){
-                        rutaArchivoOriginal = scanner.nextLine().split(":")[1];
-                    }
-                    scanner.nextLine();
-                }
-                scanner.close();
-            } catch (IOException ex){
-            } finally{
-                return rutaArchivoOriginal.trim();
-            }
-        });
-    }
 }
