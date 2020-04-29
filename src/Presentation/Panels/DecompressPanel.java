@@ -187,6 +187,8 @@ public class DecompressPanel extends JPanel {
         descomprimirArchivoButton.addActionListener(e -> {
             // añadimos la barra de progreso a la vista
             replaceComprimirButton();
+            archivoOriginal.removeAll();
+            archivoDescomprimido.removeAll();
             // descomprimimos el archivo
             controller.descomprimirFichero(nombreArchivoSeleccionado, new File("compressed/"+ nombreArchivoSeleccionado + "_compressed.txt"));
         });
