@@ -8,12 +8,9 @@ import javax.swing.border.Border;
 import java.awt.*;
 
 /**
- *
+ * Clase que contiene todas las contantes empleadas en el proyecto
  */
 public class Constantes {
-    public final static int IMAGE_PREVIEW_WIDTH = 150;
-    public final static int IMAGE_PREVIEW_HEIGHT = 100;
-
     public final static int WIDTH_DELETE_FILES_PANEL = 45;
     public final static int HEIGHT_DELETE_FILES_PANEL = 100;
     public final static int WIDTH_SELECTED_FILES_SCROLL_PANEL = 395;
@@ -43,6 +40,7 @@ public class Constantes {
     public final static String TEXT_DELETE_FILE_TOOLTIP = "Arrastrar archivo aquí para eliminar";
     public final static String TEXT_ARCHIVO_ORIGINAL_PANEL = "Archivo original";
     public final static String TEXT_ARCHIVO_DESCOMPRIMIDO_PANEL = "Archivo descomprimido";
+    public final static String TEXT_COMPRIMIR_BUTTON = "Comprimir archivo";
 
 
     public final static String TITLE_WINDOW = "Compresor Huffman";

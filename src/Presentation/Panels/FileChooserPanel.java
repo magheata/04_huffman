@@ -2,7 +2,6 @@
 package Presentation.Panels;
 
 import Application.Controller;
-import Presentation.Utils.ImagePreview;
 import Utils.Constantes;
 
 import javax.swing.*;
@@ -30,7 +29,6 @@ public class FileChooserPanel extends JPanel {
         fileChooser = new JFileChooser();
         chooseFileButton = new JButton();
         chooseFileButton.setText(Constantes.TEXT_FILECHOOSER_PANEL);
-        fileChooser.setAccessory(new ImagePreview(fileChooser));
 
         chooseFileButton.addActionListener(e -> {
             switch (fileChooser.showOpenDialog(FileChooserPanel.this))

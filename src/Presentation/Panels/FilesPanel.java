@@ -52,12 +52,16 @@ public class FilesPanel extends JPanel {
         progressBar = new JProgressBar();
         archivosComprimidos = new TablaFicherosComprimidos();
         archivosComprimidos.getPanel().setVisible(false);
+        // Inicializamos diálogo de mensaje de "archivos repetidos"
         inicializarJOptionPane();
+        // Inicializamos el panel que posibilita eliminar un archivo seleccionado
         initDeleteFilePanel();
+        // Inicializamos el panel que contendrá la lista de archivos seleccionados para comprimir
+        initSelectedFilesPanel();
+        // Inicializamos el botón de comprimir
         initComprimirArchivosButton();
+        // Inicializamos el panel que contiene la tabla de archivos comprimidos
         initComprimirFicherosPanel();
-        initSelectedFilesPanel();
-        initSelectedFilesPanel();
         this.add(comprimirFicherosPanel, BorderLayout.NORTH);
         this.add(archivosComprimidos.getPanel(), BorderLayout.CENTER);
         this.setVisible(true);
@@ -88,8 +92,9 @@ public class FilesPanel extends JPanel {
     }
 
     private void initComprimirArchivosButton(){
-        comprimirArchivoButton = new HighlightButton("Comprimir archivo");
+        comprimirArchivoButton = new HighlightButton(Constantes.TEXT_COMPRIMIR_BUTTON);
         comprimirArchivoButton.addActionListener(e -> {
+            // Se comprime la lista de archivos seleccionados
             controller.comprimirFicheros(labels.keySet());
             comprimirArchivoButton.setVisible(false);
         });
@@ -101,6 +106,7 @@ public class FilesPanel extends JPanel {
     }
 
     private void initDeleteFilePanel(){
+        // Seteamos que aparezca el texto tooltip después de 1 milisegundo
         ToolTipManager.sharedInstance().setInitialDelay(1);
         deleteFilePanel = new JPanel();
         deleteFilePanel.setLayout(new FlowLayout());
@@ -115,38 +121,50 @@ public class FilesPanel extends JPanel {
         deleteFilePanel.setSize(Constantes.DIM_DELETE_FILES_PANEL);
         deleteFilePanel.setPreferredSize(Constantes.DIM_DELETE_FILES_PANEL);
 
+        /* Inicializamos el panel como DropTargetListener, es decir, que espera a que se arrastren archivos encima */
         new DropTargetListener(deleteFilePanel, controller);
     }
 
     /**
-     *
-     * @param file
-     * @param totalBytesOriginales
-     * @param totalBytesComprimidos
+     * Método que añade un nuevo archivo a la tabla de archivos comprimidos
+     * @param file archivo comprimido
+     * @param totalBytesOriginales total de bits que ocupaba el archivo original
+     * @param totalBytesComprimidos total de bits que ocupa el archivo comprimido
      */
     public void addArchivosPorComprimirAPanel(File file, int totalBytesOriginales, int totalBytesComprimidos) {
+        // En el caso de que sea el primer archivo comprimido mostramos la tabla
         if(!archivosComprimidos.getPanel().isVisible()){
             archivosComprimidos.getPanel().setVisible(true);
         }
+        // Añadimos una nueva fila a la tabla
         archivosComprimidos.addRow(new Object[]{file.getName(), totalBytesOriginales + " bits", totalBytesComprimidos + " bits",
                 controller.getPercentageCompression(totalBytesOriginales, totalBytesComprimidos)});
+        // Eliminamos el archivo del panel de archivos seleccionados por comprimir
         removeFile(file);
         this.revalidate();
     }
 
     /**
-     *
-     * @param selectedFiles
+     * Método que setea los archivos seleccionados para comprimir. Los ficheros vienen en lista. Se comprueba si hay
+     * ficheros repetidos, y en caso de que haya se reemplazan o no según lo que elija el usuario. La lista de ficheros
+     * es incremental, por lo que se pueden añadir todos los ficheros que se desee.
+     * @param selectedFiles lista de ficheros seleccionados
      */
     public void setSelectedFiles(File[] selectedFiles){
+        // Se calcula el número de archivos seleccionados
         int archivosRepetidos = contarArchivosRepetidos(selectedFiles);
+
+        // Se calcula el número total de archivos que hay hasta ahora por comprimir
         totalArchivos = totalArchivos + (selectedFiles.length - archivosRepetidos);
 
+        // Para cada fichero seleccionado se crea su JLabel
         for(File file : selectedFiles){
             FileLabel label = new FileLabel(file);
+            // Si existe ya este archivo en la lista y no se quieren reemplazar archivos
             if (labels.get(label.file) != null && !reemplazarArchivos){
                 Object[] botones;
 
+                // Si hay más de un archivo repetido el botón contendrá el total de ficheros repetidos
                 //region JOPTIONPANE
                 if (archivosRepetidos > 1){
                     botones = new Object[]{Constantes.BTN_REEMPLAZAR, Constantes.BTN_REEMPLAZAR_TODO, Constantes.BTN_CANCELAR};
@@ -167,21 +185,27 @@ public class FilesPanel extends JPanel {
                         Constantes.BTN_REEMPLAZAR);
                 //endregion
 
+                // Si se quiere reemplazar un sólo archivo se reemplaza
                 if (reemplazarArchivo){
                     replaceFile(label.file, label.file, label.fileLabel);
+                    // Se decrementa el total de archivos repetidos
                     archivosRepetidos--;
                 }
+                // Si se desea reemplazar todos los archivos se reemplazan
             } else if (reemplazarArchivos){
                 if (labels.get(label.file) != null){
                     replaceFile(label.file, label.file, label.fileLabel);
                     archivosRepetidos--;
                 }
+                // Si no existe ya este archivo se añade al panel de archivos seleccionados
             } else {
                 selectedFilesPanel.add(label.fileLabel);
                 labels.put(file, label.fileLabel);
                 files.put(file.getName(), file);
             }
         }
+
+        // Se resetean las variables de control de reemplazo de archivos
         reemplazarArchivos = false;
         reemplazarArchivo = false;
         if (totalArchivos > 1){
@@ -192,15 +216,18 @@ public class FilesPanel extends JPanel {
     }
 
     /**
-     *
-     * @param file
+     * Método que sirve para eliminar un archivo de la lista de archivos seleccionados para comprimir
+     * @param file archivo que se quiere comprimir
      */
     public void removeFile(File file){
+        // Se elimina del panel de archivos seleccionados
         selectedFilesPanel.remove(labels.get(file));
         labels.remove(file);
         totalArchivos--;
+        // Si no quedan archivos se esconde el botón
         if (totalArchivos == 0){
             comprimirArchivoButton.setVisible(false);
+        // Si quedan más archivos se pone el texto del botón según el total de archivos restantes
         } else if (totalArchivos == 1){
             comprimirArchivoButton.setText("Comprimir archivo");
         } else {
@@ -219,14 +246,16 @@ public class FilesPanel extends JPanel {
     }
 
     /**
-     *
+     * Método que setea los actionListeners de los botones del diálogo cuando hay archivos repetidos
      */
     private void addActionListenerBotonesJOptionPane(){
         Constantes.BTN_CANCELAR.addActionListener(e -> removeDialog(Constantes.BTN_CANCELAR));
+        // Botón de reemplazar un sólo archivo
         Constantes.BTN_REEMPLAZAR.addActionListener(e -> {
             reemplazarArchivo = true;
             removeDialog(Constantes.BTN_REEMPLAZAR);
         });
+        // Botón de reemplazar todos los archivos
         Constantes.BTN_REEMPLAZAR_TODO.addActionListener(e -> {
             reemplazarArchivos = true;
             removeDialog(Constantes.BTN_REEMPLAZAR_TODO);
@@ -234,8 +263,8 @@ public class FilesPanel extends JPanel {
     }
 
     /**
-     *
-     * @param button
+     * Método que elimina el dialogo de la ventana
+     * @param button botón que se ha pulsado del JDialog
      */
     private void removeDialog(JButton button){
         JDialog w = (JDialog) SwingUtilities.getWindowAncestor(button);
@@ -245,13 +274,14 @@ public class FilesPanel extends JPanel {
     }
 
     /**
-     *
-     * @param files
-     * @return
+     * Método que retorna el número de archivos repetidos de la nueva lista de archivos seleccionados
+     * @param files archivos seleccionados
+     * @return total de archivos repetidos
      */
     private int contarArchivosRepetidos(File[] files){
         int archivosRepetidos = 0;
         for (File file : files){
+            // Si ya existe un labek para este archivo es que está repetido
             if (labels.get(file) != null){
                 archivosRepetidos++;
             }
@@ -260,20 +290,28 @@ public class FilesPanel extends JPanel {
     }
 
     /**
-     *
-     * @param oldFile
-     * @param newFile
-     * @param newButton
+     * Método que reemplaza el archivo antiguo por el nuevo
+     * @param oldFile fichero antiguo
+     * @param newFile fichero nuevo
+     * @param newLabel nuevo label para el archivo
      */
-    private void replaceFile(File oldFile, File newFile, JLabel newButton){
+    private void replaceFile(File oldFile, File newFile, JLabel newLabel){
+        // Eliminamos el fichero del panel de fichero seleccionados
         selectedFilesPanel.remove(labels.get(oldFile));
+        // Eliminamos la constancia del fichero de la lista de ficheros y de labels
         files.remove(oldFile.getName());
         labels.remove(oldFile);
-        labels.put(newFile, newButton);
-        files.remove(newFile.getName(), newFile);
-        selectedFilesPanel.add(newButton);
+        // Añadimos el nuevo fichero con su nuevo label
+        labels.put(newFile, newLabel);
+        files.put(newFile.getName(), newFile);
+        // Añadimos el label del fichero al panel
+        selectedFilesPanel.add(newLabel);
     }
 
+    /**
+     * Método que sirve para reemplazar el botón de comprimir por el JProgressBar. Se llama cuando se pulsa
+     * el botón de comprimir.
+     */
     public void replaceComprimirButton() {
         comprimirFicherosPanel.remove(comprimirArchivoButton);
         comprimirFicherosPanel.add(progressBar);
@@ -281,6 +319,10 @@ public class FilesPanel extends JPanel {
         progressBar.setIndeterminate(true);
     }
 
+    /**
+     * Método que sirve para reemplazar la JProgressBar por el botón de comprimir cuando se acaban de comprimir todos los
+     * ficheros.
+     */
     public void replaceProgressBar(){
         comprimirFicherosPanel.remove(progressBar);
         comprimirFicherosPanel.add(comprimirArchivoButton);
