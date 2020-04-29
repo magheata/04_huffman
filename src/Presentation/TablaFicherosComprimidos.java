@@ -13,17 +13,18 @@ import java.util.Enumeration;
 import java.util.Iterator;
 
 /**
- *
+ * Componente gráfico de la tabla de archivos comprimido.
  */
 public class TablaFicherosComprimidos {
 
     private JTable table;
-    public JScrollPane getPanel() {
-        return panel;
-    }
     private JScrollPane panel;
     private Controller controller;
 
+    /**
+     * Constructor vacio que crea una tabla con el modelo de nuevos archivos por comprimir, y se diferencia del otro modelo
+     * debido a que se pintan las filas con negrita
+     */
     public TablaFicherosComprimidos() {
         table = new JTable(Constantes.tableModelNewArchivos);
         table.setFillsViewportHeight(true);
@@ -35,6 +36,11 @@ public class TablaFicherosComprimidos {
         }
     }
 
+    /**
+     * Constructor que crea una tabla con el modelo de todos los archivos por comprimir, y se diferencia del otro modelo
+     * debido a que sólo se pintan las filas de los archivos nuevos en negrita
+     * @param controller
+     */
     public TablaFicherosComprimidos(Controller controller) {
         this.controller = controller;
         table = new JTable(Constantes.tableModelTotalArchivos);
@@ -48,10 +54,11 @@ public class TablaFicherosComprimidos {
     }
 
     /**
-     *
-     * @param data
+     * Método que añade una fila al modelo de las tablas
+     * @param data nueva fila
      */
     public void addRow(Object [] data){
+        // Se añade a ambas tablas ya que una es con los archivos nuevos y la otra es con todos los archivos
         Constantes.tableModelTotalArchivos.addRowToModel(data);
         Constantes.tableModelNewArchivos.addRowToModel(data);
     }
@@ -60,4 +67,7 @@ public class TablaFicherosComprimidos {
         return table;
     }
 
+    public JScrollPane getPanel() {
+        return panel;
+    }
 }

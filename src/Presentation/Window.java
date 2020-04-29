@@ -12,14 +12,14 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 /**
- *
+ * Ventana principa del programa que contiene todos los elementos gráficos
  */
 public class Window extends JFrame {
 
     private DnDPanel dragDropComponent;
     private FileChooserPanel fileChooserPanelComponent;
-    public FilesPanel filesPanel;
-    public DecompressPanel decompressPanel;
+    private FilesPanel filesPanel;
+    private DecompressPanel decompressPanel;
     private IntroductionPanel introductionPanel;
     private Controller controller;
     private JPanel outerPanel;

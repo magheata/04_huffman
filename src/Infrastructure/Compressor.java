@@ -2,25 +2,25 @@
 package Infrastructure;
 
 import Application.Controller;
-import Domain.Interficies.ICompressor;
 import Domain.Node;
-import Infrastructure.Utils.BinaryOut;
 import Utils.Constantes;
 
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.*;
 
 /**
- *
+ * Clase encargada de realizar las operaciones de compresión.
  */
-public class Compressor implements ICompressor {
+public class Compressor{
 
-    private Thread worker;
+    /**
+     * Colección de los códigos Huffman con los bytes que representan
+     */
     private Map<Byte, String> huffmanCode = new HashMap<>();
+    /**
+     * Colección de los bytes del fichero con la frecuencia de cada uno
+     */
     private Map<Byte, Integer> freq;
     private byte[] bytes;
     private File file;
@@ -33,64 +33,6 @@ public class Compressor implements ICompressor {
         this.bytes = bytes;
         this.file = file;
     }
-
-    /**
-     *
-     */
-    public void start() {
-        worker = new Thread(this);
-        worker.start();
-    }
-
-    /**
-     *
-     * @param root
-     * @param str
-     * @param huffmanCode
-     */
-    // traverse the Huffman Tree and store Huffman Codes
-    // in a map.
-    public void encode(Node root, String str, Map<Byte, String> huffmanCode) {
-        if (root == null) return;
-
-        // found a leaf node
-        if (root.leftNode == null && root.rightNode == null) {
-            huffmanCode.put(root.byteRepresentado, str);
-        }
-
-        encode(root.leftNode, str + "0", huffmanCode);
-        encode(root.rightNode, str + "1", huffmanCode);
-    }
-
-    /**
-     *
-     * @param root
-     * @param index
-     * @param sb
-     * @return
-     */
-    // traverse the Huffman Tree and decode the encoded string
-    public int decode(Node root, int index, StringBuilder sb) {
-        if (root == null)
-            return index;
-
-        // found a leaf node
-        if (root.leftNode == null && root.rightNode == null)
-        {
-            System.out.print(root.byteRepresentado);
-            return index;
-        }
-
-        index++;
-
-        if (sb.charAt(index) == '0')
-            index = decode(root.leftNode, index, sb);
-        else
-            index = decode(root.rightNode, index, sb);
-
-        return index;
-    }
-
     /**
      *
      */
@@ -105,29 +47,59 @@ public class Compressor implements ICompressor {
         PriorityQueue<Node> pq = crearArbolHuffman(freq);
 
         // traverse the Huffman tree and store the Huffman codes in a map
-
         encode(pq.peek(), "", huffmanCode);
 
         String name = file.getName().split("\\.")[0];
 
+        // Añadimos la raíz a la lista
         controller.addFileRoot(pq.peek(), name);
 
+        // Creamos el fichero que contendrá el árbol Huffman
         controller.createBinaryOutputFile(Constantes.OUTPUT_TYPE_TRIE + name,
                 Constantes.PATH_HUFFMAN_TRIE + name + Constantes.EXTENSION_HUFFMAN_TRIE);
+
+        // Creamos el fichero que contendrá la información de la compresión
         controller.createBinaryOutputFile(Constantes.OUTPUT_TYPE_CODES + name,
                 Constantes.PATH_HUFFMAN_CODES + name + Constantes.EXTENSION_HUFFMAN_CODES);
+
+        // Creamos el fichero donde se volcarán los bytes comprimidos
         controller.createOutputFile(Constantes.OUTPUT_TYPE_COMPRESSED_FILE + name,
                 Constantes.PATH_COMPRESSED_FILE + name + Constantes.EXTENSION_COMPRESSED_FILE);
 
+        // Escribimos el árbol
         writeTrie(Constantes.OUTPUT_TYPE_TRIE + name, pq.peek());
+
+        // Escribimos el fichero comprimido
         writeCompressedFile(Constantes.OUTPUT_TYPE_COMPRESSED_FILE + name);
+
+        // Escribimos el fichero con la información de la compresión
         writeHuffmanCodes(Constantes.OUTPUT_TYPE_CODES + name, file.getName().split("\\.")[1]);
+
+        // Añadimos el archivo a la lista de archivos comprimidos
         controller.addArchivosPorComprimirAPanel(file, bytesOriginales, bytesComprimidos);
     }
 
     /**
      *
-     * @return
+     * @param root
+     * @param str
+     * @param huffmanCode
+     */
+    // traverse the Huffman Tree and store Huffman Codes
+    // in a map.
+    private void encode(Node root, String str, Map<Byte, String> huffmanCode) {
+        if (root == null) return;
+        // found a leaf node
+        if (root.leftNode == null && root.rightNode == null) {
+            huffmanCode.put(root.byteRepresentado, str);
+        }
+        encode(root.leftNode, str + "0", huffmanCode);
+        encode(root.rightNode, str + "1", huffmanCode);
+    }
+
+    /**
+     * Método que sirve para calcular las frecuencias de los bytes en el fichero
+     * @return mapa que contiene los bytes y sus respectivas frecuencias
      */
     private Map<Byte, Integer> crearTablaFrecuencias(){
         StringBuilder bytesOrig = new StringBuilder();
@@ -146,9 +118,9 @@ public class Compressor implements ICompressor {
     }
 
     /**
-     *
-     * @param freq
-     * @return
+     * Método que crea el árbol Huffman
+     * @param freq mapa de frecuencia
+     * @return árbol Huffman
      */
     private PriorityQueue<Node> crearArbolHuffman(Map<Byte, Integer> freq){
         // Create a priority queue to store live nodes of Huffman tree
@@ -179,9 +151,9 @@ public class Compressor implements ICompressor {
     }
 
     /**
-     *
-     * @param outputType
-     * @param x
+     * Método que escribe el árbol Huffman en el fichero
+     * @param outputType nombre del BinaryOut que se encarga de escribir el fichero
+     * @param x nodo raíz del árbol
      */
     private void writeTrie(String outputType, Node x){
         writeTriePrivate(outputType, x);
@@ -189,9 +161,9 @@ public class Compressor implements ICompressor {
     }
 
     /**
-     *
-     * @param outputType
-     * @param x
+     * Método recursivo que escribe el árbol Huffman en el fichero
+     * @param outputType nombre del BinaryOut que se encarga de escribir el fichero
+     * @param x nodo raíz del árbol
      */
     private void writeTriePrivate(String outputType, Node x) {
         if (x.isLeaf()) {
@@ -207,9 +179,9 @@ public class Compressor implements ICompressor {
     }
 
     /**
-     *
-     * @param outputType
-     * @param extension
+     * Método que escribe la información de la compresión en un fichero
+     * @param outputType nombre del BinaryOut que se encarga de escribir el fichero
+     * @param extension extensión del archivo original
      */
     private void writeHuffmanCodes(String outputType, String extension){
         controller.write(outputType, "Extension archivo original: " + extension + "\n");
@@ -218,10 +190,12 @@ public class Compressor implements ICompressor {
         controller.write(outputType, "Ruta archivo: " + file.getAbsolutePath() + "\n\n");
 
         StringBuilder outputString;
+
+        // Si es formato txt añadimos los carácteres que representan cada byte
         if (extension.equals("txt")){
             // print the Huffman codes
             controller.write(outputType, "BYTE |    CHARACTER     |     HUFFMAN CODE      |    FREQUENCY     |\n");
-            controller.write(outputType, "------------------------------------------\n");
+            controller.write(outputType, "--------------------------------------------------------------------\n");
             for (Map.Entry<Byte, String> entry : huffmanCode.entrySet()) {
                 outputString = new StringBuilder();
                 outputString.append(entry.getKey() + "           ");
@@ -235,10 +209,11 @@ public class Compressor implements ICompressor {
 
                 controller.write(outputType, outputString.toString());
             }
+            // Si no sólo escribimos el código Huffman y su frecuencia
         } else {
             // print the Huffman codes
             controller.write(outputType, "BYTE |     HUFFMAN CODE      |    FREQUENCY     |\n");
-            controller.write(outputType, "-----------------------\n");
+            controller.write(outputType, "-------------------------------------------------\n");
             for (Map.Entry<Byte, String> entry : huffmanCode.entrySet()) {
                 outputString = new StringBuilder();
                 outputString.append(entry.getKey() + "           ");
@@ -247,30 +222,26 @@ public class Compressor implements ICompressor {
                 controller.write(outputType, outputString.toString());
             }
         }
+        // cerrmos el fichero
         controller.closeBinaryOutputFile(outputType);
     }
 
     /**
-     *
-     * @param outputType
+     * Método que sirve para escribir el fichero comprimido resultante
+     * @param outputType nombre del FileOutputStream que se encarga de escribir el fichero
      */
     private void writeCompressedFile(String outputType){
         StringBuilder bytesCompr = new StringBuilder();
-        // print encoded string
+        // Para cada byte se encuentra su código Huffman
         for (int i = 0 ; i < bytes.length; i++) {
+            // Se escribe el código Huffman en el fichero
             String code = huffmanCode.get(bytes[i]);
             controller.write(outputType, code.getBytes());
             bytesCompr.append(huffmanCode.get(bytes[i]));
         }
         bytesComprimidos = bytesCompr.length();
+        // Se cierra el fichero
         controller.closeOutputFile(outputType);
     }
 
-    /**
-     *
-     */
-    @Override
-    public void run() {
-        comprimir();
-    }
 }

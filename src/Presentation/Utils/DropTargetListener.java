@@ -13,6 +13,9 @@ import java.io.File;
 
 import static Presentation.Utils.JLabelTransferable.jLabelFlavor;
 
+/**
+ * Clase qiue implementa la funcionalidad de Drag and Drop
+ */
 public class DropTargetListener extends DropTargetAdapter {
 
     private final Controller controller;
@@ -29,6 +32,7 @@ public class DropTargetListener extends DropTargetAdapter {
             evt.acceptDrop(java.awt.dnd.DnDConstants.ACTION_COPY_OR_MOVE);
             // Get a useful list
             JLabel fileList = (JLabel) tr.getTransferData(jLabelFlavor);
+            // Elminar fichero de la lista de archivos seleccionados para comprimir
             controller.deleteFile(new File(fileList.getName()));
             // Mark that drop is completed.
             evt.getDropTargetContext().dropComplete(true);
