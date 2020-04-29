@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- *
+ * Panel que contiene la región de la ventana en la cual se pueden arrastrar archivos para comprimir
  */
 public class DnDPanel extends JPanel {
 

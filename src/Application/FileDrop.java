@@ -134,7 +134,7 @@ public class FileDrop {
                             java.io.File[] filesTemp = new java.io.File[fileList.size()];
                             fileList.toArray(filesTemp);
                             final java.io.File[] files = filesTemp;
-                            controller.addFiles(null, files);
+                            controller.addFiles(files);
                             // Alert listener to drop.
                             if (listener != null)
                                 listener.filesDropped(files);

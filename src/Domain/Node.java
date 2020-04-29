@@ -1,20 +1,14 @@
 /* Created by Miruna Andreea Gheata & Rafael Adrián Gil Cañestro */
 package Domain;
 
+/**
+ * Clase que contiene la información de un Nodo del árbol Huffman.
+ */
 public class Node implements Comparable<Node>{
     public  int frecuencia;
     public  byte byteRepresentado;
-
-    public void setRightNode(Node rightNode) {
-        this.rightNode = rightNode;
-    }
-
-    public void setLeftNode(Node leftNode) {
-        this.leftNode = leftNode;
-    }
-
+    // Nodos hijos
     public  Node rightNode, leftNode;
-
 
     public Node(byte byteRepresentado, int frecuencia, Node leftNode, Node rightNode){
         this.byteRepresentado = byteRepresentado;
@@ -23,11 +17,8 @@ public class Node implements Comparable<Node>{
         this.leftNode = leftNode;
     }
 
-    public Node() {
-    }
-
     /**
-     *
+     * Método que retorna si el nodo es hoja o no (si no tiene hijos es nodo hoja)
      * @return
      */
     public boolean isLeaf(){
@@ -36,7 +27,7 @@ public class Node implements Comparable<Node>{
     }
 
     /**
-     *
+     * Método que sirve para comparar dos nodos por su frecuencia
      * @param node
      * @return
      */
@@ -45,6 +36,13 @@ public class Node implements Comparable<Node>{
         return this.frecuencia - node.frecuencia;
     }
 
+    public void setRightNode(Node rightNode) {
+        this.rightNode = rightNode;
+    }
+
+    public void setLeftNode(Node leftNode) {
+        this.leftNode = leftNode;
+    }
 
 }
 
