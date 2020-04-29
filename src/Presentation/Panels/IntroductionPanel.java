@@ -34,6 +34,11 @@ public class IntroductionPanel extends JEditorPane {
 
         String introduccion = "<p> Programa que permite comprimir cualquier tipo de archivo. </p>";
 
+        String ficherosFormato = "<h2> Formato de los ficheros </h2>" +
+                "Los ficheros que se pueden comprimir pueden tener cualquier extensión (txt, docx, pdf, png), pero " +
+                "el nombre del archivo no puede contener acentos, símbolos extraños o puntos (por ejemplo 1.Foto.png no " +
+                "sería correcto. Ejemplo correcto: foto.png, Archivo.pdf, mi_text.txt). ";
+
         String ejemplos = "<h2> Archivos de ejemplo </h2>" +
                 "Dentro de la carpeta de ejemplos se pueden encontrar distintos archivos de prueba. ";
 
@@ -78,6 +83,7 @@ public class IntroductionPanel extends JEditorPane {
         this.setText(
                 title + autores +
                 introduccion +
+                ficherosFormato +
                 ejemplos +
                 comprimirArchivoInfo + listaPasosComprimirArchivo +
                 eliminarArchivoInfo + listaPasosEliminarArchivo +
