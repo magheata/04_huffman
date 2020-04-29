@@ -10,6 +10,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.Serializable;
 
+/**
+ * Clase que implementa el label de un fichero
+ */
 public class FileLabel implements Serializable, DragGestureListener, DragSourceListener {
 
     public File file;

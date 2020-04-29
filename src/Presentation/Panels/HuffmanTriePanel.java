@@ -10,11 +10,14 @@ import com.mxgraph.util.mxEvent;
 import javax.swing.*;
 
 /**
- *
+ * Panel que contiene el árbol Huffman asociado a un fichero en concreto. El árbol está compuesto por nodos que se pueden
+ * "colapsar", de manera que se pueden esconder los nodos.
  */
 public class HuffmanTriePanel extends JPanel {
 
+    // Elemento árbol que tiene los nodos colapsables
     private FoldableTree graph;
+    // Elemento del grafo con el que se construye el árbol
     private mxGraphComponent graphComponent;
 
     public HuffmanTriePanel(Node rootHuffman) {
@@ -46,10 +49,10 @@ public class HuffmanTriePanel extends JPanel {
     }
 
     /**
-     *
-     * @param root
-     * @param rootNode
-     * @return
+     * Método que construye el árbol Huffman a partir de un nodo raíz
+     * @param root raíz del nodo Huffman
+     * @param rootNode raíz del nodo del árbol gráfico
+     * @return nuevo nodo del grafo
      */
     private Object createTree(Node root, Object rootNode){
         Object newNode = graph.insertVertex(rootNode, Integer.toString(root.frecuencia), root.frecuencia, 0, 0, 60, 40);
@@ -59,10 +62,11 @@ public class HuffmanTriePanel extends JPanel {
     }
 
     /**
-     *
-     * @param node
-     * @param parent
-     * @return
+     * Método recursivo que va construyendo el árbol. Realiza un recorrido inorden, de manera que primero construye los nodos
+     * intermedios y luego los nodos hoja.
+     * @param node nodo Huffman asociado
+     * @param parent nodo padre del árbol
+     * @return nuevo nodo del grafo
      */
     private Object createTreeRecursive(Node node, Object parent){
         if ((node.rightNode == null) || (node.leftNode == null)){

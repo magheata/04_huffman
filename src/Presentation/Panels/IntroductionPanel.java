@@ -6,7 +6,7 @@ import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 
 /**
- *
+ * Panel que contiene la información de uso del programa
  */
 public class IntroductionPanel extends JEditorPane {
 

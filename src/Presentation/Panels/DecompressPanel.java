@@ -38,81 +38,24 @@ public class DecompressPanel extends JPanel {
         this.setLayout(new BorderLayout());
         this.setSize(Constantes.DIM_FILES_PANEL);
 
+        initArchivoDescomprimidoPanel();
+        initArchivoOriginalPanel();
+        initTabla();
+        initBotonDescomprimir();
+
         progressBar = new JProgressBar();
+
         wrapperTable = new JPanel();
         wrapperTable.setLayout(new BorderLayout());
-
-        archivoDescomprimido = new JPanel();
-        archivoDescomprimido.setVisible(true);
-        archivoDescomprimido.setBackground(Color.white);
-
-        scrollPaneArchivoDescomprimido = new JScrollPane(archivoDescomprimido, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
-        scrollPaneArchivoDescomprimido.setPreferredSize(new Dimension(this.getWidth() / 2, this.getHeight()/2));
-        scrollPaneArchivoDescomprimido.setSize(new Dimension(this.getWidth() / 2, this.getHeight()/2));
-
-
-        JPanel archivoComprimidoWrapper = new JPanel();
-        archivoComprimidoWrapper.setLayout(new BorderLayout());
-
-        JLabel archivoComprimidoLabel = new JLabel("Archivo descomprimido");
-        archivoComprimidoLabel.setHorizontalAlignment(JLabel.CENTER);
-
-        archivoComprimidoWrapper.add(archivoComprimidoLabel, BorderLayout.NORTH);
-        archivoComprimidoWrapper.add(scrollPaneArchivoDescomprimido, BorderLayout.CENTER);
+        wrapperTable.add(tablaFicherosComprimidos.getPanel(), BorderLayout.NORTH);
+        wrapperTable.add(descomprimirArchivoButton, BorderLayout.CENTER);
 
         JPanel wrapperArchivos = new JPanel();
         wrapperArchivos.setLayout(new BorderLayout());
         wrapperArchivos.setVisible(true);
 
-        archivoOriginal = new JPanel();
-        archivoOriginal.setVisible(true);
-        archivoOriginal.setBackground(Color.white);
-
-
-        scrollPaneArchivoOriginal = new JScrollPane(archivoOriginal, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPaneArchivoOriginal.setPreferredSize(new Dimension(this.getWidth() / 2, this.getHeight() - 150));
-        scrollPaneArchivoOriginal.setSize(new Dimension(this.getWidth() / 2, this.getHeight() - 150));
-
-        JPanel archivoOriginalWrapper = new JPanel();
-        archivoOriginalWrapper.setLayout(new BorderLayout());
-
-        JLabel archivoOriginalLabel = new JLabel("Archivo original");
-        archivoOriginalLabel.setHorizontalAlignment(JLabel.CENTER);
-
-        archivoOriginalWrapper.add(archivoOriginalLabel, BorderLayout.NORTH);
-        archivoOriginalWrapper.add(scrollPaneArchivoOriginal, BorderLayout.CENTER);
-
-
-        descomprimirArchivoButton = new HighlightButton("Descomprimir archivo");
-        descomprimirArchivoButton.addActionListener(e -> {
-            replaceComprimirButton();
-            controller.descomprimirFichero(nombreArchivoSeleccionado, new File("compressed/"+ nombreArchivoSeleccionado + "_compressed.txt"));
-        });
-
-        tablaFicherosComprimidos.getPanel().setPreferredSize(Constantes.DIM_TABLA_FICHEROS_COMPRIMIDOS);
-        tablaFicherosComprimidos.getPanel().setSize(Constantes.DIM_TABLA_FICHEROS_COMPRIMIDOS);
-        tablaFicherosComprimidos.getTable().getSelectionModel().addListSelectionListener(e -> {
-            if (e.getValueIsAdjusting()){
-                Vector values = Constantes.tableModelTotalArchivos.getDataVector().elementAt(tablaFicherosComprimidos.getTable().getSelectedRow());
-                String file = (String) values.get(0);
-                nombreArchivoSeleccionado = file.split("\\.")[0];
-                extensionArchivo = file.split("\\.")[1];
-            }
-        });
-
-        // Botón que inicia la descompresión
-        descomprimirArchivoButton.setHighlight(new Color(231, 29, 54, 64));
-        descomprimirArchivoButton.setFocusPainted(false);
-        descomprimirArchivoButton.setFont(new Font("Tahoma", Font.BOLD, 12));
-
-        wrapperTable.add(tablaFicherosComprimidos.getPanel(), BorderLayout.NORTH);
-        wrapperTable.add(descomprimirArchivoButton, BorderLayout.CENTER);
-
-        wrapperArchivos.add(archivoOriginalWrapper, BorderLayout.WEST);
-        wrapperArchivos.add(archivoComprimidoWrapper);
+        wrapperArchivos.add(crearPanelContenido(Constantes.TEXT_ARCHIVO_ORIGINAL_PANEL, scrollPaneArchivoOriginal), BorderLayout.WEST);
+        wrapperArchivos.add(crearPanelContenido(Constantes.TEXT_ARCHIVO_DESCOMPRIMIDO_PANEL, scrollPaneArchivoDescomprimido));
 
         this.add(wrapperTable, BorderLayout.NORTH);
         this.add(wrapperArchivos, BorderLayout.CENTER);
@@ -120,9 +63,10 @@ public class DecompressPanel extends JPanel {
     }
 
     /**
-     *
+     * Método que añade el contenido del archivo comprimido al panel
      */
     public void addContentToArchivoDescomprimidoPanel(){
+        // Si el fichero es de tipo txt se muestra el contenido
         if (extensionArchivo.equals("txt")){
             executorService.submit(() -> {
                 archivoDescomprimido.removeAll();
@@ -135,6 +79,7 @@ public class DecompressPanel extends JPanel {
                 archivoDescomprimido.repaint();
                 this.revalidate();
             });
+            // si no se abre el fichero descomprimido resultante
         } else {
             try {
                 Desktop.getDesktop().open(new File("decompressed/" + nombreArchivoSeleccionado + "." + extensionArchivo));
@@ -145,9 +90,10 @@ public class DecompressPanel extends JPanel {
     }
 
     /**
-     *
+     * Método que añade el contenido del archivo original al panel
      */
     public void addContentToArchivoOriginalPanel(){
+        // Si el fichero es de tipo txt se muestra el contenido
         if (extensionArchivo.equals("txt")){
             executorService.submit(() -> {
                 archivoOriginal.removeAll();
@@ -164,6 +110,11 @@ public class DecompressPanel extends JPanel {
         }
     }
 
+    /**
+     * Método que sirve para redimensionar los paneles cuando la ventana cambia de tamaño
+     * @param width anchura de la ventana
+     * @param height altura de la ventana
+     */
     public void resizePanels(int width, int height){
         scrollPaneArchivoDescomprimido.setPreferredSize(new Dimension(width / 2, height - 150));
         scrollPaneArchivoOriginal.setPreferredSize(new Dimension(width / 2, height - 150));
@@ -171,7 +122,9 @@ public class DecompressPanel extends JPanel {
         scrollPaneArchivoOriginal.setSize(new Dimension(width / 2, height - 150));
     }
 
-
+    /**
+     * Método que elimina el botón de descomprimir y añade la  barra de progreso a la vista
+     */
     public void replaceComprimirButton() {
         wrapperTable.remove(descomprimirArchivoButton);
         wrapperTable.add(progressBar);
@@ -179,11 +132,101 @@ public class DecompressPanel extends JPanel {
         progressBar.setIndeterminate(true);
     }
 
+    /**
+     * Método que elimina la barra de progreso y añade el botón de descomprimir a la vista
+     */
     public void replaceProgressBar(){
         wrapperTable.remove(progressBar);
         wrapperTable.add(descomprimirArchivoButton);
         progressBar.setIndeterminate(false);
         descomprimirArchivoButton.setVisible(true);
         wrapperTable.revalidate();
+    }
+
+    /**
+     * Método que inicializa el panel que contendrá el contenido del archivo original
+     */
+    private void initArchivoOriginalPanel(){
+        archivoOriginal = new JPanel();
+        archivoOriginal.setVisible(true);
+        archivoOriginal.setBackground(Color.white);
+        scrollPaneArchivoOriginal = createScrollPanel(archivoOriginal);
+    }
+
+    /**
+     * Método que inicializa el panel que contendrá el contenido del archivo descomprimido
+     */
+    private void initArchivoDescomprimidoPanel(){
+        archivoDescomprimido = new JPanel();
+        archivoDescomprimido.setVisible(true);
+        archivoDescomprimido.setBackground(Color.white);
+        scrollPaneArchivoDescomprimido = createScrollPanel(archivoDescomprimido);
+    }
+
+    /**
+     * Método que inicializa la tabla de los ficheros comprimidos
+     */
+    private void initTabla(){
+        tablaFicherosComprimidos.getPanel().setPreferredSize(Constantes.DIM_TABLA_FICHEROS_COMPRIMIDOS);
+        tablaFicherosComprimidos.getPanel().setSize(Constantes.DIM_TABLA_FICHEROS_COMPRIMIDOS);
+        tablaFicherosComprimidos.getTable().getSelectionModel().addListSelectionListener(e -> {
+            if (e.getValueIsAdjusting()){
+                Vector values = Constantes.tableModelTotalArchivos.getDataVector().elementAt(tablaFicherosComprimidos.getTable().getSelectedRow());
+                String file = (String) values.get(0);
+                nombreArchivoSeleccionado = file.split("\\.")[0];
+                extensionArchivo = file.split("\\.")[1];
+            }
+        });
+    }
+
+    /**
+     * Método que inicializa el botón de descomprimir
+     */
+    private void initBotonDescomprimir(){
+        descomprimirArchivoButton = new HighlightButton("Descomprimir archivo");
+        descomprimirArchivoButton.addActionListener(e -> {
+            // añadimos la barra de progreso a la vista
+            replaceComprimirButton();
+            archivoOriginal.removeAll();
+            archivoDescomprimido.removeAll();
+            // descomprimimos el archivo
+            controller.descomprimirFichero(nombreArchivoSeleccionado, new File("compressed/"+ nombreArchivoSeleccionado + "_compressed.txt"));
+        });
+
+        // Botón que inicia la descompresión
+        descomprimirArchivoButton.setHighlight(new Color(231, 29, 54, 64));
+        descomprimirArchivoButton.setFocusPainted(false);
+        descomprimirArchivoButton.setFont(new Font("Tahoma", Font.BOLD, 12));
+    }
+
+    /**
+     * Método que crea un JScrollPane que contiene el panel que se pasa por parámetro
+     * @param panel panel que contiene el JScrollPane
+     * @return JScrollPane resultante
+     */
+    private JScrollPane createScrollPanel(JPanel panel){
+        JScrollPane scrollPanel = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPanel.setPreferredSize(new Dimension(this.getWidth() / 2, this.getHeight() - 150));
+        scrollPanel.setSize(new Dimension(this.getWidth() / 2, this.getHeight() - 150));
+        return scrollPanel;
+    }
+
+    /**
+     * Método que crea el panel que contendrá el contenido de un archivo
+     * @param labelText nombre del panel
+     * @param scrollPane JScrollPane que contiene el panel
+     * @return panel resultante
+     */
+    private JPanel crearPanelContenido(String labelText, JScrollPane scrollPane){
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        JLabel archivoOriginalLabel = new JLabel(labelText);
+        archivoOriginalLabel.setHorizontalAlignment(JLabel.CENTER);
+
+        panel.add(archivoOriginalLabel, BorderLayout.NORTH);
+        panel.add(scrollPane, BorderLayout.CENTER);
+        return panel;
     }
 }
