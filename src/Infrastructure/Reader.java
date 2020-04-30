@@ -161,7 +161,7 @@ public class Reader implements IReader {
                 Scanner scanner = new Scanner(new File(path));
                 for (int i = 0; i < 4; i++){
                     if (i == 3){
-                        rutaArchivoOriginal = scanner.nextLine().split(":")[1];
+                        rutaArchivoOriginal = scanner.nextLine().split(";")[1];
                     }
                     scanner.nextLine();
                 }
@@ -223,5 +223,4 @@ public class Reader implements IReader {
 
         return node;
     }
-
 }

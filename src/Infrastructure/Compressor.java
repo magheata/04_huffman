@@ -187,7 +187,7 @@ public class Compressor{
         controller.write(outputType, "Extension archivo original: " + extension + "\n");
         controller.write(outputType, "Total bits archivo original: " + bytesOriginales + "\n");
         controller.write(outputType, "Total bits archivo comprimido: " + bytesComprimidos + "\n");
-        controller.write(outputType, "Ruta archivo: " + file.getAbsolutePath() + "\n\n");
+        controller.write(outputType, "Ruta archivo; " + file.getAbsolutePath() + "\n\n");
 
         StringBuilder outputString;
 
