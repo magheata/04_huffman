@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="jgraphx-master">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/jgraphx-master.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jgraphx-master.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
