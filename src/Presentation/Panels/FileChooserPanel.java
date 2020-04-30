@@ -26,7 +26,8 @@ public class FileChooserPanel extends JPanel {
      *
      */
     private void initComponents() {
-        fileChooser = new JFileChooser();
+        // Abrimos el JFileChooser dentro de la carpeta del proyecto
+        fileChooser = new JFileChooser(new File(System.getProperty("user.dir")));
         chooseFileButton = new JButton();
         chooseFileButton.setText(Constantes.TEXT_FILECHOOSER_PANEL);
 

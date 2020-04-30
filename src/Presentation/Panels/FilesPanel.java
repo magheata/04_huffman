@@ -26,7 +26,6 @@ public class FilesPanel extends JPanel {
     private JPanel selectedFilesPanel, deleteFilePanel, comprimirFicherosPanel;
     private TablaFicherosComprimidos archivosComprimidos;
     private HashMap<File, JLabel> labels = new HashMap<>();
-    private HashMap<String, File> files = new HashMap<>();
     private JProgressBar progressBar;
     private HighlightButton comprimirArchivoButton;
     private Color color;
@@ -201,7 +200,6 @@ public class FilesPanel extends JPanel {
             } else {
                 selectedFilesPanel.add(label.fileLabel);
                 labels.put(file, label.fileLabel);
-                files.put(file.getName(), file);
             }
         }
 
@@ -298,12 +296,10 @@ public class FilesPanel extends JPanel {
     private void replaceFile(File oldFile, File newFile, JLabel newLabel){
         // Eliminamos el fichero del panel de fichero seleccionados
         selectedFilesPanel.remove(labels.get(oldFile));
-        // Eliminamos la constancia del fichero de la lista de ficheros y de labels
-        files.remove(oldFile.getName());
+        // Eliminamos la constancia del fichero de labels
         labels.remove(oldFile);
         // Añadimos el nuevo fichero con su nuevo label
         labels.put(newFile, newLabel);
-        files.put(newFile.getName(), newFile);
         // Añadimos el label del fichero al panel
         selectedFilesPanel.add(newLabel);
     }
