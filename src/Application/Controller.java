@@ -214,16 +214,6 @@ public class Controller implements IController {
     }
 
     /**
-     * Método que retorna todos los bytes de un fichero
-     * @param name nombre del fichero que se quiere leer
-     * @return
-     */
-    @Override
-    public byte[] getFileBytes(String name){
-        return reader.getBytes(new File(name));
-    }
-
-    /**
      * Método que retorna ínformación del fichero comprimido (bits originales, bits después de la compresión, y extensión
      * del archivo original).
      * @param path ruta al fichero dentro de la carpeta huffmanCodes/

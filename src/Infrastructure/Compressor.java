@@ -63,7 +63,7 @@ public class Compressor{
                 Constantes.PATH_HUFFMAN_CODES + name + Constantes.EXTENSION_HUFFMAN_CODES);
 
         // Creamos el fichero donde se volcarán los bytes comprimidos
-        controller.createOutputFile(Constantes.OUTPUT_TYPE_COMPRESSED_FILE + name,
+        controller.createBinaryOutputFile(Constantes.OUTPUT_TYPE_COMPRESSED_FILE + name,
                 Constantes.PATH_COMPRESSED_FILE + name + Constantes.EXTENSION_COMPRESSED_FILE);
 
         // Escribimos el árbol
@@ -236,12 +236,19 @@ public class Compressor{
         for (int i = 0 ; i < bytes.length; i++) {
             // Se escribe el código Huffman en el fichero
             String code = huffmanCode.get(bytes[i]);
-            controller.write(outputType, code.getBytes());
+            for (char currentChar : code.toCharArray()){
+                if (currentChar == '0'){
+                    controller.write(outputType, false);
+                } else {
+                    controller.write(outputType, true);
+                }
+            }
+            //controller.write(outputType, code.getBytes());
             bytesCompr.append(huffmanCode.get(bytes[i]));
         }
         bytesComprimidos = bytesCompr.length();
         // Se cierra el fichero
-        controller.closeOutputFile(outputType);
+        controller.closeBinaryOutputFile(outputType);
     }
 
 }

@@ -21,7 +21,6 @@ public interface IController {
     void            createOutputFile(String outputType, String path);
     void            deleteFile(File file);
     void            descomprimirFichero(String nombre, File file);
-    byte[]          getFileBytes(String name);
     Object[]        getOriginalAndCompressedBytes(String path);
     String          getPathArchivoOriginal(String path);
     void            initRootNodes();
