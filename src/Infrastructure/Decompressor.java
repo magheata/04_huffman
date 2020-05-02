@@ -2,6 +2,7 @@ package Infrastructure;
 
 import Application.Controller;
 import Domain.Node;
+import Infrastructure.Utils.BinaryIn;
 import Utils.Constantes;
 
 import java.io.File;
@@ -35,19 +36,19 @@ public class Decompressor {
         // Nodo de la raíz del árbol Huffman
         Node tmp = root;
         // Contenido del fichero comprimido
-        byte[] fileBytes = controller.getFileBytes(file.getAbsolutePath());
-        int idx = 0;
+        BinaryIn bIn = new BinaryIn(file.getAbsolutePath());
+        boolean code;
         // Para cada byte
-        while (idx < fileBytes.length){
+        while (!bIn.isEmpty()){
             // Si no es nodo hoja avanzamos en el árbol
             if (!tmp.isLeaf()){
-                byte code = fileBytes[idx];
-                if ((char) code == '0'){
+                code = bIn.readBoolean();
+                if (!code){
                     tmp = tmp.leftNode;
                 } else {
                     tmp = tmp.rightNode;
                 }
-                idx++;
+                //idx++;
             } else {
                 // Si es nodo hoja escribimos el byte correspondiente
                 controller.write(Constantes.OUTPUT_TYPE_DECOMPRESSED_FILE + name, new byte[] {tmp.byteRepresentado});

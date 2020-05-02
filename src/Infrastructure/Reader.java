@@ -220,7 +220,6 @@ public class Reader implements IReader {
             rightNode = new Node((byte) '\0', frecuencia, null, null);
             node.setRightNode(readTrieFromFilePrivate(rightNode, bIn));
         }
-
         return node;
     }
 }
